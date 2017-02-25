@@ -1,0 +1,10 @@
+#blog {
+  .post-list {
+    .post-link{
+      color: black;
+      &:hover{
+        color: $link-hover-color;
+      }
+    }
+  }
+}

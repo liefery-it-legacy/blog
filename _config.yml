@@ -1,0 +1,11 @@
+brand: Liefery
+title: Liefery Engineering Blog
+description: > # this means to ignore newlines until "baseurl:"
+  We are a Berlin based startup for same day delivery and logistics
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://engineering.liefery.com" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+
+exclude: [CNAME, Guardfile, invoker.ini, Gemfile, Gemfile.lock, README.md]
