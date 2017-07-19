@@ -5,25 +5,25 @@ date:   2017-07-19
 categories: podcasts learning ruby
 ---
 
-We're often looking for ways to expand our knowledge, whether by reading a book, visiting a conference, or engaging in code reviews. A recent discussion in our slack channel last week revealed that many of us also listen to podcasts, and we couldn't think of a better inaugural engineering blogpost than to share that info with you.
+We're often looking for ways to expand our knowledge, whether by reading a book, visiting a conference, or engaging in code reviews. A recent discussion in our Slack channel last week revealed that many of us also listen to podcasts, and we couldn't think of a better inaugural engineering blogpost than to share that info with you.
 
 So here are our picks. Let us know if you agree or suggest your own in the comments!
 
 1. [Ruby Book Club](http://rubybookclub.com/) - English
 
-The Ruby Book Club does what it says on the tin. Each week, Saron Yitbarek and Nadio Odunayo talk through the latest chapter of a programming book that they're reading together and discuss it in incredibly accessible and entertaining detail. Currently they're working their way through Ruby Under a Microscope, but have also dissected Refactoring Ruby and 99 Bottles.
+The Ruby Book Club does what it says on the tin. Each week, Saron Yitbarek and Nadia Odunayo talk through the latest chapter of a programming book that they're reading together and discuss it in incredibly accessible and entertaining detail. Currently they're working their way through Ruby Under a Microscope, but have also dissected Refactoring Ruby and 99 Bottles.
 
 2. [The Bike Shed](http://bikeshed.fm/) - English
 
-The Bike Shed is great for rubyists. The podcast plays host to many Rails developers and provides insights into codebase constraints.
+The Bike Shed is great for Rubyists. The podcast plays host to many Rails developers and provides insights into codebase constraints. Sean Griffin, full time Rails contributor, makes frequent appearances to discuss ActiveRecord internals and his own ORM for Rust - Diesel. Definitely worth listening to if you are curious about open source and databases.
 
 3. [The Ruby Rogues](https://devchat.tv/ruby-rogues) - English
 
-The Ruby Rogues (or RR) is a treasure trove for RoR programmers. Big name guests and open source contributers frequent this podcast to talk about a wide range of topics from the latest version of Rails, to salary negotiation, to Crystal. With over 300 episodes, there's something for everyone. Don't know where to start? We can recommend [episode #278: Consequences of an Insightful Algorithm with Carina C Zona](https://devchat.tv/ruby-rogues/278-rr-consequences-of-an-insightful-algorithm-with-carina-c-zona.)
+The Ruby Rogues (or RR) is a treasure trove for RoR programmers. Big name guests and open source contributors chat about a wide range of topics from the latest version of Rails, to salary negotiation, to Crystal. With over 300 episodes, there's something for everyone. Don't know where to start? We can recommend [episode #278: Consequences of an Insightful Algorithm with Carina C. Zona](https://devchat.tv/ruby-rogues/278-rr-consequences-of-an-insightful-algorithm-with-carina-c-zona.)
 
 4. [Software Engineering Radio](http://www.se-radio.net/) - English
 
-SE Radio is an educational resource for professional software developers. Despite the sometimes patchy audio quality, the incredibly wide range of topics presented are well worth a listen. Looking to learn about Docker, Elasticseach, Machine Learning, Rust, or Sonic Pi? SE Radio has everything.
+SE Radio is an educational resource for professional software developers. Despite the sometimes patchy audio quality, the incredibly wide range of topics presented are well worth a listen. Looking to learn about Docker, Elasticsearch, Machine Learning, Rust, or Sonic Pi? SE Radio has everything.
 
 5. [The Changelog](https://changelog.com/podcast) - English
 
@@ -43,4 +43,4 @@ Given we're in Germany, we thought we'd add a German podcast to the list. Softwa
 
 9. [Start Up](https://gimletmedia.com/startup/) - English
 
-Start Up from Gimlet Media made its way onto the list, not because it discusses the hottest new developer trends, or because of interviews with our favourite ruby people, but because it provides a fascinating insight into the world of start ups. In season one, follow Alex Blumberg, CEO and co-founder of Gimlet Media (a podcasting company with lots of other great podcasts under its belt as well) fumble his way through initial pitches, finding a co-founder, making his first hires and, of course, making his first mistakes. Later, co-host Lisa Chow takes over to interview other start ups, occasionally checking back in with her boss and colleagues.
+Start Up from Gimlet Media made its way onto the list, not because it discusses the hottest new developer trends, or because of interviews with our favourite Ruby people, but because it provides a fascinating insight into the world of start ups. In season one, follow Alex Blumberg, CEO and co-founder of Gimlet Media (a podcasting company with lots of other great podcasts under its belt as well) fumble his way through initial pitches, finding a co-founder, making his first hires and, of course, making his first mistakes. Later, co-host Lisa Chow takes over to interview other start ups, occasionally checking back in with her boss and colleagues.
