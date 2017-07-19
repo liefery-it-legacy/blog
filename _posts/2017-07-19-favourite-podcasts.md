@@ -43,4 +43,9 @@ So here are our picks. Let us know if you agree or suggest your own in the comme
 
 9. [Start Up](https://gimletmedia.com/startup/) - English
 
-   Start Up from Gimlet Media made its way onto the list, not because it discusses the hottest new developer trends, or because of interviews with our favourite Ruby people, but because it provides a fascinating insight into the world of start ups. In season one, follow Alex Blumberg, CEO and co-founder of Gimlet Media (a podcasting company with lots of other great podcasts under its belt as well) fumble his way through initial pitches, finding a co-founder, making his first hires and, of course, making his first mistakes. Later, co-host Lisa Chow takes over to interview other start ups, occasionally checking back in with her boss and colleagues.
+   Start Up from Gimlet Media made its way onto the list, not because it discusses the hottest new developer trends, or because of interviews with our favourite Ruby people, but because it provides a fascinating insight into the world of start ups. In season one, follow Alex Blumberg, CEO and co-founder of Gimlet Media (a podcasting company with lots of other great podcasts under its belt as well) fumble his way through initial pitches, finding a co-founder, making his first hires and, of course, making his first mistakes. Later, co-host Lisa Chow takes over to interview other start ups, occasionally checking back in with her boss and colleagues. No previous programming experience required!
+
+1. [Bits of Berlin](http://bitsofberlin.org/) - English
+
+   Bits of Berlin is a podcast about anything loosely related to tech in Berlin. They invite panelists to dive into their topics of choice, and then chat with them about it, so you can learn about local projects like sending satellites into space, robots playing football and the "Freifunk". They also often gets in touch with initiatives for learning such as FrauenLoop and Rails Girls Summer of Code. Our very own Tam is one of the creators of this one!
+
