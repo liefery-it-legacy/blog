@@ -14,6 +14,8 @@ bundle install
 invoker start
 ```
 
+and then visit localhost:4000 to see the blog in action.
+
 # License and copyright
 Following files, directories and their contents are copyright LieferFactory GmbH.
 You may not reuse anything therein without permission:
@@ -23,4 +25,4 @@ You may not reuse anything therein without permission:
 * index.html
 
 All other files and directories are licensed under the
-[MIT](http://opensource.org/licenses/MIT) unless explicitly stated. 
+[MIT](http://opensource.org/licenses/MIT) unless explicitly stated.
