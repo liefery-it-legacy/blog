@@ -17,9 +17,9 @@ So here are our picks. Let us know if you agree or suggest your own in the comme
 
    The Bike Shed is great for Rubyists. The podcast plays host to many Rails developers and provides insights into codebase constraints. Sean Griffin, full time Rails contributor, makes frequent appearances to discuss ActiveRecord internals and his own ORM for Rust - Diesel. Definitely worth listening to if you are curious about open source and databases.
 
-3. [The Ruby Rogues](https://devchat.tv/ruby-rogues) - English
+3. [Elixir Fountain](http://elixirfountain.com/) - English
 
-   The Ruby Rogues (or RR) is a treasure trove for RoR programmers. Big name guests and open source contributors chat about a wide range of topics from the latest version of Rails, to salary negotiation, to Crystal. With over 300 episodes, there's something for everyone. Don't know where to start? We can recommend [episode #278: Consequences of an Insightful Algorithm with Carina C. Zona](https://devchat.tv/ruby-rogues/278-rr-consequences-of-an-insightful-algorithm-with-carina-c-zona.)
+   Elixir is the new big thing in the Ruby community, and it's a language we're excited to be using (and learning about) here at Liefery. If your interest has also been piqued, check out Elixir Fountain, a weekly podcast containing interviews with people related to the Elixir community, from Elixir creator José Valim, to some familiar faces like Chad Fowler and Dave Thomas.
 
 4. [Software Engineering Radio](http://www.se-radio.net/) - English
 
