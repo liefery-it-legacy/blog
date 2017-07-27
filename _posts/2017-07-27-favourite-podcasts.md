@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Our Favourite Podcasts"
-date:   2017-07-19
+date:   2017-07-27
 categories: podcasts learning ruby
 ---
 
