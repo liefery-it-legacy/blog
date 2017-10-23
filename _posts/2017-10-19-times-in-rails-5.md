@@ -56,7 +56,7 @@ CREATE TABLE corn_stores (
 );
 ```
 
-Let's add some data in there. My current time is October 19th, 11:24 am CEST.
+Let's add some data in there. My current time is October 19th, 11:00 am CEST.
 
 ```ruby
 corn_store = CornStore.create!(
@@ -65,7 +65,7 @@ corn_store = CornStore.create!(
 corn_store.reload
 
 corn_store.sale_start_at
-# => Fri, 20 Oct 2017 11:24:31 CEST +02:00
+# => Fri, 20 Oct 2017 11:00:00 CEST +02:00
 corn_store.sale_start_at.class
 # => ActiveSupport::TimeWithZone
 
@@ -82,7 +82,7 @@ SELECT sale_start_at FROM corn_stores WHERE id = 1;
 
 #      sale_start_at
 # --------------------------
-# 2017-10-20 09:24:31.513386
+# 2017-10-20 09:00:00.513386
 
 SELECT opening_time FROM corn_stores WHERE id = 1;
 
@@ -94,21 +94,22 @@ SELECT opening_time FROM corn_stores WHERE id = 1;
 There are a few interesting things going on here.
 
 1. Our `sale_start_at` value is stored in postgres in UTC. This is a bit confusing though, because it doesn't actually say "UTC" anywhere.
-2. When we're in the rails console, `ActiveRecord` returns the `sale_started_at` value as an `ActiveSupport::TimeWithZone` object. Our application knows our timezone because it's set in a yaml file as "Berlin". If I were to change that to "London", we would get "Fri, 20 Oct 2017 10:24:31 BST +01:00" back as a value instead of "Fri, 20 Oct 2017 11:24:31 CEST +02:00". This means our `datetime` column is *time zone aware*. It knows what timezone the application is in and returns our value based on that.
-3. Our `opening_time` value in postgres is just a time (no date!). It's also in UTC, which again, is confusing.
-4. When we're in the rails console, `ActiveRecord` returns the `opening_time` value as a `Time` object, which... confusingly... now has a date attached to it and that date is January 1st, 2000 (this just seems to be a dummy value which [originates from the early days of Rails](https://github.com/rails/rails/blob/b3df95985a449fd155868b4ec04a556530a03e6c/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L78)). It's also still in UTC. The value wasn't translated to Berlin time for us. This means our `time` column is *not time zone aware*. It doesn't know the time zone of our application, and it doesn't care.
+2. When we're in the rails console, `ActiveRecord` returns the `sale_started_at` value as an `ActiveSupport::TimeWithZone` object. Our application knows our time zone because it's set in a yaml file as "Berlin". If I were to change that to "London", we would get "Fri, 20 Oct 2017 10:00:00 BST +01:00" instead of "Fri, 20 Oct 2017 11:00:00 CEST +02:00".
+3. Remember our `structure.sql`? It created two columns, both of which were "without time zone". As far as postgres is concerned, these values have no time zone, but Rails applies time zone logic to them. The `datetime` column for `sale_started_at` is *time zone aware*. It knows what time zone the application is in and gives us our value based on that.
+4. Our `opening_time` value in postgres is just a time (no date!). It's also in UTC, which again, is confusing.
+5. When we're in the rails console, `ActiveRecord` returns the `opening_time` value as a `Time` object, which... confusingly... now has a date attached to it and that date is January 1st, 2000 (this just seems to be a dummy value which [originates from the early days of Rails](https://github.com/rails/rails/blob/b3df95985a449fd155868b4ec04a556530a03e6c/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L78)). It's also still in UTC. Rails didn't translate the value to Berlin time for us. This means our `time` column is *not time zone aware*.
 
 If we now look back at our deprecation warning, things are starting to make a bit more sense. In Rails 4, `datetime` columns were already time zone aware. So to keep this behaviour in Rails 5, we can add `config.active_record.time_zone_aware_types = [:datetime]` to the `application.rb` (this will silence the deprecation warning). If you were to repeat all the exercises in a Rails 5 project with the above configuration, you'd get the exact same results.
 
 ### Behaviour in Rails 5
 
-Let's try out the new - **and Rails 5.1 default** - behaviour. In a Rails 5 project, let's add `config.active_record.time_zone_aware_types = [:datetime, :time]` to our `application.rb` and exit out of and then into the console again (just to make sure everything's reloaded properly). Let's revisit that old corn store and see what's different. Remember, my original time was October 19th, 11:24 am CEST. My sale starts tomorrow (October 20th), and my store opens every day at 9am.
+Let's try out the new - **and Rails 5.1 default** - behaviour. In a Rails 5 project, let's add `config.active_record.time_zone_aware_types = [:datetime, :time]` to our `application.rb` and exit out of and then into the console again (just to make sure everything's reloaded properly). Let's revisit that old corn store and see what's different. Remember, my original time was October 19th, 11:00 am CEST. My sale starts tomorrow (October 20th), and my store opens every day at 9 am.
 
 ```ruby
 corn_store = CornStore.last
 
 corn_store.sale_start_at
-# => Fri, 20 Oct 2017 11:24:31 CEST +02:00
+# => Fri, 20 Oct 2017 11:00:00 CEST +02:00
 corn_store.sale_start_at.class
 # => ActiveSupport::TimeWithZone
 
@@ -118,7 +119,7 @@ corn_store.opening_time.class
 # => ActiveSupport::TimeWithZone
 ```
 
-Something's changed! Here you can see that instead of getting a `Time` object back for the `opening_time`, we've gotten a `ActiveSupport::TimeWithZone` object. Like the deprecation warning suggested, it has become *time zone aware*. We set the value as 9am CEST, it was saved to postgres as 7am UTC and it was returned as 8am CET (winter time)! This is unfortunate, because it's not even a little bit the time that we wanted.
+Something's changed! Here you can see that instead of getting a `Time` object back for the `opening_time`, we've gotten a `ActiveSupport::TimeWithZone` object. Like the deprecation warning suggested, it has become *time zone aware*. Rails has applied time zone logic to this value. We set the value as 9 am CEST, it was saved to postgres as 7 am UTC and it was returned as 8 am CET (winter time)! This is unfortunate, because it's not even a little bit the time that we wanted.
 
 How you deal with this change is up to you. We decided that using the new configuration would be quite problematic for us as it would throw our times off by an hour - not a good idea for a delivery company! Our current course of action is just to use the `config.active_record.time_zone_aware_types = [:datetime]` configuration for now and discuss a possible future refactoring.
 
@@ -140,7 +141,7 @@ To silence this deprecation warning, add the following:
 
 It makes more sense now, but the explanation for the suggested configuration options is wrong. If you want to keep the old behaviour, you have to add the first configuration option to your Rails 5 project. If you want to use the *entirely new behaviour*, you can instead add the second configuration option. You *have to* add one of these two configuration options to silence the deprecation warning.
 
-Here's a good way of thinking about it: which columns in your application should be time zone aware?
+Here's a good way of thinking about it: which columns in your application should return an `ActiveSupport::TimeWithZone` object?
 
-* To keep the old behaviour and *only* have `datetime` columns be timezone aware, use `[:datetime]`.
-* To use the new behaviour and have `time` columns *also* be timezone aware, use `[:datetime, :time]`.
+* To keep the old behaviour and *only* have `datetime` columns return an `ActiveSupport::TimeWithZone` object, use `[:datetime]`.
+* To use the new behaviour and have `time` columns *also* return an `ActiveSupport::TimeWithZone` object, use `[:datetime, :time]`.
