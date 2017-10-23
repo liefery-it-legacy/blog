@@ -7,26 +7,27 @@ categories: ruby rails rubyonrails api json active_model_serializers
 ---
 This blog post presents our battle story from upgrading ActiveModelSerializers
 from version 0.8 to 0.10. Version 0.10 introduces significant changes in the
-library, including **backwards incompatible changes**. That's totally
-understandable, the library is before version 1.0, which, at least according
-to Semantic Versioning, means that it's 100% experimental. That said, it's also
-a popular solution in the Ruby / Rails community and it has been around for
-quite a while.
+library, including **backwards incompatible changes**. That's to be expected,
+after all it's a pre 1.0 release and according to
+[semantic versioning](http://semver.org/) __"Anything may change at any
+time"__. That said, it's also a popular solution in the Ruby / Rails community
+and it has been around for quite a while.
 
 In the past the version 0.8 received a lot of fixes when the version 0.10 was
-already in development, so the pressure to upgrade was lower. However when we
-started preparing for Rails 5 upgrade we decided that it's safer to upgrade
-ActiveModelSerializers first, because version 0.8 may not be compatible with
-Rails 5.
+already in development, so the pressure to upgrade was lower. However, when we
+started preparing for the Rails 5 upgrade we decided that it's safer to upgrade
+ActiveModelSerializers first, because it wasn't easy to determine upfront if
+0.8 had Rails 5 compatibility. In general, a Rails version upgrade is also a
+good opportunity to do some house cleaning and upgrade all other gems.
 
 ## First try
 
 At first we attempted to follow the
 [official upgrade guide](https://github.com/rails-api/active_model_serializers/blob/0-10-stable/docs/howto/upgrade_from_0_8_to_0_10.md)
 found in the gem documentation. It lists the breaking changes and provides
-patches that bring back the old behaviour.
+monkey patches that bring back the old behaviour.
 
-We applied the patches, run our test suite, and... saw a lot of red. The
+We applied the patches, ran our test suite, and... saw a lot of red. The
 thing with monkey patches is that they are helpful when they work out of the
 box. When they don't work and you have to debug these patches and develop
 patches for the patches, their value diminishes.
@@ -58,9 +59,9 @@ We developed the following upgrade procedure:
 7. if it's not in the list, add it there and repeat the same procedure
 
 We ended up with a clear write-up that lists all breaking changes that we
-found, discusses their impact, available solutions and the possibility of
-slipping through our tests. This list proved to be **incredibly helpfulfor code
-reviewers** and forms the basis for this blog post.
+found, discusses their impact as well as available solutions and the
+possibility of slipping through our tests. This list proved to be **incredibly
+helpful for code reviewers** and forms the basis for this blog post.
 
 I'm definitely not claiming that it's complete or that the presented solutions
 will work for everybody. This is what we had to consider in our codebase and
@@ -71,7 +72,7 @@ people.
 
 ### Redefined concept of serializer
 
-In 0.8 serializer was "an object that can give you JSON". Because of that we
+In 0.8 a serializer was "an object that can give you JSON". Because of that we
 had a lot of code that looked like this:
 
 ```ruby
@@ -99,7 +100,7 @@ transform its attributes into a JSON document; **it cannot be serialized
 itself**.
 
 This means that we have to go through all the places where we called a
-serializer and rewrite it to:
+serializer and rewrite it as:
 
 ```ruby
 render(
@@ -108,7 +109,7 @@ render(
 )
 ```
 
-Outside of the controller context we have to rewrite the code to use
+Outside of the controller context we had to rewrite the code to use
 `ActiveModelSerializers::SerializableResource`:
 
 ```ruby
@@ -256,7 +257,7 @@ class UserSerializer < ActiveModel::Serializer
   attributes :name, :email, :level
 
   def include_name?
-    object.name.start_with?("a")
+    object.name.start_with?("a") # dummy logic
   end
 end
 ```
@@ -265,7 +266,7 @@ This will include `name` key in JSON output only when `include_name?` returns
 true. This stopped working in 0.10 which means that the key will always be
 included regardless of the return value of `include_name?`.
 
-That's quite scary, especially when you use this feature to remove
+That's quite frightening, especially when you use this feature to remove
 attributes that are sensitive in a certain context and should not be included
 for security purposes.
 
@@ -277,7 +278,7 @@ class UserSerializer < ActiveModel::Serializer
   attribute :name, if: :awesome_name?
 
   def awesome_name?
-    object.name.start_with?("a")
+    object.name.start_with?("a") # dummy logic
   end
 end
 ```
@@ -464,4 +465,5 @@ Take-aways:
 2. However, there are no silver bullets and sometimes performing a full upgrade
    is more cost-effective.
 3. Make a list of breaking changes, share it in your team, and work through it.
-4. Tests for serializers are more helpful than you may think.
+4. Our good test coverage made the upgrade much easier, and tests for
+   serializers are more helpful than I previously thought.
