@@ -139,9 +139,11 @@ To silence this deprecation warning, add the following:
     config.active_record.time_zone_aware_types = [:datetime, :time]
 ```
 
-It makes more sense now, but the explanation for the suggested configuration options is wrong. If you want to keep the old behaviour, you have to add the first configuration option to your Rails 5 project. If you want to use the *entirely new behaviour*, you can instead add the second configuration option. You *have to* add one of these two configuration options to silence the deprecation warning.
+It makes more sense now, but the explanation for the suggested configuration options is unclear. If you want to keep the old behaviour, you have to add the first configuration option to your Rails 5 project. If you want to use the *entirely new behaviour*, you can instead add the second configuration option. You *have to* add one of these two configuration options to silence the deprecation warning.
 
 Here's a good way of thinking about it: which columns in your application should return an `ActiveSupport::TimeWithZone` object?
 
 * To keep the old behaviour and *only* have `datetime` columns return an `ActiveSupport::TimeWithZone` object, use `[:datetime]`.
 * To use the new behaviour and have `time` columns *also* return an `ActiveSupport::TimeWithZone` object, use `[:datetime, :time]`.
+
+And hey, it's open source! If you see something that doesn't quite make sense or you think might be wrong, [it's totally fixable](https://github.com/rails/rails/pull/30954). :)
