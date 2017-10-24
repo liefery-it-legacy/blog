@@ -75,7 +75,7 @@ corn_store.opening_time.class
 # => Time
 ```
 
-This looks weird. Why does the `opening_time` have such an strange date? And why is it a string? Why is its return value so different from `sale_start_at`? Let's double check Postgres before we make any assumptions:
+This looks weird. Why does the `opening_time` have such an strange date? Why is its return value so different from `sale_start_at`? Let's double check Postgres before we make any assumptions:
 
 ```sql
 SELECT sale_start_at FROM corn_stores WHERE id = 1;
