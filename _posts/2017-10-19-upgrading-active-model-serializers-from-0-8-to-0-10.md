@@ -70,6 +70,20 @@ people.
 
 ## Breaking changes and solutions
 
+- [Redefined concept of serializer](#redefined-concept-of-serializer)
+- [Nested relationships are no longer walked by default](#nested-relationships-are-no-longer-walked-by-default)
+- [Specifying root key](#specifying-root-key)
+- [Root key not included in JSON](#root-key-not-included-in-json)
+- [Default root key](#default-root-key)
+- [Root key and empty array](#empty-array)
+- [`include_*?` methods no longer work](#include_-methods-no-longer-work)
+- [URL helpers are no longer automatically available](#url-helpers-are-no-longer-automatically-available)
+- [`@options` changed to `instance_options`](#options-changed-to-instance_options)
+- [Attributes with question mark](#attributes-with-question-mark)
+- [Serializing Plain Old Ruby Objects](#serializing-plain-old-ruby-objects)
+- [Attribute methods are no longer defined on the serializer](#attribute-methods-are-no-longer-defined-on-the-serializer)
+- [Passing a `nil` resource to serializer now fails](#passing-a-nil-resource-to-serializer-now-fails)
+
 ### Redefined concept of serializer
 
 In 0.8, a serializer was "an object that can give you JSON". Because of that we
