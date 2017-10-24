@@ -20,6 +20,12 @@ ActiveModelSerializers first, because it wasn't easy to determine upfront if
 0.8 had Rails 5 compatibility. In general, a Rails version upgrade is also a
 good opportunity to do some house cleaning and upgrade all other gems.
 
+There are two important things to mention here. Our API is used by external
+partners so it is critical for us to keep backwards compatibility. Even tiny
+changes in the JSON structure are unacceptable for us. The second thing is that
+we have good test coverage in general, and separate tests for serializers
+specifically.
+
 ## First try
 
 At first we attempted to follow the
