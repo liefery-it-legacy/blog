@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "Time zone aware columns in Rails 5"
-date:   2017-10-19
-categories: rails rubyonrails time Postgres upgrade timezone ruby
+date:   2017-10-24
+categories: rails rubyonrails time Postgres upgrade timezone ruby deprecation
 ---
 
 Our backend application is running on Rails 4.2 (Ruby 2.4.2), and we've been eager to upgrade to Rails 5 for ages. We do weekly retrospectives here at Liefery, and someone mentions almost every week that they'd love for us to do the upgrade. Unfortunately, it wasn't as easy as just changing the version in our Gemfile and calling it a day. We were blocked for a while because of incompatible gems, so we kept our eyes open and upgraded these when possible.
