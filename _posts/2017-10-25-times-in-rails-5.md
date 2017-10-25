@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Time zone aware columns in Rails 5"
-date:   2017-10-24
+date:   2017-10-25
 categories: rails rubyonrails time Postgres upgrade timezone ruby deprecation
 ---
 
