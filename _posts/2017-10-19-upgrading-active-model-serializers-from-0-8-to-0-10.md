@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Upgrading ActiveModelSerializers from 0.8 to 0.10"
-date: 2017-10-19
+date: 2017-11-07
 author: Adam Niedzielski
 tags: ruby rails rubyonrails api json active_model_serializers
 ---
