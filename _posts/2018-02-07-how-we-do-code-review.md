@@ -28,4 +28,4 @@ We have a very different situation at Liefery. We have 10 programmers in our tea
 
 When you submit a pull request you don't assign anybody to review it, instead you just leave it open. Everybody is encouraged to grab and review it, although in many cases it's one of the people that you work together on the current feature, because they have the necessary context already "loaded". If the pull request introduces a major change we ask other people to take a look at it. We don't want the knowledge about certain areas of the application to be limited to a small group of people.
 
-Addressing feedback on the pull request is not so much "making Adam happy", but rather
+Addressing feedback on the pull request is not so much "making Adam happy", but rather "making sure that you're not the only person that holds this opinion". When you 
