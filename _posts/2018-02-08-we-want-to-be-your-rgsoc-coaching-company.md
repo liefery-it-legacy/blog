@@ -1,14 +1,14 @@
 ---
 layout: post
 title:  "We want to be your RGSoC coaching company!"
-date:   2018-02-08
-author: Adam Niedzielski and Tam Eastley
+date:   2018-02-12
+author: Tam Eastley and Adam Niedzielski
 tags: rails rubyonrails ruby rgsoc women summer code railsgirls
 ---
 
 [Rails Girls Summer of Code (RGSoC)](https://railsgirlssummerofcode.org) is a three month long program that aims to get more women and non-binary people into the world of open source by offering them a monthly stipend, a welcoming community, and experienced coaches.
 
-Lots of us on the dev team are involved with Rails Girls and the community, and this program in particular is very close to our hearts.
+Lots of us on the Liefery dev team are involved with Rails Girls and the community, and this program in particular is very close to our hearts.
 
 **Now, for the first time, we want to combine our efforts and be YOUR coaching company!**
 
@@ -18,7 +18,7 @@ Want to know a bit more about us and about RGSoC? One of our developers, Tam, wa
 
 _**Adam: Hey Tam, I know that you participated in Rails Girls Summer of Code 2013. What prompted you to apply for the program?**_
 
-**Tam:** I went to a Rails Girls workshop in Feb 2013, and was both totally confused and amazed at what I could accomplish with Ruby. I joined a project group, the Rubycorns, right after the workshop and together we started playing around with RoR. I suddenly found myself doing codecademy Ruby tutorials in the evenings and staying up late into the night to implement small little features for our project group app. When I saw that RGSoC was happening (for the first year ever) I knew immediately that I wanted to apply. Oddly enough, at the time it didn't occur to me that this was my first step towards a programming career. I saw it as a great opportunity to learn more about programming, and programming was something that I was really starting to enjoy. The community was so encouraging and helpful I figured worst case scenario, I'd have a really interesting summer.
+**Tam:** I went to a Rails Girls workshop in Feb 2013, and was both totally confused and amazed at what I could accomplish with Ruby. I joined a project group, the Rubycorns, right after the workshop and together we started playing around with RoR. I suddenly found myself doing Codecademy Ruby tutorials in the evenings and staying up late into the night to implement small little features for our project group app. When I saw that RGSoC was happening (for the first year ever) I knew immediately that I wanted to apply. Oddly enough, at the time it didn't occur to me that this was my first step towards a programming career. I saw it as a great opportunity to learn more about programming, and programming was something that I was really starting to enjoy. The community was so encouraging and helpful I figured worst case scenario, I'd have a really interesting summer.
 
 _**Adam: I’m so happy to hear about your positive experience with the community, and that programming "stuck" with you after a Rails Girls workshop! What was the most important skill that you learned during the summer?**_
 
@@ -30,11 +30,11 @@ _**Adam: Ha, your answer really captures the essence of programming! And what ha
 
 _**Adam: That’s so awesome :) Stories like that are what motivates people to contribute to the Rails Girls Summer of Code initiative. And how about a coaching company? What are the most important things that it has to provide so that participants can be productive and learn a lot?**_
 
-**Tam:** We were lucky enough to have an incredible coaching company in Absolventa, and my RGSoC partner and I sat together with the dev team. Technically we had two coaches, but the whole team was there for us and we could go to any of them at any time if we had questions. This was key. As a beginner it's easy to go down the wrong path for hours on end, and it's so helpful when there's someone beside you to pull you back from that. Absolventa also included us in their normal everyday dev activities like their stand up and we had weekly planning meetings. I'd never experienced anything like this before, so it was an easy and comfortable introduction to an entirely different world. Our coaches were also infinitely patient and never made us feel like we were wasting their time or asking stupid questions.
+**Tam:** We were lucky enough to have an incredible coaching company in Absolventa, and my RGSoC partner and I sat together with the dev team. Technically we had two coaches, but the whole team was there for us and we could go to any of them at any time if we had questions. This was key. As a beginner it's easy to go down the wrong path for hours on end, and it's so helpful when there's someone beside you to pull you back from that. Absolventa also included us in their normal everyday dev activities like their stand up and we had planning meetings. I'd never experienced anything like this before, so it was an easy and comfortable introduction to an entirely different world. Our coaches were also infinitely patient and never made us feel like we were wasting their time or asking stupid questions.
 
 _**Adam: Do you think that we can provide a similar environment at Liefery?**_
 
-**Tam:** Definitely! We're in a really unique position in that we have a LOT of developers who have experience coaching at RG workshops. Plus, a handful of us have volunteered for RGSoC in one way or another (we have ex supervisors, organizers, coaches, students, and mentors!), so we have a pretty good grasp of what's needed and what we can bring to the table. We also have a great atmosphere here. We're a very supportive group, and we stress knowledge sharing and helping one another. In my experience, this is exactly what a RGSoC team needs, and we already practice these values, so it's pretty perfect. Now we just need a team!
+**Tam:** Definitely! We're in a really unique position in that we have a LOT of developers who have experience coaching at Rails Girls workshops. Plus, a handful of us have volunteered for RGSoC in one way or another (we have ex supervisors, organizers, coaches, students, and mentors!), so we have a pretty good grasp of what's needed and what we can bring to the table. We also have a great atmosphere here. We're a very supportive group, and we stress knowledge sharing and helping one another. In my experience, this is exactly what a RGSoC team needs, and we already practice these values, so it's pretty perfect. Now we just need a team!
 
 _**Adam: Thanks a lot for the interview!**_
 
