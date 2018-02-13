@@ -46,7 +46,9 @@ Don't we sound like fun? Here's what we can offer:
 * A handful of eager on site coaches with extensive coaching experience
 * a wonderful, patient, friendly, understanding, and welcoming team and environment
 
-Liefery is primarily a Ruby company, so we are happy to help with Ruby related projects. If you have a non-Ruby project in mind or any other questions or concerns about whether your project might fit our knowledge base, feel free to [ask us!](mailto:tam@liefery.com)
+Liefery is primarily a Ruby company, so we are happy to help with Ruby related projects.
+
+Interested? Please drop [us an email](mailto:tam@liefery.com)! If you have a non-Ruby project in mind or any other questions or concerns about whether your project might fit our knowledge base, feel free to ask us :)
 
 
 _* Full disclosure, our office situation is a bit up in the air. The dev team is currently renting office space from BitCrowd, but we don't know how long we'll be here for or where we'll go next. If we decide to work together and if you get accepted to the program, we will keep you up to date with the situation and aim to find a solution that works for everyone._
