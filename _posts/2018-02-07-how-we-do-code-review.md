@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "How we do code review"
+title: "How we do code reviews"
 date: 2018-02-07
 author: Adam Niedzielski
-tags: quality review process
+tags: quality review process codereview
 ---
 
 Code review is an essential software development practice that we use at
@@ -14,12 +14,14 @@ how we designed our process, and what to look for when you are the reviewer.
 ## The why
 
 Why do we make sure that every line of code is reviewed by at least one
-other team member? The most important reason is that it helps us build a
-shared ownership of the application. It's not an "Adam's feature" that "has
+other team member? Besides the standard reason--i.e. code quality--the
+most important reason is that it helps us build a shared ownership of the
+application. It's not an "Adam's feature" that "has
 bugs" and "Adam has to fix it now". When I reviewed and accepted a pull
 request I'm now equally responsible for the code. This reduces the fear of
 making changes by replacing "programmer mistakes" with "team mistakes". And
-I make mistakes every single day.
+I make mistakes every single day. This approach is a shift from "blame"
+culture to "we have to fix it" culture.
 
 Our application gets bigger and bigger, and it's no longer possible that
 everybody works on every feature. Thanks to code reviews I am still aware
@@ -31,7 +33,7 @@ suggest an alternative way to solve the problem, a useful method from Ruby
 standard library that simplifies the code, or ask questions about new
 technologies that they encounter for the first time.
 
-## Process - DYI
+## Process - DIY
 
 It's important to design a code review process that suits your company, not
 just blindly copy what other companies are doing. They probably have a
@@ -75,7 +77,8 @@ incremental improvements and want to empower the whole team to review code.
 When you submit a pull request you don't assign anybody to review it,
 instead you just leave it open. Everybody is encouraged to grab and review
 it, although in many cases it's one of the people that you work together
-on the current feature, because they have the necessary context already in
+on the current feature group, because they have the necessary context
+already in
 their head. If the pull request introduces a non-trivial change we ask
 other people to take a look at it. We don't want the knowledge about
 certain areas of the application to be clustered.
@@ -86,7 +89,9 @@ this opinion". You don't have to adjust your pull request to match exactly
 the programming habits of the reviewer, it's enough when another team
 member agrees with your opinion. This requires a lot of trust in the team
 as a whole, but saves us from having long discussions on things that don't
-really matter.
+really matter. For example, making a method shorter by extracting a private
+method is often a matter of style and should not block a pull request if
+other people agree that it's optional.
 
 As you can see our review process doesn't depend that much on individuals
 and we don't get blocked on waiting for a response from a particular
@@ -105,62 +110,71 @@ tickets.
 
 So you decided to review a pull request, you have the code diff right in
 front of you, what do you do now? I have an informal list of steps in my
-mind that I follow every time I perform a code review. I'll try to write
+mind that I follow every time I perform a code review. I'll write
 it down for you now.
 
-1. Read the associated issue / ticket first. You need to have a good
+1. **Read the associated issue / ticket first**. You need to have a good
 understanding of what had to be done before you see how it was done. This
 forces you to think about how you would solve the problem without being
 biased by the solution in the pull request.
 2. Go through all the changes and try to understand the proposed solution
-on the high level. Do you understand how it solves the problem? Do you
+on the **high level**. Do you understand how it solves the problem? Do you
 think that it's better, worse or equivalent to what you would do? Does it
 leave the codebase in a better shape than it was before?
-3. Don't leave any comments yet during the first pass. Chances are that
-your questions will be answered by the code that follows. Note down these
-remarks or create draft comments.
-4. Go back to the first file and start over. This time read every single
+3. **Don't leave any comments yet during the first pass**. Chances are that
+your questions will be answered by the code that follows. Instead create
+draft comments for these remarks.
+4. Go back to the first file and **start over**. This time read every single
 line and focus on individual methods and classes.
-5. Do not leave comments related to the code formatting. The code
+5. **Do not leave comments related to the code formatting**. The code
 formatting should be enforced by automatic tools (like Rubocop) and having
 a discussion about it in every pull request is a waste of time.
-6. Think about the readability of the code. Is this method / class easy to
+6. Think about the **readability of the code**. Is this method / class easy to
 read? Is it immediately clear what it does? Will it benefit from being
-split into two methods / classes? Does it have a good name?
-7. Think about edge cases. Is it possible that the argument is `nil`? Will
+split into multiple methods / classes? Does it have a good name?
+7. Think about **edge cases**. Is it possible that the argument is `nil`? Will
 the code still work when there are no users with the provided email? What
 if the sum of the elements is zero?
-8. Think about your business domain. Does the language used in the code
+8. Think about your **business domain**. Does the language used in the code
 match the terms that your business specialists use? Does the code feel
 like a natural solution in the context of your business?
-9. Think about the duplication. Do you already have code that tries to do
+9. Think about the **duplication**. Do you already have code that tries to do
 the same thing? Is it the right moment to introduce an abstraction that
 reduces the duplication?
-10. Think about the security. Do we filter the allowed parameters
+10. Think about the **security**. Do we filter the allowed parameters
 properly? Do we scope the available records to the ones associated with
 the current user? Do we sanitize the input?
-11. Think about the performance. Does this action happen in the request
+11. Think about the **performance**. Does this action happen in the request
 life-cycle or in the background job? Does it take a long time? Can it be
 moved to the background? Does the code produce an efficient SQL query?
-12. Look at the tests. Are there tests for the newly introduced classes
+12. Look at the **tests**. Are there tests for the newly introduced classes
 and public methods? Are changes of behaviour documented by corresponding
 test cases? Does this pull request require higher level integration tests?
-13. Ask questions instead of pointing out mistakes. It happens to me often
+13. **Ask questions instead of pointing out mistakes**. It happens to me often
 that when I confidently say that something is wrong, I missed some
 important piece of information and it's in fact me who is wrong. That's
 why it is much better to ask questions instead: "why did you decide to
 implement it like that?" or "don't we have to consider that case when
 customer is missing here?".
-14. Ask questions when you have no experience with certain technologies or
+14. **Be nice**. Always assume the best intentions of the person submitting
+the pull request. When describing things to improve, talk about the code
+("This code is a bit unclear. What do you think about renaming the method?")
+not about the person ("You failed to communicate your intent here. Can you
+learn how to use better naming conventions?").
+15. **Ask questions when you have no experience with certain technologies** or
 techniques. When I review a pull request that introduces static typing
-with Flux, and I've never used Flux before, I have two options: do my own
+with Flow, and I've never used Flow before, I have two options: do my own
 research or ask my colleague to point me to the resources that they know.
 Now the chances are that whatever they suggest will be a much better
 source of knowledge that the thing I can find after 5 minutes of googling.
 That's because they already have this knowledge so they can judge the
 quality of resources more easily. Asking for help doesn't make you a "less
 credible reviewer".
-15. When you go back and forth in a text discussion without reaching an
-agreement, switch to an one-on-one, synchronous communication. It's much
+16. When you go back and forth in a text discussion without reaching an
+agreement, **switch to one-on-one, synchronous communication**. It's much
 more efficient when resolving conflicts. Write down the outcome of the
-discussion as a comment in the pull request for other people reviewing it.
+pairing review as a comment in the pull request for other people reviewing it.
+
+This is how we do code reviews. And how about your company? What is your
+process? What are the things that you pay attention to? I encourage you
+to think about it :)
