@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How we do code reviews"
-date: 2018-02-07
+date: 2018-02-21
 author: Adam Niedzielski
 tags: quality review process codereview
 ---
