@@ -6,30 +6,93 @@ author: Tobias Pfeiffer
 tags: elixir postgresql performance benchee
 ---
 
-On a shiny nice summer day once I was thinking of nothing evil when _Bugsnag_
+Once on a shiny nice summer day I was thinking of nothing evil when _Bugsnag_
 popped up in our _Slack_ and complained about an
 `Elixir.DBConnection.ConnectionError` - curiously I took a look and it turns out
 it was a timeout error! [Ecto (elixir database tool) defaults to a timeout of 15
 seconds](https://hexdocs.pm/ecto/Ecto.Repo.html#module-shared-options) and we
 had a query that took longer than this? Yikes! What went wrong?
 
-The application gets the locations of couriers on the road and then makes them
-available for admins to look at with live channels. One important part of that is
-that as soon as you look at a shipment its last known location is displayed.
-This was were the bug was coming from. The rather innocent line:
+This is the story of what happened, where we went wrong and how we made sure we
+fixed it.
 
+## The problem
 
+The application we are looking at here is our courier tracker. It gets the
+gps locations of couriers on the road and then makes them available for admins
+to look at with live channels. One important part of this is that as soon as
+you look at a shipment its last known location is displayed. This was were
+the exception was coming from. The rather innocent line where it occurred:
 
-* create gif? for moving courier?
-* One day timeout error (show error)
+```elixir
+last_courier_location =
+  LatestCourierLocation
+  |> CourierLocation.with_courier_ids(courier_id)
+  |> Repo.one
+```
 
-* I know this stuff write first benchmark
-* Boom again -- What happened?!?!
-* Write new benchmark with more meaningful records
-* PG EXPLAIN
+How could this take so long (remember the query took 15 minutes to execute)
+and what does it do?
+
+`with_courier_ids/1` basically resolves to this:
+
+```elixir
+def with_courier_ids(query, courier_ids) when is_list(courier_ids) do
+  from location in query,
+  where: location.courier_id in ^courier_ids
+end
+```
+
+Instead of a straight `id = my_id` check it checks against the inclusion in a list
+(the list being `[courier_id]`).
+
+`LatestCourierLocation` on the other hand is a database view that we created
+as follows:
+
+```SQL
+CREATE OR REPLACE VIEW latest_courier_locations AS
+  SELECT DISTINCT ON(courier_id)
+  *
+  FROM courier_locations
+  ORDER BY courier_id, time DESC
+```
+
+So it does what we said in the beginning - it gets the latest location for
+a given courier. Easy enough.
+
+## Why did it take so long?
+
+A quick debugging showed that it took so long because a misbehaving client
+was submitting locations at a way too frequent rate. At the time that courier
+had around 2.3 Million locations in the database. Quite some, but nothing
+that should cause the database to take that long. 
+
+This is probably also a good time to mention that we are running PostgreSQL.
+At the time I think it was 9.5, results shown here are with Postgres 9.6 though.
+
+## Attempt#1
+
+Ok let's make this faster. I got this. I know this. Let's write a benchmark!
+We'll use [benchee](https://github.com/PragTob/benchee).
+
+* only the 2.3 Million input
+
+## Boom!
+
+* boom image
+
+## What happened?
+
+* benchmark number 2 with old indexes
 * Combined indexes to the rescue
 * performance comparison
-* takeaway: INPUTS MATTER
+
+
+## Takeaway
+
+* takeaway: always benchmark, INPUTS MATTER, PG EXPLAIN is your friend
+
+
 
 ```
 ##### With input Big 2.3 Million locations #####
