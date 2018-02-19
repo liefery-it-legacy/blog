@@ -231,82 +231,248 @@ I'll spare you the output of system metrics etc. this time around. Let's have
 a look at the results divided by input:
 
 ```
+##### With input Big 2.5 Million locations #####
+Name                       ips        average  deviation         median         99th %
+with_courier_ids        937.18        1.07 ms    ±34.98%        0.95 ms        2.64 ms
+full custom             843.24        1.19 ms    ±52.82%        0.99 ms        4.37 ms
+DB View                   0.22     4547.24 ms     ±2.80%     4503.63 ms     4718.76 ms
 
+Comparison: 
+with_courier_ids        937.18
+full custom             843.24 - 1.11x slower
+DB View                   0.22 - 4261.57x slower
+
+##### With input No locations #####
+Name                       ips        average  deviation         median         99th %
+DB View                1885.48      0.00053 s    ±44.06%      0.00047 s      0.00164 s
+with_courier_ids        0.0522        19.16 s     ±3.77%        19.16 s        19.88 s
+full custom             0.0505        19.82 s     ±1.58%        19.82 s        20.13 s
+
+Comparison: 
+DB View                1885.48
+with_courier_ids        0.0522 - 36123.13x slower
+full custom             0.0505 - 37367.23x slower
+
+##### With input ~200k locations #####
+Name                       ips        average  deviation         median         99th %
+DB View                   3.57         0.28 s     ±7.84%         0.28 s         0.35 s
+with_courier_ids         0.109         9.19 s     ±2.25%         9.13 s         9.53 s
+full custom             0.0978        10.23 s     ±0.95%        10.23 s        10.34 s
+
+Comparison: 
+DB View                   3.57
+with_courier_ids         0.109 - 32.84x slower
+full custom             0.0978 - 36.53x slower
+
+##### With input ~20k locations #####
+Name                       ips        average  deviation         median         99th %
+DB View                  31.73       0.0315 s    ±12.50%       0.0298 s       0.0469 s
+with_courier_ids         0.104         9.62 s     ±0.84%         9.59 s         9.76 s
+full custom             0.0897        11.14 s     ±1.38%        11.17 s        11.32 s
+
+Comparison: 
+DB View                  31.73
+with_courier_ids         0.104 - 305.37x slower
+full custom             0.0897 - 353.61x slower
 ```
 
 It seems like `DB View` is faster than our 2 alternatives for everything that
-doesn't have the 2.5 Million locations? How can this be? `full_custom` and
+doesn't have the 2.5 Million locations? And not just by a little bit, for no locations they are more than **35 000 times slower**! How can this be? `full_custom` and
 `with_courier_ids` get slower the fewer elements are affected by it?
 
 To find out what's going on, let's get the respective queries, fire up a
 PostgreSQL shell and `EXPLAIN ANALYZE` what's up.
 
 To get the SQL query each one of those would generate, let's get it from an
-`iex` session:
+`iex` session using [`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3):
 
 ```
-
+iex(1)> query = CourierLocation.with_courier_ids(LatestCourierLocation, 3799)
+...
+iex(2)> Ecto.Adapters.SQL.to_sql(:all, Repo, query)
+{"SELECT l0.\"id\", l0.\"courier_id\", l0.\"location\", l0.\"time\", l0.\"inserted_at\", l0.\"updated_at\" FROM \"latest_courier_locations\" AS l0 WHERE (l0.\"courier_id\" = ANY($1))",
+ [[3799]]}
+iex(3)> custom_query = CourierLocation |> Ecto.Query.where(courier_id: 3799) |> Ecto.Query.order_by(desc: :time) |> Ecto.Query.limit(1)  
+...
+iex(4)> Ecto.Adapters.SQL.to_sql(:all, Repo, custom_query)                      
+{"SELECT c0.\"id\", c0.\"courier_id\", c0.\"location\", c0.\"time\", c0.\"accuracy\", c0.\"inserted_at\", c0.\"updated_at\" FROM \"courier_locations\" AS c0 WHERE (c0.\"courier_id\" = 3799) ORDER BY c0.\"time\" DESC LIMIT 1",
+ []}
 ```
 
 And now to `EXPLAIN ANALYZE` - it's basically asking PostgreSQL (or the query 
 planner, more precisely) how it wants to get that data. Seeing that, we might
 see where we are missing an index or where our data model hurts us.
 
+Let's first check out `full_custom`:
+
+```
+courier_tracker=# EXPLAIN ANALYZE SELECT c0."id", c0."courier_id", c0."location", c0."time", c0."accuracy", c0."inserted_at", c0."updated_at" FROM "courier_locations" AS c0 WHERE (c0."courier_id" = 3799) ORDER BY c0."time" DESC LIMIT 1;
+                                                                                  QUERY PLAN                                                                                  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..0.83 rows=1 width=72) (actual time=1.840..1.841 rows=1 loops=1)
+   ->  Index Scan Backward using courier_locations_time_index on courier_locations c0  (cost=0.43..932600.17 rows=2386932 width=72) (actual time=1.837..1.837 rows=1 loops=1)
+         Filter: (courier_id = 3799)
+         Rows Removed by Filter: 1371
+ Planning time: 0.190 ms
+ Execution time: 1.894 ms
+(6 rows)
+```
+
+What does this tell us? It uses the index to basically sort the courier
+locations by time to get the most recent one. That works brilliantly if there
+is a recent one. If there is no recent one we'll still scan the whole table
+until we realize there isn't any 😱😱😱
+
+That explains why `full custom` is slower the fewer locations we have (the
+lower our hit chances, basically). `with_courier_ids` is much the same.
+What does `DB View` do differently?
+
+```
+courier_tracker=# EXPLAIN ANALYZE SELECT l0."id", l0."courier_id", l0."location", l0."time", l0."inserted_at", l0."updated_at" FROM "latest_courier_locations" AS l0 WHERE (l0."courier_id" = ANY('{3799}'));
+                                                                                QUERY PLAN                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unique  (cost=650416.51..662351.17 rows=282 width=64) (actual time=3135.211..3969.453 rows=1 loops=1)
+   ->  Sort  (cost=650416.51..656383.84 rows=2386932 width=64) (actual time=3135.211..3849.342 rows=2508672 loops=1)
+         Sort Key: courier_locations.courier_id, courier_locations."time" DESC
+         Sort Method: external merge  Disk: 181472kB
+         ->  Bitmap Heap Scan on courier_locations  (cost=44683.16..218073.14 rows=2386932 width=64) (actual time=179.249..601.531 rows=2508672 loops=1)
+               Recheck Cond: (courier_id = ANY ('{3799}'::integer[]))
+               Heap Blocks: exact=33490
+               ->  Bitmap Index Scan on courier_locations_courier_id_index  (cost=0.00..44086.42 rows=2386932 width=0) (actual time=172.958..172.958 rows=2508672 loops=1)
+                     Index Cond: (courier_id = ANY ('{3799}'::integer[]))
+ Planning time: 0.344 ms
+ Execution time: 3992.065 ms
+(11 rows)
+```
+
+Our biggest time investment here is the sorting by time that PostgreSQL
+performs, scanning is then done by the index. Most likely this goes back to the
+way we defined the database view. The sort is cheaper the fewer locations are
+affected (which we find efficiently in this case) - explaining how it is faster
+for those compared to `full custom` & friends.
+
+So, what's the solution? Our solutions seem to use either the index on
+`courier_id` or the index on `time` - if only there was a way to _combine_
+both...
+
+## Combined Indexes to the rescue
+
+![combined indexes](/images/posts/curious_query/combined_index.jpg)
+
+We can define indexes on [multiple columns](https://www.postgresql.org/docs/9.6/static/indexes-multicolumn.html)
+and it's important that the most limiting is the leftmost. As we usually scope
+by couriers, we'll make that the left most. So let's migrate our database!
+
+```elixir
+defmodule CourierTracker.Repo.Migrations.LongLiveTheCombinedIndex do
+  use Ecto.Migration
+
+  def change do
+    drop index(:courier_locations, [:courier_id])
+    drop index(:courier_locations, [:time])
+    create index(:courier_locations, [:courier_id, :time])
+  end
+end
+```
+
+As our _combined_ index can basically be used as a replacement for the leftmost
+index (`courier_id`) and we learned we don't wanna just scan based on `time` it
+is safe to drop those.
+
+But how do we know that we improved on our old results? We could just run them
+again and compare by hand... or we could use benchee's new feature since 0.12
+for [saving, loading and comparing previous runs](https://github.com/PragTob/benchee#saving-loading-and-comparing-previous-runs)!
+Easily enough we add `save: [tag: "before", path: "location.benchee"]` to the
+configuration and run it again before we run the migration to save those results. Then we set `load: "location.benchee"` to load them up again and
+compare against them.
+
+Well I've given you enough plain text to read for one day haven't I? Let's just
+go with the images for now if the details (including histograms, raw runtime
+graphs interest you...) interest you feel free to check out the [full HTML 
+report](/resources/curious_query/latest_location.html). Suffice it to say, **`full custom` is now the fastest with all inputs**.
+
+### 2.5 Million Locations
+
+![big](/images/posts/curious_query/big.png)
+
+### 200 000 Locations
+
+![200k](/images/posts/curious_query/200k.png)
+
+### 20 000 locations
+
+![20k](/images/posts/curious_query/20k.png)
+
+### No Locations
+
+![no locations](/images/posts/curious_query/no_locations.png)
+
+## One more thing
+
+I know it's time to wrap this up already, but there's one more important thing!
+When you add indexes etc. it's always wise to also benchmark the time it takes
+you to insert records into the database. A simple benchmark:
+
+```elixir
+alias CourierTracker.{Repo, CourierLocation}
+
+valid_location = %{
+  courier_id: 42,
+  location: %Geo.Point{coordinates: {1.0, 42.0}},
+  time: "2010-04-17T14:00:00Z"
+}
+
+Benchee.run %{
+  "Inserting a location" => fn ->
+    changeset = CourierLocation.changeset(%CourierLocation{}, valid_location)
+    Repo.insert!(changeset)
+  end
+}, load: "insertion.benchee"#, save: [tag: "old", path: "insertion.benchee"]
+```
+
+Note that it'd be best to destroy all the created locations afterwards.
+
+And the result:
+
+```
+tobi@liefy ~/projects/liefery-courier-tracker $ mix run benchmarks/location_creation.exs 
+Operating System: Linux
+CPU Information: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz
+Number of Available Cores: 8
+Available memory: 15.49 GB
+Elixir 1.4.5
+Erlang 20.1
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+parallel: 1
+inputs: none specified
+Estimated total run time: 7 s
 
 
-* benchmark number 2 with old indexes
-* Combined indexes to the rescue
-* performance comparison
+Benchmarking Inserting a location...
 
+Name                                 ips        average  deviation         median         99th %
+Inserting a location (old)        353.46        2.83 ms    ±20.58%        2.69 ms        4.88 ms
+Inserting a location              348.17        2.87 ms    ±42.25%        2.37 ms        7.92 ms
+
+Comparison: 
+Inserting a location (old)        353.46
+Inserting a location              348.17 - 1.02x slower
+```
+
+That's the same-ish difference and could easily be explained by the deviation.
+So, we're good.
 
 ## Takeaway
 
-* takeaway: always benchmark, INPUTS MATTER, PG EXPLAIN is your friend
+So what do we learn in the end?
 
+**Always benchmark with a variety of inputs!** Even if you think your input
+might be the _worst_ one - it's you guessing not knowing. The results might 
+surprise you, as they did here. 
 
+Obviously we should have also noticed this slow query earlier by using application performance monitoring. Back then there weren't as many good tools for this as
+there are now and the application never made us any trouble.
 
-```
-##### With input Big 2.3 Million locations #####
-Name                                  ips        average  deviation         median         99th %
-full custom                       1032.69      0.00097 s    ±24.98%      0.00091 s      0.00224 s
-with_courier_ids + order           949.10      0.00105 s    ±38.37%      0.00095 s      0.00300 s
-Using LatestCourierLocation          0.21         4.79 s     ±8.10%         4.79 s         5.18 s
-
-Comparison:
-full custom                       1032.69
-with_courier_ids + order           949.10 - 1.09x slower
-Using LatestCourierLocation          0.21 - 4947.34x slower
-
-##### With input No locations #####
-Name                                  ips        average  deviation         median         99th %
-Using LatestCourierLocation       2489.78      0.00040 s    ±29.78%      0.00039 s      0.00091 s
-full custom                        0.0513        19.51 s     ±0.00%        19.51 s        19.51 s
-with_courier_ids + order           0.0487        20.52 s     ±0.00%        20.52 s        20.52 s
-
-Comparison:
-Using LatestCourierLocation       2489.78
-full custom                        0.0513 - 48584.15x slower
-with_courier_ids + order           0.0487 - 51098.57x slower
-
-##### With input ~200k locations #####
-Name                                  ips        average  deviation         median         99th %
-Using LatestCourierLocation          3.84         0.26 s     ±4.85%         0.26 s         0.29 s
-with_courier_ids + order            0.103         9.73 s     ±0.00%         9.73 s         9.73 s
-full custom                         0.103         9.74 s     ±0.00%         9.74 s         9.74 s
-
-Comparison:
-Using LatestCourierLocation          3.84
-with_courier_ids + order            0.103 - 37.36x slower
-full custom                         0.103 - 37.40x slower
-
-##### With input ~20k locations #####
-Name                                  ips        average  deviation         median         99th %
-Using LatestCourierLocation         32.58       0.0307 s     ±7.30%       0.0298 s       0.0399 s
-full custom                        0.0976        10.25 s     ±0.00%        10.25 s        10.25 s
-with_courier_ids + order           0.0970        10.31 s     ±0.00%        10.31 s        10.31 s
-
-Comparison:
-Using LatestCourierLocation         32.58
-full custom                        0.0976 - 333.89x slower
-with_courier_ids + order           0.0970 - 335.83x slower
-```
+So, take your trusty benchmarking tool and remember your inputs.
