@@ -6,8 +6,8 @@ author: Tobias Pfeiffer
 tags: elixir postgresql performance benchee indexes
 ---
 
-Once on a wonderful Berlin winter day I was thinking of nothing evil when
-suddenly...
+Once on a wonderful Berlin winter day more than a year ago I was thinking of
+nothing evil when suddenly...
 
 ![one error pops up burning house](/images/posts/curious_query/boom.jpg)
 
