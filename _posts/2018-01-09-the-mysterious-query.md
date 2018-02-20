@@ -6,23 +6,28 @@ author: Tobias Pfeiffer
 tags: elixir postgresql performance benchee
 ---
 
-Once on a shiny nice summer day I was thinking of nothing evil when _Bugsnag_
-popped up in our _Slack_ and complained about an
+Once on a wonderful Berlin winter day I was thinking of nothing evil when
+suddenly...
+
+![one error pops up burning house](/images/posts/curious_query/boom.jpg)
+
+
+_Bugsnag_ popped up and complained about an
 `Elixir.DBConnection.ConnectionError` - curiously I took a look and it turns out
 it was a timeout error! [Ecto (elixir database tool) defaults to a timeout of 15
 seconds](https://hexdocs.pm/ecto/Ecto.Repo.html#module-shared-options) and we
-had a query that took longer than this? Yikes! What went wrong?
+had a query that took longer than this? **Yikes!** What happened?
 
 This is the story of what happened, where we went wrong and how we made sure we
 fixed it.
 
 ## The problem
 
-The application we are looking at here is our courier tracker. It gets the
-gps locations of couriers on the road and then makes them available for admins
-to look at with live channels. One important part of this is that as soon as
+The application we are looking at here is our _courier tracker_. It gets the
+GPS locations of couriers on the road and then makes them available for admins
+to look at through websockets. One important part of this is that as soon as
 you look at a shipment its last known location is displayed. This was were
-the exception was coming from. The rather innocent line where it occurred:
+the exception was raised:
 
 ```elixir
 last_courier_location =
@@ -31,10 +36,10 @@ last_courier_location =
   |> Repo.one
 ```
 
-How could this take so long (remember the query took 15 minutes to execute)
-and what does it do?
+How could this innocent line take so long (remember the query took 15 seconds to
+execute) and what does it do?
 
-`with_courier_ids/1` basically resolves to this:
+`with_courier_ids/2` basically resolves to this:
 
 ```elixir
 def with_courier_ids(query, courier_ids) when is_list(courier_ids) do
@@ -44,12 +49,13 @@ end
 ```
 
 Instead of a straight `id = my_id` check it checks against the inclusion in a list
-(the list being `[courier_id]`).
+(the list being `[courier_id]` on the elixir side).
 
-`LatestCourierLocation` on the other hand is a database view that we created
-as follows:
+`LatestCourierLocation` on the other hand is a
+[database view](https://www.postgresql.org/docs/9.6/static/tutorial-views.html)
+that we created as follows:
 
-```SQL
+```sql
 CREATE OR REPLACE VIEW latest_courier_locations AS
   SELECT DISTINCT ON(courier_id)
   *
@@ -64,13 +70,13 @@ a given courier. Easy enough.
 
 A quick debugging showed that it took so long because a misbehaving client
 was submitting locations at a way too frequent rate. At the time that courier
-had around 2.3 Million locations in the database. Quite some, but nothing
+had around 2.5 Million locations in the database. Quite some, but nothing
 that should cause the database to take that long. 
 
-This is probably also a good time to mention that we are running PostgreSQL.
-At the time I think it was 9.5, results shown here are with Postgres 9.6 though.
+This is probably also a good time to mention that we are running
+_PostgreSQL 9.6_ along with _ecto 2.1.6_ and _postgrex 0.13.3_.
 
-## Attempt#1
+## First Attempt
 
 Ok let's make this faster. I got this. I know this. Let's write a benchmark!
 We'll use [benchee](https://github.com/PragTob/benchee):
@@ -111,11 +117,11 @@ Benchee.run %{
 
 What does this do? It defines 3 variants that we want to benchmark (`DB View`,
 `with_courier_ids` and `full customer`) along with the code that should be 
-measured. We measure this with a specific id that was causing the error, which
-had about 2.5 Millions locations.
-We then also define a _warmup_ period of 5 seconds and an measurement
+measured. We measure this with the specific id that was causing the error.
+
+We then also define a _warmup_ period of 5 seconds and a measurement
 _time_ of 30 seconds for each of the defined jobs. We also say we want to output
-this in the console as well as in an HTML format (that allows png exports).
+this in the console as well as in an HTML format (this allows png exports).
 
 So what does the benchmark say?
 
@@ -151,8 +157,7 @@ DB View                   0.21 - 4625.70x slower
 ```
 
 It says a lot of things, so if you're interested in what the system for running
-this looked like, you got all the information right there! The other thing that
-might be interesting is that we used `ecto 2.1.6` and `postgrex 0.13.3`.
+this looked like, you got all the information right there!
 
 But what do the results say? Apparently `with_courier_ids` and `full_custom`
 rock! `DB View` is over **4600 times slower!**. Wow case solved. Using a nice
@@ -160,12 +165,14 @@ visual representation from the HTML report makes this even clearer:
 
 ![benchee report locations single report](/images/posts/curious_query/benchee_single_run.png)
 
-The standard deviation seems sort of high (~10% would be expected) but our
-worst case performance (99th%) is still under 5 ms so we seem to be goog. 
+(displayed is how many iterationgs we could do per second on average, so
+bigger is better!)
 
-Let's roll this out, pat ourselves on the shoulder for one of the best
+The standard deviation seems sort of high (~10% would be more normal) but our
+worst case performance (99th%) is still under 5 ms so we seem to be good. 
+
+Let's roll this out, pat ourselves on the back for one of the best
 performance improvements ever and call it a day!
-
 
 ## Boom!
 
@@ -174,20 +181,21 @@ We deploy and boom...
 ![many errors pop up burning house](/images/posts/curious_query/boooom.jpg)
 
 The bugsnags start rolling in! All these `DBConnectionError`s - more than
-before? How? We benchmarked this!
+before? How? We benchmarked this! This can't be happening!
 
-No time to argue, let's rollback these changes (I'll spare you this part of the
-story).
+No time to argue with reality.
+Let's rollback these changes and investigate.
 
 ## What happened?
 
-So, what happened? Taking a look at the logs we find out that the new errors
+Taking a look at the logs we find out that the new errors
 happened especially when the courier we were requesting locations for had no
 locations at all. This can happen when the feature is turned off or the courier
 doesn't use our app.
 
 Ok then, let's write a new benchmark this time we'll use a wider range of
-inputs. Luckily benchee has us covered with the `inputs` feature:
+inputs. Luckily benchee has us covered with the
+[`inputs` feature](https://github.com/PragTob/benchee#inputs):
 
 ```elixir
 alias CourierTracker.{Repo, CourierLocation, LatestCourierLocation}
@@ -242,17 +250,6 @@ with_courier_ids        937.18
 full custom             843.24 - 1.11x slower
 DB View                   0.22 - 4261.57x slower
 
-##### With input No locations #####
-Name                       ips        average  deviation         median         99th %
-DB View                1885.48      0.00053 s    ±44.06%      0.00047 s      0.00164 s
-with_courier_ids        0.0522        19.16 s     ±3.77%        19.16 s        19.88 s
-full custom             0.0505        19.82 s     ±1.58%        19.82 s        20.13 s
-
-Comparison: 
-DB View                1885.48
-with_courier_ids        0.0522 - 36123.13x slower
-full custom             0.0505 - 37367.23x slower
-
 ##### With input ~200k locations #####
 Name                       ips        average  deviation         median         99th %
 DB View                   3.57         0.28 s     ±7.84%         0.28 s         0.35 s
@@ -274,34 +271,33 @@ Comparison:
 DB View                  31.73
 with_courier_ids         0.104 - 305.37x slower
 full custom             0.0897 - 353.61x slower
+
+##### With input No locations #####
+Name                       ips        average  deviation         median         99th %
+DB View                1885.48      0.00053 s    ±44.06%      0.00047 s      0.00164 s
+with_courier_ids        0.0522        19.16 s     ±3.77%        19.16 s        19.88 s
+full custom             0.0505        19.82 s     ±1.58%        19.82 s        20.13 s
+
+Comparison: 
+DB View                1885.48
+with_courier_ids        0.0522 - 36123.13x slower
+full custom             0.0505 - 37367.23x slower
 ```
 
 It seems like `DB View` is faster than our 2 alternatives for everything that
-doesn't have the 2.5 Million locations? And not just by a little bit, for no locations they are more than **35 000 times slower**! How can this be? `full_custom` and
-`with_courier_ids` get slower the fewer elements are affected by it?
+doesn't have the 2.5 Million locations? And not just by a little bit,
+for no locations our _"faster"_ alternatives are more than
+**35 000 times slower**! How can this be? `full_custom` and
+`with_courier_ids` get slower the fewer elements are affected by them?
 
 To find out what's going on, let's get the respective queries, fire up a
-PostgreSQL shell and `EXPLAIN ANALYZE` what's up.
+PostgreSQL shell and `EXPLAIN ANALYZE` what's up. It's basically asking
+PostgreSQL (or the query planner, more precisely) how it wants to get that data.
+Seeing that, we might see where we are missing an index or where our data model
+hurts us.
 
-To get the SQL query each one of those would generate, let's get it from an
-`iex` session using [`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3):
-
-```
-iex(1)> query = CourierLocation.with_courier_ids(LatestCourierLocation, 3799)
-...
-iex(2)> Ecto.Adapters.SQL.to_sql(:all, Repo, query)
-{"SELECT l0.\"id\", l0.\"courier_id\", l0.\"location\", l0.\"time\", l0.\"inserted_at\", l0.\"updated_at\" FROM \"latest_courier_locations\" AS l0 WHERE (l0.\"courier_id\" = ANY($1))",
- [[3799]]}
-iex(3)> custom_query = CourierLocation |> Ecto.Query.where(courier_id: 3799) |> Ecto.Query.order_by(desc: :time) |> Ecto.Query.limit(1)  
-...
-iex(4)> Ecto.Adapters.SQL.to_sql(:all, Repo, custom_query)                      
-{"SELECT c0.\"id\", c0.\"courier_id\", c0.\"location\", c0.\"time\", c0.\"accuracy\", c0.\"inserted_at\", c0.\"updated_at\" FROM \"courier_locations\" AS c0 WHERE (c0.\"courier_id\" = 3799) ORDER BY c0.\"time\" DESC LIMIT 1",
- []}
-```
-
-And now to `EXPLAIN ANALYZE` - it's basically asking PostgreSQL (or the query 
-planner, more precisely) how it wants to get that data. Seeing that, we might
-see where we are missing an index or where our data model hurts us.
+To get the SQL query each one of our possibilities would generate, we can use
+[`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3).
 
 Let's first check out `full_custom`:
 
@@ -318,13 +314,15 @@ courier_tracker=# EXPLAIN ANALYZE SELECT c0."id", c0."courier_id", c0."location"
 (6 rows)
 ```
 
-What does this tell us? It uses the index to basically sort the courier
-locations by time to get the most recent one. That works brilliantly if there
-is a recent one. If there is no recent one we'll still scan the whole table
-until we realize there isn't any 😱😱😱
+What does this tell us? It uses the index on `time` to basically efficiently sort the
+courier locations by time to get the most recent one for a given courier.
+That works brilliantly if there is a recent one. If there is no recent one we'll
+still scan the whole table until we realize there isn't any 😱😱😱
 
 That explains why `full custom` is slower the fewer locations we have (the
-lower our hit chances, basically). `with_courier_ids` is much the same.
+lower our chances to hit a recent location of a given courier, basically).
+`with_courier_ids` is much the same.
+
 What does `DB View` do differently?
 
 ```
@@ -345,23 +343,26 @@ courier_tracker=# EXPLAIN ANALYZE SELECT l0."id", l0."courier_id", l0."location"
 (11 rows)
 ```
 
-Our biggest time investment here is the sorting by time that PostgreSQL
-performs, scanning is then done by the index. Most likely this goes back to the
-way we defined the database view. The sort is cheaper the fewer locations are
-affected (which we find efficiently in this case) - explaining how it is faster
-for those compared to `full custom` & friends.
+Our biggest time investment here is the sorting by time (without an index!) that
+PostgreSQL performs, scanning is then done by the index on `courier_id`.
+Most likely this goes back to the way we defined the database view.
+The sort is cheaper the fewer locations are affected (which we find efficiently
+in this case) - explaining how it is faster for those compared to
+`full custom` & friends.
 
-So, what's the solution? Our solutions seem to use either the index on
+So, what's the solution? Our attempts seem to use either the index on
 `courier_id` or the index on `time` - if only there was a way to _combine_
-both...
+them...
 
 ## Combined Indexes to the rescue
 
 ![combined indexes](/images/posts/curious_query/combined_index.jpg)
 
-We can define indexes on [multiple columns](https://www.postgresql.org/docs/9.6/static/indexes-multicolumn.html)
-and it's important that the most limiting is the leftmost. As we usually scope
-by couriers, we'll make that the left most. So let's migrate our database!
+We can define indexes on
+[multiple columns](https://www.postgresql.org/docs/9.6/static/indexes-multicolumn.html)
+and it's important that the most important index is the leftmost one. As we
+usually scope by couriers, we'll make `courier_id` the left most.
+So let's migrate our database!
 
 ```elixir
 defmodule CourierTracker.Repo.Migrations.LongLiveTheCombinedIndex do
@@ -376,20 +377,26 @@ end
 ```
 
 As our _combined_ index can basically be used as a replacement for the leftmost
-index (`courier_id`) and we learned we don't wanna just scan based on `time` it
+index (`courier_id`) and we learned we don't want just scan based on `time` it
 is safe to drop those.
 
-But how do we know that we improved on our old results? We could just run them
-again and compare by hand... or we could use benchee's new feature since 0.12
-for [saving, loading and comparing previous runs](https://github.com/PragTob/benchee#saving-loading-and-comparing-previous-runs)!
+But how do we know that we improved on our old results? We could just run the
+benchmarks again and compare by hand... or we could use benchee's new feature
+since _0.12_ for [saving, loading and comparing previous runs](https://github.com/PragTob/benchee#saving-loading-and-comparing-previous-runs)!
 Easily enough we add `save: [tag: "before", path: "location.benchee"]` to the
-configuration and run it again before we run the migration to save those results. Then we set `load: "location.benchee"` to load them up again and
-compare against them.
+configuration and run it again before we run the migration to save the _"before"_
+results. Then we run the migration, set `load: "location.benchee"` in the
+benchmark to load them up again and compare against the old results.
 
 Well I've given you enough plain text to read for one day haven't I? Let's just
 go with the images for now if the details (including histograms, raw runtime
-graphs interest you...) interest you feel free to check out the [full HTML 
-report](/resources/curious_query/latest_location.html). Suffice it to say, **`full custom` is now the fastest with all inputs**.
+graphs & more) interest you feel free to check out the
+[full HTML report](/resources/curious_query/latest_location.html).
+Suffice it to say, **`full custom` with a combined index is now the fastest with
+all inputs**.
+
+Results from before our migrations to combined indexes are annotated as
+_(before)_.
 
 ### 2.5 Million Locations
 
@@ -409,7 +416,7 @@ report](/resources/curious_query/latest_location.html). Suffice it to say, **`fu
 
 ## One more thing
 
-I know it's time to wrap this up already, but there's one more important thing!
+I know it's time to wrap this up already, but there's **one more important thing**!
 When you add indexes etc. it's always wise to also benchmark the time it takes
 you to insert records into the database. A simple benchmark:
 
@@ -430,28 +437,9 @@ Benchee.run %{
 }, load: "insertion.benchee"#, save: [tag: "old", path: "insertion.benchee"]
 ```
 
-Note that it'd be best to destroy all the created locations afterwards.
-
 And the result:
 
 ```
-tobi@liefy ~/projects/liefery-courier-tracker $ mix run benchmarks/location_creation.exs 
-Operating System: Linux
-CPU Information: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz
-Number of Available Cores: 8
-Available memory: 15.49 GB
-Elixir 1.4.5
-Erlang 20.1
-Benchmark suite executing with the following configuration:
-warmup: 2 s
-time: 5 s
-parallel: 1
-inputs: none specified
-Estimated total run time: 7 s
-
-
-Benchmarking Inserting a location...
-
 Name                                 ips        average  deviation         median         99th %
 Inserting a location (old)        353.46        2.83 ms    ±20.58%        2.69 ms        4.88 ms
 Inserting a location              348.17        2.87 ms    ±42.25%        2.37 ms        7.92 ms
@@ -469,10 +457,13 @@ So, we're good.
 So what do we learn in the end?
 
 **Always benchmark with a variety of inputs!** Even if you think your input
-might be the _worst_ one - it's you guessing not knowing. The results might 
-surprise you, as they did here. 
+is definiely the _worst case_ - it's you guessing not knowing. Algorithms and
+systems often have interesting worst cases. The results might surprise you, as
+they surprised me here. 
 
-Obviously we should have also noticed this slow query earlier by using application performance monitoring. Back then there weren't as many good tools for this as
-there are now and the application never made us any trouble.
+Obviously we should have also noticed this slow query earlier by using
+application performance monitoring. Back then there weren't as many good tools
+for this and our application never caused any trouble before though.
+Now there are more and better tools.
 
 So, take your trusty benchmarking tool and remember your inputs.
