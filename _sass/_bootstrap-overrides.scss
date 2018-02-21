@@ -1,3 +1,5 @@
+@import "bootstrap/bootstrap/variables";
+
 $font-family-base: 'Open Sans', sans-serif;
 $font-size-base: 16px;
 $line-height-base: 1.65;
@@ -6,3 +8,6 @@ $headings-font-weight: 800;
 
 $blockquote-font-size: ($font-size-base * 1.0) !default;
 
+a code {
+  color: $link-color;
+}
