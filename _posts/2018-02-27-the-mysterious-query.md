@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The curious case of the query that gets slower the fewer elements it affects"
-date: 2018-02-27
+date: 2018-02-20
 author: Tobias Pfeiffer
 tags: elixir postgresql performance benchee indexes
 ---
@@ -71,7 +71,7 @@ a given courier. Easy enough.
 A quick debugging showed that it took so long because a misbehaving client
 was submitting locations at a way too frequent rate. At the time that courier
 had around 2.5 Million locations in the database. Quite some, but nothing
-that should cause the database to take that long. 
+that should cause the database to take that long.
 
 This is probably also a good time to mention that we are running
 _PostgreSQL 9.6_ along with _ecto 2.1.6_ and _postgrex 0.13.3_.
@@ -116,7 +116,7 @@ Benchee.run %{
 ```
 
 What does this do? It defines 3 variants that we want to benchmark (`DB View`,
-`with_courier_ids` and `full customer`) along with the code that should be 
+`with_courier_ids` and `full customer`) along with the code that should be
 measured. We measure this with the specific id that was causing the error.
 
 We then also define a _warmup_ period of 5 seconds and a measurement
@@ -126,7 +126,7 @@ this in the console as well as in an HTML format (this allows png exports).
 So what does the benchmark say?
 
 ```
-tobi@liefy ~/projects/liefery-courier-tracker $ mix run benchmarks/latest_location_no_input.exs 
+tobi@liefy ~/projects/liefery-courier-tracker $ mix run benchmarks/latest_location_no_input.exs
 Operating System: Linux
 CPU Information: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz
 Number of Available Cores: 8
@@ -145,15 +145,15 @@ Benchmarking DB View...
 Benchmarking full custom...
 Benchmarking with_courier_ids...
 
-Name                       ips        average  deviation         median         99th %
-with_courier_ids        983.21        1.02 ms    ±43.22%        0.91 ms        3.19 ms
-full custom             855.07        1.17 ms    ±53.86%        0.96 ms        4.25 ms
-DB View                   0.21     4704.70 ms     ±4.89%     4738.83 ms     4964.49 ms
+Name                 ips     average  deviation      median      99th %
+with_courier_ids  983.21     1.02 ms    ±43.22%     0.91 ms     3.19 ms
+full custom       855.07     1.17 ms    ±53.86%     0.96 ms     4.25 ms
+DB View             0.21  4704.70 ms     ±4.89%  4738.83 ms  4964.49 ms
 
-Comparison: 
-with_courier_ids        983.21
-full custom             855.07 - 1.15x slower
-DB View                   0.21 - 4625.70x slower
+Comparison:
+with_courier_ids  983.21
+full custom       855.07 - 1.15x slower
+DB View             0.21 - 4625.70x slower
 ```
 
 It says a lot of things, so if you're interested in what the system for running
@@ -169,7 +169,7 @@ visual representation from the HTML report makes this even clearer:
 bigger is better!)
 
 The standard deviation seems sort of high (~10% would be more normal) but our
-worst case performance (99th%) is still under 5 ms so we seem to be good. 
+worst case performance (99th%) is still under 5 ms so we seem to be good.
 
 Let's roll this out, pat ourselves on the back for one of the best
 performance improvements ever and call it a day!
@@ -240,48 +240,48 @@ a look at the results divided by input:
 
 ```
 ##### With input Big 2.5 Million locations #####
-Name                       ips        average  deviation         median         99th %
-with_courier_ids        937.18        1.07 ms    ±34.98%        0.95 ms        2.64 ms
-full custom             843.24        1.19 ms    ±52.82%        0.99 ms        4.37 ms
-DB View                   0.22     4547.24 ms     ±2.80%     4503.63 ms     4718.76 ms
+Name                 ips     average  deviation      median      99th %
+with_courier_ids  937.18     1.07 ms    ±34.98%     0.95 ms     2.64 ms
+full custom       843.24     1.19 ms    ±52.82%     0.99 ms     4.37 ms
+DB View             0.22  4547.24 ms     ±2.80%  4503.63 ms  4718.76 ms
 
-Comparison: 
-with_courier_ids        937.18
-full custom             843.24 - 1.11x slower
-DB View                   0.22 - 4261.57x slower
+Comparison:
+with_courier_ids  937.18
+full custom       843.24 - 1.11x slower
+DB View             0.22 - 4261.57x slower
 
 ##### With input ~200k locations #####
-Name                       ips        average  deviation         median         99th %
-DB View                   3.57         0.28 s     ±7.84%         0.28 s         0.35 s
-with_courier_ids         0.109         9.19 s     ±2.25%         9.13 s         9.53 s
-full custom             0.0978        10.23 s     ±0.95%        10.23 s        10.34 s
+Name                 ips  average  deviation   median   99th %
+DB View             3.57   0.28 s     ±7.84%   0.28 s   0.35 s
+with_courier_ids   0.109   9.19 s     ±2.25%   9.13 s   9.53 s
+full custom       0.0978  10.23 s     ±0.95%  10.23 s  10.34 s
 
-Comparison: 
-DB View                   3.57
-with_courier_ids         0.109 - 32.84x slower
-full custom             0.0978 - 36.53x slower
+Comparison:
+DB View             3.57
+with_courier_ids   0.109 - 32.84x slower
+full custom       0.0978 - 36.53x slower
 
 ##### With input ~20k locations #####
-Name                       ips        average  deviation         median         99th %
-DB View                  31.73       0.0315 s    ±12.50%       0.0298 s       0.0469 s
-with_courier_ids         0.104         9.62 s     ±0.84%         9.59 s         9.76 s
-full custom             0.0897        11.14 s     ±1.38%        11.17 s        11.32 s
+Name                 ips   average  deviation    median    99th %
+DB View            31.73  0.0315 s    ±12.50%  0.0298 s  0.0469 s
+with_courier_ids   0.104    9.62 s     ±0.84%    9.59 s    9.76 s
+full custom       0.0897   11.14 s     ±1.38%   11.17 s   11.32 s
 
-Comparison: 
-DB View                  31.73
-with_courier_ids         0.104 - 305.37x slower
-full custom             0.0897 - 353.61x slower
+Comparison:
+DB View            31.73
+with_courier_ids   0.104 - 305.37x slower
+full custom       0.0897 - 353.61x slower
 
 ##### With input No locations #####
-Name                       ips        average  deviation         median         99th %
-DB View                1885.48      0.00053 s    ±44.06%      0.00047 s      0.00164 s
-with_courier_ids        0.0522        19.16 s     ±3.77%        19.16 s        19.88 s
-full custom             0.0505        19.82 s     ±1.58%        19.82 s        20.13 s
+Name                  ips    average  deviation     median     99th %
+DB View           1885.48  0.00053 s    ±44.06%  0.00047 s  0.00164 s
+with_courier_ids   0.0522    19.16 s     ±3.77%    19.16 s    19.88 s
+full custom        0.0505    19.82 s     ±1.58%    19.82 s    20.13 s
 
-Comparison: 
-DB View                1885.48
-with_courier_ids        0.0522 - 36123.13x slower
-full custom             0.0505 - 37367.23x slower
+Comparison:
+DB View           1885.48
+with_courier_ids   0.0522 - 36123.13x slower
+full custom        0.0505 - 37367.23x slower
 ```
 
 It seems like `DB View` is faster than our 2 alternatives for everything that
@@ -303,7 +303,7 @@ Let's first check out `full_custom`:
 
 ```
 courier_tracker=# EXPLAIN ANALYZE SELECT c0."id", c0."courier_id", c0."location", c0."time", c0."accuracy", c0."inserted_at", c0."updated_at" FROM "courier_locations" AS c0 WHERE (c0."courier_id" = 3799) ORDER BY c0."time" DESC LIMIT 1;
-                                                                                  QUERY PLAN                                                                                  
+                                                                                  QUERY PLAN
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Limit  (cost=0.43..0.83 rows=1 width=72) (actual time=1.840..1.841 rows=1 loops=1)
    ->  Index Scan Backward using courier_locations_time_index on courier_locations c0  (cost=0.43..932600.17 rows=2386932 width=72) (actual time=1.837..1.837 rows=1 loops=1)
@@ -327,7 +327,7 @@ What does `DB View` do differently?
 
 ```
 courier_tracker=# EXPLAIN ANALYZE SELECT l0."id", l0."courier_id", l0."location", l0."time", l0."inserted_at", l0."updated_at" FROM "latest_courier_locations" AS l0 WHERE (l0."courier_id" = ANY('{3799}'));
-                                                                                QUERY PLAN                                                                                 
+                                                                                QUERY PLAN
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  Unique  (cost=650416.51..662351.17 rows=282 width=64) (actual time=3135.211..3969.453 rows=1 loops=1)
    ->  Sort  (cost=650416.51..656383.84 rows=2386932 width=64) (actual time=3135.211..3849.342 rows=2508672 loops=1)
@@ -440,13 +440,13 @@ Benchee.run %{
 And the result:
 
 ```
-Name                                 ips        average  deviation         median         99th %
-Inserting a location (old)        353.46        2.83 ms    ±20.58%        2.69 ms        4.88 ms
-Inserting a location              348.17        2.87 ms    ±42.25%        2.37 ms        7.92 ms
+Name                           ips  average  deviation   median   99th %
+Inserting a location (old)  353.46  2.83 ms    ±20.58%  2.69 ms  4.88 ms
+Inserting a location        348.17  2.87 ms    ±42.25%  2.37 ms  7.92 ms
 
-Comparison: 
-Inserting a location (old)        353.46
-Inserting a location              348.17 - 1.02x slower
+Comparison:
+Inserting a location (old)  353.46
+Inserting a location        348.17 - 1.02x slower
 ```
 
 That's the same-ish difference and could easily be explained by the deviation.
@@ -459,7 +459,7 @@ So what do we learn in the end?
 **Always benchmark with a variety of inputs!** Even if you think your input
 is definiely the _worst case_ - it's you guessing not knowing. Algorithms and
 systems often have interesting worst cases. The results might surprise you, as
-they surprised me here. 
+they surprised me here.
 
 Obviously we should have also noticed this slow query earlier by using
 application performance monitoring. Back then there weren't as many good tools
