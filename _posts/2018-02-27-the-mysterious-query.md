@@ -13,7 +13,7 @@ nothing evil when suddenly...
 
 _Bugsnag_ popped up and complained about an
 `Elixir.DBConnection.ConnectionError` - I took a look immedeatly to find out
-what made our wonderful application crash. It turns out
+what made our wonderful application crash. It turned out
 it was a timeout error! [Ecto (elixir database tool) defaults to a timeout of 15
 seconds](https://hexdocs.pm/ecto/Ecto.Repo.html#module-shared-options) and we
 had a query that took longer than this? **Yikes!** What happened?
@@ -26,7 +26,7 @@ fixed it.
 The application we are looking at here is our _courier tracker_. It gets the
 GPS locations of couriers on the road and then makes them available for admins
 to look at through websockets. One important part of this is that as soon as
-you look at a shipment its last known location is displayed. This was were
+you look at a shipment its last known location is displayed. This was where
 the exception was raised:
 
 ```elixir
@@ -49,7 +49,7 @@ end
 ```
 
 Instead of a straight `id = my_id` check it checks against the inclusion in a list
-(the list being `[courier_id]` on the elixir side).
+(the list being `[courier_id]` on the Elixir side).
 
 `LatestCourierLocation` on the other hand is a
 [database view](https://www.postgresql.org/docs/9.6/static/tutorial-views.html)
@@ -183,7 +183,7 @@ We deploy and boom...
 
 ![many errors pop up burning house](/images/posts/curious_query/boooom.jpg)
 
-The bugsnags start rolling in! Look at all these `DBConnectionError`s! There are
+The bugsnag errors start rolling in! Look at all these `DBConnectionError`s! There are
 more than before! How? We benchmarked this! This can't be happening!
 
 No time to argue with reality.
@@ -196,7 +196,7 @@ happened when the courier we were requesting locations for had no
 locations at all or fairly fe. This can happen when the feature is turned off or
 the courier doesn't use our app.
 
-Ok then, let's write a new benchmark and this time we'll use a wider range of
+Ok then, let's write a new benchmark! This time we'll use a wider range of
 inputs. Luckily benchee has us covered with the
 [`inputs` feature](https://github.com/PragTob/benchee#inputs):
 
@@ -293,13 +293,14 @@ It seems like `DB View` is faster than our 2 alternatives for everything that
 doesn't have the 2.5 million locations? And not just by a little bit,
 for no locations our _"faster"_ alternatives are more than
 **35 000 times slower**! How can this be? `full custom` and
-`with_courier_ids` get slower the fewer elements are affected by them?
+`with_courier_ids` get slower the fewer locations their respective couriers
+have?
 
 To find out what's going on, let's get the respective queries, fire up a
 PostgreSQL shell and `EXPLAIN ANALYZE` what's up. It's basically asking
 PostgreSQL (or the query planner, more precisely) how it wants to get that data.
-Seeing that, we might see where we are missing an index or where our data model
-hurts us.
+Seeing that, we might find out where we are missing an index or where our data
+model hurts us.
 
 To get the SQL query each one of our possibilities would generate, we can use
 [`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3).
@@ -337,7 +338,7 @@ courier_tracker=# EXPLAIN ANALYZE
 (6 rows)
 ```
 
-What does this tell us? It uses the index on `time` to basically efficiently sort the
+What does this tell us? It uses the index on `time` to efficiently order the
 courier locations by time to get the most recent one for a given courier.
 That works brilliantly if there is a recent one. If there is no recent one we'll
 still scan the whole table until we realize there isn't any 😱😱😱
@@ -415,13 +416,14 @@ defmodule CourierTracker.Repo.Migrations.LongLiveTheCombinedIndex do
 end
 ```
 
-As our _combined_ index can basically be used as a replacement for the leftmost
-index (`courier_id`) and we learned we don't want to scan only based on `time` it
-is safe to drop those.
+As our _combined_ index can basically be [used as a replacement for the leftmost
+index](https://dba.stackexchange.com/a/27493) (`courier_id`) and we learned we
+don't want to scan only based on `time` it is safe to drop those.
 
 But how do we know that we improved on our old results? We could just run the
 benchmarks again and compare by hand... or we could use benchee's new feature
-since _0.12_ for [saving, loading and comparing previous runs](https://github.com/PragTob/benchee#saving-loading-and-comparing-previous-runs)!
+introduced in _0.12_ for
+[saving, loading and comparing previous runs](https://github.com/PragTob/benchee#saving-loading-and-comparing-previous-runs)!
 It's easy to use. Just add `save: [tag: "before", path: "location.benchee"]` to the
 configuration and run it again before we run the migration to save the _"before"_
 results. Then we run the migration, set `load: "location.benchee"` in the
