@@ -530,7 +530,7 @@ So, we're good.
 
 ## Takeaway
 
-So what do we learn in the end?
+What did this journey teach us in the end?
 
 **Always benchmark with a variety of inputs!** Even if you think your input
 is definiely the _worst case_ - it's you guessing not knowing. Algorithms and
@@ -542,4 +542,7 @@ application performance monitoring. Back then there weren't very many good tools
 for this, and our application had never caused us any problems. Now however,
 there's some great tools out there.
 
-So, take your trusty benchmarking tool and remember your inputs.
+So, take your trusty benchmarking tool and remember your inputs. Then, you too
+can have a nice comfortable house... errm application again.
+
+![nice house](/images/posts/curious_query/nice-house.jpg)
