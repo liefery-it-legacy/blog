@@ -150,18 +150,21 @@ moved to the background? Does the code produce an efficient SQL query?
 12. Look at the **tests**. Are there tests for the newly introduced classes
 and public methods? Are changes of behaviour documented by corresponding
 test cases? Does this pull request require higher level integration tests?
-13. **Ask questions instead of pointing out mistakes**. It happens to me often
+13. Pick at least one thing that you particularly like in the pull request
+(for example perfect method name, simple solution or improved test) and
+point it out. **Positive feedback** is also important!
+14. **Ask questions instead of pointing out mistakes**. It happens to me often
 that when I confidently say that something is wrong, I missed some
 important piece of information and it's in fact me who is wrong. That's
 why it is much better to ask questions instead: "why did you decide to
 implement it like that?" or "don't we have to consider that case when
 customer is missing here?".
-14. **Be nice**. Always assume the best intentions of the person submitting
+15. **Be nice**. Always assume the best intentions of the person submitting
 the pull request. When describing things to improve, talk about the code
 ("This code is a bit unclear. What do you think about renaming the method?")
 not about the person ("You failed to communicate your intent here. Can you
 learn how to use better naming conventions?").
-15. **Ask questions when you have no experience with certain technologies** or
+16. **Ask questions when you have no experience with certain technologies** or
 techniques. When I review a pull request that introduces static typing
 with Flow, and I've never used Flow before, I have two options: do my own
 research or ask my colleague to point me to the resources that they know.
@@ -170,7 +173,7 @@ source of knowledge that the thing I can find after 5 minutes of googling.
 That's because they already have this knowledge so they can judge the
 quality of resources more easily. Asking for help doesn't make you a "less
 credible reviewer".
-16. When you go back and forth in a text discussion without reaching an
+17. When you go back and forth in a text discussion without reaching an
 agreement, **switch to one-on-one, synchronous communication**. It's much
 more efficient when resolving conflicts. Write down the outcome of the
 pairing review as a comment in the pull request for other people reviewing it.
