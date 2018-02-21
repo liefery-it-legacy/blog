@@ -11,9 +11,9 @@ nothing evil when suddenly...
 
 ![one error pops up burning house](/images/posts/curious_query/boom.jpg)
 
-
 _Bugsnag_ popped up and complained about an
-`Elixir.DBConnection.ConnectionError` - curiously I took a look and it turns out
+`Elixir.DBConnection.ConnectionError` - I took a look immedeatly to find out
+what made our wonderful application crash. It turns out
 it was a timeout error! [Ecto (elixir database tool) defaults to a timeout of 15
 seconds](https://hexdocs.pm/ecto/Ecto.Repo.html#module-shared-options) and we
 had a query that took longer than this? **Yikes!** What happened?
@@ -70,8 +70,8 @@ a given courier. Easy enough.
 
 A quick debugging showed that it took so long because a misbehaving client
 was submitting locations at a way too frequent rate. At the time that courier
-had around 2.5 Million locations in the database. Quite some, but nothing
-that should cause the database to take that long.
+had around 2.5 million locations in the database. That's quite a lot, but
+nothing that should cause the database to take that long.
 
 This is probably also a good time to mention that we are running
 _PostgreSQL 9.6_ along with _ecto 2.1.6_ and _postgrex 0.13.3_.
@@ -85,7 +85,7 @@ We'll use [benchee](https://github.com/PragTob/benchee):
 alias CourierTracker.{Repo, CourierLocation, LatestCourierLocation}
 require Ecto.Query
 
-courier_id = 3799 # about 2.5 Million locations
+courier_id = 3799 # this courier has about 2.5 million locations in my db
 
 Benchee.run %{
   "DB View" => fn ->
@@ -156,23 +156,26 @@ full custom       855.07 - 1.15x slower
 DB View             0.21 - 4625.70x slower
 ```
 
-It says a lot of things, so if you're interested in what the system for running
-this looked like, you got all the information right there!
+It says a lot of things, but first of all it mentions what system the benchmark
+was run on. So, if you're interested in the CPU, elixir or erlang version...
+they're all right there!
 
-But what do the results say? Apparently `with_courier_ids` and `full_custom`
+But what do the results say? Apparently `with_courier_ids` and `full custom`
 rock! `DB View` is over **4600 times slower!**. Wow case solved. Using a nice
 visual representation from the HTML report makes this even clearer:
 
 ![benchee report locations single report](/images/posts/curious_query/benchee_single_run.png)
 
-(displayed is how many iterationgs we could do per second on average, so
+(displayed is how many iterations we could do per second on average, so
 bigger is better!)
 
 The standard deviation seems sort of high (~10% would be more normal) but our
 worst case performance (99th%) is still under 5 ms so we seem to be good.
 
-Let's roll this out, pat ourselves on the back for one of the best
-performance improvements ever and call it a day!
+This _should_ be enough. So, let's switch our our current implementation
+(`DB View`) with the most performant one from the benchmark
+(`with_courier_ids`). Commit it, push it, merge it, roll it out, pat ourselves
+on the back for one of the best performance improvements ever and call it a day!
 
 ## Boom!
 
@@ -180,8 +183,8 @@ We deploy and boom...
 
 ![many errors pop up burning house](/images/posts/curious_query/boooom.jpg)
 
-The bugsnags start rolling in! All these `DBConnectionError`s - more than
-before? How? We benchmarked this! This can't be happening!
+The bugsnags start rolling in! Look at all these `DBConnectionError`s! There are
+more than before! How? We benchmarked this! This can't be happening!
 
 No time to argue with reality.
 Let's rollback these changes and investigate.
@@ -189,20 +192,22 @@ Let's rollback these changes and investigate.
 ## What happened?
 
 Taking a look at the logs we find out that the new errors
-happened especially when the courier we were requesting locations for had no
-locations at all. This can happen when the feature is turned off or the courier
-doesn't use our app.
+happened when the courier we were requesting locations for had no
+locations at all or fairly fe. This can happen when the feature is turned off or
+the courier doesn't use our app.
 
-Ok then, let's write a new benchmark this time we'll use a wider range of
+Ok then, let's write a new benchmark and this time we'll use a wider range of
 inputs. Luckily benchee has us covered with the
 [`inputs` feature](https://github.com/PragTob/benchee#inputs):
 
 ```elixir
+# in benchmarls/latest_location.exs or some such file
 alias CourierTracker.{Repo, CourierLocation, LatestCourierLocation}
 require Ecto.Query
 
+# Use the ids of couriers that have a certain amount of locations in my db
 inputs = %{
-  "Big 2.5 Million locations" => 3799,
+  "Big 2.5 million locations" => 3799,
   "No locations"              => 8901,
   "~200k locations"           => 4238,
   "~20k locations"            => 4201
@@ -239,7 +244,7 @@ I'll spare you the output of system metrics etc. this time around. Let's have
 a look at the results divided by input:
 
 ```
-##### With input Big 2.5 Million locations #####
+##### With input Big 2.5 million locations #####
 Name                 ips     average  deviation      median      99th %
 with_courier_ids  937.18     1.07 ms    ±34.98%     0.95 ms     2.64 ms
 full custom       843.24     1.19 ms    ±52.82%     0.99 ms     4.37 ms
@@ -285,9 +290,9 @@ full custom        0.0505 - 37367.23x slower
 ```
 
 It seems like `DB View` is faster than our 2 alternatives for everything that
-doesn't have the 2.5 Million locations? And not just by a little bit,
+doesn't have the 2.5 million locations? And not just by a little bit,
 for no locations our _"faster"_ alternatives are more than
-**35 000 times slower**! How can this be? `full_custom` and
+**35 000 times slower**! How can this be? `full custom` and
 `with_courier_ids` get slower the fewer elements are affected by them?
 
 To find out what's going on, let's get the respective queries, fire up a
@@ -298,8 +303,11 @@ hurts us.
 
 To get the SQL query each one of our possibilities would generate, we can use
 [`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3).
+This looks like `Ecto.Adapters.SQL.to_sql(:all, Repo, ecto_query)`, where
+`ecto_query` is our query as defined in the benchmarks. I'll spare you the
+details :)
 
-Let's first check out `full_custom` (reformatted for readability):
+Let's first check out `full custom` (reformatted for readability):
 
 ```
 courier_tracker=# EXPLAIN ANALYZE
@@ -391,7 +399,7 @@ them...
 
 We can define indexes on
 [multiple columns](https://www.postgresql.org/docs/9.6/static/indexes-multicolumn.html)
-and it's important that the most important index is the leftmost one. As we
+and it's importat that the most limiting index is the leftmost one. As we
 usually scope by couriers, we'll make `courier_id` the left most.
 So let's migrate our database!
 
@@ -408,28 +416,28 @@ end
 ```
 
 As our _combined_ index can basically be used as a replacement for the leftmost
-index (`courier_id`) and we learned we don't want just scan based on `time` it
+index (`courier_id`) and we learned we don't want to scan only based on `time` it
 is safe to drop those.
 
 But how do we know that we improved on our old results? We could just run the
 benchmarks again and compare by hand... or we could use benchee's new feature
 since _0.12_ for [saving, loading and comparing previous runs](https://github.com/PragTob/benchee#saving-loading-and-comparing-previous-runs)!
-Easily enough we add `save: [tag: "before", path: "location.benchee"]` to the
+It's easy to use. Just add `save: [tag: "before", path: "location.benchee"]` to the
 configuration and run it again before we run the migration to save the _"before"_
 results. Then we run the migration, set `load: "location.benchee"` in the
 benchmark to load them up again and compare against the old results.
 
 Well I've given you enough plain text to read for one day haven't I? Let's just
-go with the images for now if the details (including histograms, raw runtime
+go with the images for now. If the details (including histograms, raw runtime
 graphs & more) interest you feel free to check out the
 [full HTML report](/resources/curious_query/latest_location.html).
 Suffice it to say, **`full custom` with a combined index is now the fastest with
 all inputs**.
 
-Results from before our migrations to combined indexes are annotated as
+Results from before our migration to combined indexes are annotated as
 _(before)_.
 
-### 2.5 Million Locations
+### 2.5 million Locations
 
 ![big](/images/posts/curious_query/big.png)
 
@@ -493,8 +501,8 @@ systems often have interesting worst cases. The results might surprise you, as
 they surprised me here.
 
 Obviously we should have also noticed this slow query earlier by using
-application performance monitoring. Back then there weren't as many good tools
-for this and our application never caused any trouble before though.
-Now there are more and better tools.
+application performance monitoring. Back then there weren't very many good tools
+for this, and our application had never caused us any problems. Now however,
+there's some great tools out there.
 
 So, take your trusty benchmarking tool and remember your inputs.
