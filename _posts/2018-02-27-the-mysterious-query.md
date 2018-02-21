@@ -299,14 +299,29 @@ hurts us.
 To get the SQL query each one of our possibilities would generate, we can use
 [`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3).
 
-Let's first check out `full_custom`:
+Let's first check out `full_custom` (reformatted for readability):
 
 ```
-courier_tracker=# EXPLAIN ANALYZE SELECT c0."id", c0."courier_id", c0."location", c0."time", c0."accuracy", c0."inserted_at", c0."updated_at" FROM "courier_locations" AS c0 WHERE (c0."courier_id" = 3799) ORDER BY c0."time" DESC LIMIT 1;
-                                                                                  QUERY PLAN
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Limit  (cost=0.43..0.83 rows=1 width=72) (actual time=1.840..1.841 rows=1 loops=1)
-   ->  Index Scan Backward using courier_locations_time_index on courier_locations c0  (cost=0.43..932600.17 rows=2386932 width=72) (actual time=1.837..1.837 rows=1 loops=1)
+courier_tracker=# EXPLAIN ANALYZE
+  SELECT c0."id",
+         c0."courier_id",
+         c0."location",
+         c0."time",
+         c0."accuracy",
+         c0."inserted_at",
+         c0."updated_at"
+   FROM "courier_locations" AS c0
+  WHERE (c0."courier_id" = 3799)
+  ORDER BY c0."time" DESC LIMIT 1;
+
+                                 QUERY PLAN
+--------------------------------------------------------------------------------
+ Limit  (cost=0.43..0.83 rows=1 width=72)
+        (actual time=1.840..1.841 rows=1 loops=1)
+   ->  Index Scan Backward using courier_locations_time_index on
+       courier_locations c0
+       (cost=0.43..932600.17 rows=2386932 width=72)
+       actual time=1.837..1.837 rows=1 loops=1)
          Filter: (courier_id = 3799)
          Rows Removed by Filter: 1371
  Planning time: 0.190 ms
@@ -326,17 +341,33 @@ lower our chances to hit a recent location of a given courier, basically).
 What does `DB View` do differently?
 
 ```
-courier_tracker=# EXPLAIN ANALYZE SELECT l0."id", l0."courier_id", l0."location", l0."time", l0."inserted_at", l0."updated_at" FROM "latest_courier_locations" AS l0 WHERE (l0."courier_id" = ANY('{3799}'));
-                                                                                QUERY PLAN
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Unique  (cost=650416.51..662351.17 rows=282 width=64) (actual time=3135.211..3969.453 rows=1 loops=1)
-   ->  Sort  (cost=650416.51..656383.84 rows=2386932 width=64) (actual time=3135.211..3849.342 rows=2508672 loops=1)
+courier_tracker=# EXPLAIN ANALYZE
+SELECT l0."id",
+       l0."courier_id",
+       l0."location",
+       l0."time",
+       l0."inserted_at",
+       l0."updated_at"
+  FROM "latest_courier_locations"
+    AS l0
+ WHERE (l0."courier_id" = ANY('{3799}'));
+
+                                  QUERY PLAN
+------------------------------------------------------------------------------
+ Unique  (cost=650416.51..662351.17 rows=282 width=64)
+          (actual time=3135.211..3969.453 rows=1 loops=1)
+   ->  Sort  (cost=650416.51..656383.84 rows=2386932 width=64)
+             (actual time=3135.211..3849.342 rows=2508672 loops=1)
          Sort Key: courier_locations.courier_id, courier_locations."time" DESC
          Sort Method: external merge  Disk: 181472kB
-         ->  Bitmap Heap Scan on courier_locations  (cost=44683.16..218073.14 rows=2386932 width=64) (actual time=179.249..601.531 rows=2508672 loops=1)
+         ->  Bitmap Heap Scan on courier_locations
+             (cost=44683.16..218073.14 rows=2386932 width=64)
+             (actual time=179.249..601.531 rows=2508672 loops=1)
                Recheck Cond: (courier_id = ANY ('{3799}'::integer[]))
                Heap Blocks: exact=33490
-               ->  Bitmap Index Scan on courier_locations_courier_id_index  (cost=0.00..44086.42 rows=2386932 width=0) (actual time=172.958..172.958 rows=2508672 loops=1)
+               ->  Bitmap Index Scan on courier_locations_courier_id_index
+                   (cost=0.00..44086.42 rows=2386932 width=0)
+                   (actual time=172.958..172.958 rows=2508672 loops=1)
                      Index Cond: (courier_id = ANY ('{3799}'::integer[]))
  Planning time: 0.344 ms
  Execution time: 3992.065 ms
