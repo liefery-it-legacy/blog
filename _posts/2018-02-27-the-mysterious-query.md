@@ -455,6 +455,41 @@ _(before)_.
 
 ![no locations](/images/posts/curious_query/no_locations.png)
 
+### The Query Plan
+
+How has our query plan changed now that we use a combined index you might ask,
+well here you go (for `full custom`):
+
+```
+courier_tracker=# EXPLAIN ANALYZE
+  SELECT c0."id",
+         c0."courier_id",
+         c0."location",
+         c0."time",
+         c0."accuracy",
+         c0."inserted_at",
+         c0."updated_at"
+   FROM "courier_locations" AS c0
+  WHERE (c0."courier_id" = 3799)
+  ORDER BY c0."time" DESC LIMIT 1;
+
+                                 QUERY PLAN
+--------------------------------------------------------------------------------
+ Limit  (cost=0.43..2.94 rows=1 width=72) (actual time=0.047..0.048 rows=1 loops=1)
+   ->  Index Scan Backward using courier_locations_courier_id_time_index on
+       courier_locations c0
+       (cost=0.43..273924.89 rows=109445 width=72)
+       (actual time=0.045..0.045 rows=1 loops=1)
+         Index Cond: (courier_id = 3799)
+ Planning time: 0.255 ms
+ Execution time: 0.108 ms
+(5 rows)
+```
+
+It looks much like our previous query plan (save the changed index name),
+however notice how instead of `Filter: (courier_id = 3799)` it says `Index Cond:
+(courier_id = 3799)`? That's the index kicking in!
+
 ## One more thing
 
 I know it's time to wrap this up already, but there's **one more important thing**!
