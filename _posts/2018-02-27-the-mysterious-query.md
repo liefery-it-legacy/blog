@@ -307,11 +307,29 @@ model hurts us.
 
 To get the SQL query each one of our possibilities would generate, we can use
 [`Ecto.Adapters.SQL.to_sql/3`](https://hexdocs.pm/ecto/Ecto.Adapters.SQL.html#to_sql/3).
-This looks like `Ecto.Adapters.SQL.to_sql(:all, Repo, ecto_query)`, where
-`ecto_query` is our query as defined in the benchmarks. I'll spare you the
-details :)
+Let's use it:
 
-Let's first check out `full custom` (reformatted for readability):
+```
+iex(1)> query = CourierLocation |> Ecto.Query.where(courier_id: 3799)
+|> Ecto.Query.order_by(desc: :time) |> Ecto.Query.limit(1)
+#Ecto.Query<from c in CourierTracker.CourierLocation,
+ where: c.courier_id == 3799, order_by: [desc: c.time], limit: 1>
+iex(2)> {string, _args} = Ecto.Adapters.SQL.to_sql(:all, Repo, query)
+{"SELECT c0.\"id\", c0.\"courier_id\", c0.\"location\", c0.\"time\",
+c0.\"accuracy\", c0.\"inserted_at\", c0.\"updated_at\"
+FROM \"courier_locations\" AS c0 WHERE (c0.\"courier_id\" = 3799)
+ORDER BY c0.\"time\" DESC LIMIT 1", []}
+iex(3)> IO.puts string
+SELECT c0."id", c0."courier_id", c0."location", c0."time", c0."accuracy",
+c0."inserted_at", c0."updated_at"
+FROM "courier_locations" AS c0
+WHERE (c0."courier_id" = 3799)
+ORDER BY c0."time" DESC LIMIT 1
+:ok
+```
+
+We can just take the string we printed out and copy & paste it into a `psql`
+console. Let's first check out `full custom` (reformatted for readability):
 
 ```
 courier_tracker=# EXPLAIN ANALYZE
