@@ -12,7 +12,7 @@ nothing evil when suddenly...
 ![one error pops up burning house](/images/posts/curious_query/boom.jpg)
 
 _Bugsnag_ popped up and complained about an
-`Elixir.DBConnection.ConnectionError` - I took a look immedeatly to find out
+`Elixir.DBConnection.ConnectionError` - I took a look immediately to find out
 what made our wonderful application crash. It turned out
 it was a timeout error! [Ecto (elixir database tool) defaults to a timeout of 15
 seconds](https://hexdocs.pm/ecto/Ecto.Repo.html#module-shared-options) and we
@@ -63,22 +63,25 @@ CREATE OR REPLACE VIEW latest_courier_locations AS
   ORDER BY courier_id, time DESC
 ```
 
-So it does what we said in the beginning - it gets the latest location for
+So it does what we said in the beginning--it gets the latest location for
 a given courier. Easy enough.
 
 ## Why did it take so long?
 
 A quick debugging showed that it took so long because a misbehaving client
-was submitting locations at a way too frequent rate. At the time that courier
+was submitting locations at a way too frequent rate. At the time, that courier
 had around 2.5 million locations in the database. That's quite a lot, but
 nothing that should cause the database to take that long.
+
 
 This is probably also a good time to mention that we are running
 _PostgreSQL 9.6_ along with _ecto 2.1.6_ and _postgrex 0.13.3_.
 
 ## First Attempt
 
-Ok let's make this faster. I got this. I know this. Let's write a benchmark!
+OK, let's make this faster. I got this. I know this. Let's write a benchmark!
+Benchmarking is done on a production-like database minus the sensitive data so
+that our results will translate to the production environment.
 We'll use [benchee](https://github.com/PragTob/benchee):
 
 ```elixir
@@ -420,6 +423,7 @@ As our _combined_ index can basically be [used as a replacement for the leftmost
 index](https://dba.stackexchange.com/a/27493) (`courier_id`) and we learned we
 don't want to scan only based on `time` it is safe to drop those.
 
+
 But how do we know that we improved on our old results? We could just run the
 benchmarks again and compare by hand... or we could use benchee's new feature
 introduced in _0.12_ for
@@ -533,13 +537,13 @@ So, we're good.
 What did this journey teach us in the end?
 
 **Always benchmark with a variety of inputs!** Even if you think your input
-is definiely the _worst case_ - it's you guessing not knowing. Algorithms and
+is definitely the _worst case_, it's you guessing--not knowing. Algorithms and
 systems often have interesting worst cases. The results might surprise you, as
 they surprised me here.
 
 Obviously we should have also noticed this slow query earlier by using
 application performance monitoring. Back then there weren't very many good tools
-for this, and our application had never caused us any problems. Now however,
+for this, and our application had never caused us any problems. Now, however,
 there's some great tools out there.
 
 So, take your trusty benchmarking tool and remember your inputs. Then, you too
