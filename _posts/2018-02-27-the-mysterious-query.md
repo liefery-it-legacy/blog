@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The curious case of the query that gets slower the fewer elements it affects"
-date: 2018-02-20
+date: 2018-02-27
 author: Tobias Pfeiffer
 tags: elixir postgresql performance benchee indexes
 ---
