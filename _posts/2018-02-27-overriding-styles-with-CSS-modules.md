@@ -99,8 +99,7 @@ For our rule to be picked up, we would need its compiled name in the HTML, along
 
 
 ## Stepping back for a second
-Having an HTML element with classes form two different modules sounds complicated. Maybe there are simpler solutions.
-How can we get the parent component to alter the styles of a child component?
+Having an HTML element with classes form two different modules sounds complicated. Maybe there are simpler solutions to override styles.
 
 #### Wrap the element?
 If we are struggling to target a class inside the menu, we could simply wrap the menu in another element, and apply extra styles to that:
@@ -177,7 +176,7 @@ We have successfully used specificity to override a style using CSS Modules.
 
 
 ## What's next?
-This is a common problem faced in front end development. Thankfully there is a great discussion in progress and a new [CSS-Modules proposal](https://github.com/css-modules/css-modules/issues/147) to make this issue simpler with the introduction of a new `:external` keyword in CSS. The proposal is a recommended read with some interesting discussions. In the mean time, always go for the simplest solution, but know that your old friend specificity is always there when you need it.
+Wanting a parent component to alter the styles of a child component turns out to not be such a rare scenario. Thankfully there is a great discussion in progress and a new [CSS-Modules proposal](https://github.com/css-modules/css-modules/issues/147) to make this issue simpler with the introduction of a new `:external` keyword in CSS. The proposal is a recommended read with some interesting discussions. In the mean time, always go for the simplest solution and know that your old friend specificity is always there for you.
 
 
 _Have you had this problem? How did you solve it? Let us know your thoughts in the comments below!_
