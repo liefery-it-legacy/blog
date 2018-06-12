@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Where's my specificity? Overriding styles with CSS Modules"
+title: "Overriding styles with CSS Modules: Where's my specificity? "
 date: 2018-05-07
 author: Ali Churcher
 tags: CSS-modules, CSS, React, JavaScript, Component
@@ -13,13 +13,13 @@ No longer are you scared to delete css rules, for fear of unexpected style chang
 With CSS-Modules you can write small and simple CSS files. By default each module has its own scope, allowing you to define duplicated css rules such as `.button` in several different modules. Your build tools, such as `css-loader` takes care of scoping and naming issues during compilation. CSS modules let you forget about complex naming systems and, for the most part, specificity.
 
 
-But one day I found myself longing for my old friend specificity. I set out to find out if my longing was a code smell, a limitation of CSS Modules, or something else.
+After some joyful months of using CSS Modules I suddenly found myself longing for my old friend specificity. I set out to find out if my longing was a code smell, a limitation of CSS Modules, or something else.
 
 ## The component
 
 Let’s say we have a reusable menu component that is used on every page of the application. It looks something like this:
 
-![menu with separators between items](/images/posts/overriding-styles-in-CSS-modules/menu-separated.png){:width="36px"}
+![menu with separators between items](/images/posts/overriding-styles-with-CSS-modules/menu-separated.png){:width="36px"}
 
 The component has an outer div, containing three menu items, each with the class `item`
 ```jsx
@@ -45,7 +45,7 @@ So far so good.
 
 As with all applications, we have a special case. When the Menu is inside a Header we want to remove the separator lines like this:
  
-![menu with no separators between items](/images/posts/overriding-styles-in-CSS-modules/menu-not-separated.png)
+![menu with no separators between items](/images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png)
 
 To achieve this we need a CSS rule that is only used on Menus that are inside the Header.
 The CSS will remove the separator and replace it with empty content:
@@ -58,7 +58,7 @@ The CSS will remove the separator and replace it with empty content:
 This rule will need to be used rather than the default rule that the Menu component defines. This sounds like a job for our friend specificity.
 
 
-## Attempt at overriding a rule
+## The attempt at overriding a rule
 
 Let's try it. The basic principles of CSS tell me that if I want my rule to be picked up then it needs to be more specific than the other rules with the same name. If I simply make a new rule, that is more specific of course it will be used  ...right?
 
@@ -78,7 +78,7 @@ Let's try it. The basic principles of CSS tell me that if I want my rule to be p
 With two classes, the selector `.menu.item` defined in the Header.css is much more specific than the `.item` we have defined in Menu.css. But does it work?
 
 
-![menu with separators between items](/images/posts/overriding-styles-in-CSS-modules/menu-separated.png)
+![menu with separators between items](/images/posts/overriding-styles-with-CSS-modules/menu-separated.png)
 
 
  No.
@@ -91,7 +91,7 @@ Don't be sad though, this is how things should be when we use CSS Modules. All t
 the Menu, we can see this happening in action with our `item` class:
 
 
-![compiled menu scoped classes](/images/posts/overriding-styles-in-CSS-modules/compiled-menu-classes.png)
+![compiled menu scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-menu-classes.png)
 
 
 The menu items do not have the class `item`. Instead, they have been given the compiled class name `Menu__item--3FNtb`. Sure, our CSS rule may have won the specificity battle, but no element had this class name!
@@ -126,7 +126,7 @@ component is no longer 'dumb', it has to deal with things it should not have to 
 #### Global CSS?
  When all else fails we could add rules to global CSS. This is a not a page wide CSS rule, but a confined rule, that should not require global scope. We would bypass intended pattern of CSS Modules and begin to lose the benefits of scoped CSS.
 
-## A solution:
+## A solution
 Our initial attempt at specificity failed because our Header.css rule, was not compiled into the HTML for the Menu. So let's find a way to add it to our HTML element. For our new CSS rule to be added to the HTML it needs to be present in Menu.jsx. To achieve this, we can pass the rule in from the Header.jsx component.
 
 When the header renders the Menu we pass our new item rule:
@@ -163,14 +163,14 @@ As the class belongs to Header.css it will still be compiled in the Header names
 
 
 
-![compiled menu and header scoped classes](/images/posts/overriding-styles-in-CSS-modules/compiled-with-header-classes.46.20.png){:border="1px solid black"}
+![compiled menu and header scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-with-header-classes.46.20.png){:border="1px solid black"}
 
 
 
 
 Now we have two item classes on our element.  `Menu_item--3FNtb` and `Header_item--1NKCj`. So which styles will be used? Our old friend specificity will determine that!
 
-![menu with no separators between items](/images/posts/overriding-styles-in-CSS-modules/menu-not-separated.png)
+![menu with no separators between items](/images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png)
 
 The header styles, that remove the separator has won.
 We have successfully used specificity to override a style using CSS Modules.
