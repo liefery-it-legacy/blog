@@ -123,7 +123,7 @@ What if the Menu component knew where it was being rendered? It could then displ
 component is no longer 'dumb', it has to deal with things it should not have to worry about. We want our menu to provide  menu, and then be done with it.
 
 #### Global CSS?
- When all else fails we could add rules to global CSS. This is a not a page wide CSS rule, but a confined rule, that should not require global scope. We would bypass intended pattern of CSS Modules and begin to lose the benefits of scoped CSS.
+ When all else fails we could add rules to global CSS. While useful for site-wide styes, this option is not good for contained components like our Menu. We would bypass intended pattern of CSS Modules and begin to lose the benefits of scoped CSS.
 
 ## A solution
 Our initial attempt at specificity failed because our Header.css rule, was not compiled into the HTML for the Menu. So let's find a way to add it to our HTML element. For our new CSS rule to be added to the HTML it needs to be present in Menu.jsx. To achieve this, we can pass the rule in from the Header.jsx component.
@@ -176,7 +176,7 @@ We have successfully used specificity to override a style using CSS Modules.
 
 
 ## What's next?
-Wanting a parent component to alter the styles of a child component turns out to not be such a rare scenario. Thankfully there is a great discussion in progress and a new [CSS-Modules proposal](https://github.com/css-modules/css-modules/issues/147) to make this issue simpler with the introduction of a new `:external` keyword in CSS. The proposal is a recommended read with some interesting discussions. In the mean time, always go for the simplest solution and know that your old friend specificity is always there for you.
+Wanting a parent component to alter the styles of a child component turns out to not be such a rare scenario. Thankfully there is a great discussion in progress and a new [CSS-Modules proposal](https://github.com/css-modules/css-modules/issues/147) to make this issue simpler with the introduction of a new `:external` keyword in CSS. The proposal is a recommended read with some interesting discussions. In the mean time, always go for the simplest solution, and know that your old friend specificity is always there for you.
 
 
 _Have you had this problem? How did you solve it? Let us know your thoughts in the comments below!_
