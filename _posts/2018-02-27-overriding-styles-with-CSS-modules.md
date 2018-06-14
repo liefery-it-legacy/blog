@@ -3,39 +3,39 @@ layout: post
 title: "Overriding styles with CSS Modules: Where's my specificity? "
 date: 2018-05-07
 author: Ali Churcher
-tags: CSS-modules, CSS, React, JavaScript, Component
+tags: CSS-Modules, CSS, React, JavaScript, Component
 ---
 [menu]: /images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png
 [menu-separated]: /images/posts/overriding-styles-with-CSS-modules/menu-separated.png
-
-[CSS modules](https://github.com/css-modules/css-modules) are a clever build step that allows you to write CSS in a clean manageable way.
+[CSS Modules](https://github.com/css-modules/css-modules) are a clever build step that allow you to write CSS in a clean manageable way.
 No longer do you have gigantic CSS files. 
 No longer are you scared to delete CSS rules, for fear of unexpected style changes in murky corners of your application. No longer do you have extremely long CSS rules with multiple classes, divs, or the dreaded `!important` declarations.
 
-With CSS-Modules you can write small and simple CSS files. By default each module has its own scope, allowing you to define duplicated CSS rules such as `.button` in several different modules. Your build tools, such as `css-loader` take care of scoping and naming issues during compilation. CSS modules let you forget about complex naming systems and, for the most part, specificity.
+With CSS-Modules you can write small and simple CSS files. By default each module has its own scope, allowing you to duplicate CSS rules like `.button` in several different modules. Your build tools, such as `css-loader` take care of scoping and naming issues during compilation. CSS Modules let you forget about complex naming systems and, for the most part, specificity.
 
 
-After some joyful months of using CSS Modules I suddenly found myself longing for my old friend specificity. I set out to find out if my longing was a code smell, a limitation of CSS Modules, or something else.
+
+After some joyful months of using CSS Modules I suddenly found myself longing for my old friend [specificity](http://cssspecificity.com/). I set out to find out if my longing was a code smell, a limitation of CSS Modules, or something else.
 
 ## The component
 
 Let’s say we have a reusable menu component that is used on every page of the application. It looks something like this:
 
-![menu with separators between items][separated-Menu]
+![menu with separators between items][menu-separated]
 
-The component has an outer div, containing three menu items, each with the class `item`
+The component has an outer div, containing three menu items, each with the class `item`.
 ```jsx
 // Menu.jsx
-import { item, container } from '..Menu.css'
+import { item, menu } from '..Menu.css'
 ...
 
-<div className={container}>
+<div className={menu}>
   <button className={item}>HOME</button>
   <button className={item}>STORE</button>
   <button className={item}>CONTACT</button>
 </div>
 ```
-The CSS rule `item` uses `::after` to create the pseudo-element that adds the vertical separator after the menu items.
+To create the pipe separator between the items we are using the pseudo element `::after`.
 ```css
 /* Menu.css */
 .item::after {
@@ -45,19 +45,22 @@ The CSS rule `item` uses `::after` to create the pseudo-element that adds the ve
 So far so good.
 ## The special case
 
-As with all applications, we have a special case. When the Menu is inside a Header we want to remove the separator lines like this:
+As with all applications, we have a special case. When the Menu is inside a Header we want to remove the separator lines:
  
-![menu with no separators between items]
+![menu with no separators between items][menu]
 
-To achieve this we need a CSS rule that is only used on Menus that are inside the Header.
-The CSS will remove the separator and replace it with empty content:
+To achieve this we can create a CSS rule that
+will remove the separator and replace it with empty content:
 ```css
 /* Header.css  replaces the separator with nothing */
 .item::after {
   content: ' ';
 }
 ```
-This rule will need to be used rather than the default rule that the Menu component defines. This sounds like a job for our friend specificity.
+When the Menu is inside a Header we need this new rule to be used. It must override our existing rule from Menu.css.
+
+
+This sounds like a job for specificity.
 
 ## The attempt at overriding a rule
 
@@ -78,7 +81,7 @@ Let's try it. The basic principles of CSS tell me that if I want my rule to be p
 With two classes, the selector `.menu.item` defined in the Header.css is much more specific than the `.item` we have defined in Menu.css. But does it work?
 
 
-![menu with separators between items][separated-Menu]
+![menu with separators between items][menu-separated]
 
 
  No.
@@ -87,96 +90,99 @@ With two classes, the selector `.menu.item` defined in the Header.css is much mo
 We still have separators. Our more specific CSS is not being used.
 
 
-Don't be sad though, this is how things should be when we use CSS Modules. All the glory of CSS Modules comes from the amazing ability to scope CSS classes uniquely. The reason you are allowed to define a `button` class in several components is because these classes, once compiled are given scoped names with a unique hash. If we use our developer tools to look at
-the Menu, we can see this happening in action with our `item` class:
+Don't be sad though, this is exactly how things should behave when we use CSS Modules! All the glory of CSS Modules comes from the amazing ability to scope CSS classes uniquely. The reason you are allowed to define duplicate `.button` rules in several components is because these rules, once compiled, are given scoped names with a unique hash. If we use our developer tools to look at
+the Menu, we can see this happening to our `item` class:
 
 
 ![compiled menu scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-menu-classes.png){:class="dev-tools-image"}
 
 
-The menu items do not have the class `item`. Instead, they have been given the compiled class name `Menu__item--3FNtb`. Sure, our CSS rule may have won the specificity battle, but no element had this class name!
-For our rule to be picked up, we would need its compiled name in the HTML, alongside the Menu classes.
+The menu items elements do not have the class `item`. Instead, they have been given the compiled class name `Menu__item--3FNtb`. Likewise the CSS itself is also compiled.
+```css
+.Menu__item--3FNtb::after {
+  content: '|';
+}
+```
+
+So our CSS rule may have won the specificity battle, but no element had this class name!
+For our rule to be picked up, we would need its compiled name to be present in the HTML, alongside the Menu classes.
 
 
 ## Stepping back for a second
-Having an HTML element with classes form two different modules sounds complicated. Maybe there are simpler solutions to override styles.
+Getting an HTML element with compiled class names from two different modules sounds complicated. Maybe there are simpler solutions to override our separator style.
 
 #### Wrap the element?
-If we are struggling to target a class inside the menu, we could simply wrap the menu in another element, and apply extra styles to that:
+If we are struggling to target a class inside our Menu, could we simply wrap the menu in another element, and apply extra styles to that?
 ```jsx
-//Header.jsx
+// Header.jsx
 <header>
   <div className={extraMenuStyles} // wrapper element with styles
     < Menu />
   </div>
 </header>
 ```
-This works well for things like layout, but in our case, trying to target an `::after` selector on a nested element, a solution like the following would not be possible.
+This would work well for things like positioning the Menu, but for trying to target an `::after` selector on a nested element this solution will not cut it.
 
 #### Two components?
-You can argue that if we want two different types of menus, then why don't we have two different components? For many cases, this is indeed the correct solution - sometimes components that look similar
+You can argue that if we want two different types of menus, then we should have two different components. Sometimes components that look similar
 actually represent different concepts and should indeed be separated.
-In this case however, the menus to represent the same concept, and I wanted them to be the same component.
+In this case however, the menus represent the same concept, and I wanted them to be the same component.
 
 #### Smart Menu component?
 What if the Menu component knew where it was being rendered? It could then display the separators by default, and hide them if it displayed in the Header. While this is nice in the short term it means our
-component is no longer 'dumb', it has to deal with things it should not have to worry about. We want our menu to provide  menu, and then be done with it.
+component is no longer 'dumb', it has to deal with things it should not have to worry about. We want our Menu to provide a Menu, and then be done with it.
 
 #### Global CSS?
  When all else fails we could add rules to global CSS. While useful for site-wide styes, this option is not good for contained components like our Menu. We would bypass the intended pattern of CSS Modules and begin to lose the benefits of scoped CSS.
 
 ## A solution
-Our initial attempt at specificity failed because our Header.css rule, was not compiled into the HTML for the Menu. So let's find a way to add it to our HTML element. For our new CSS rule to be added to the HTML it needs to be present in Menu.jsx. To achieve this, we can pass the rule in from the Header.jsx component.
+We have eliminated the common solutions and alternatives for overriding CSS. It's time to reapproach the idea of adding the compiled class from Header.css into each of our Menu item elements.
+We know that for our new Header.css rule to be added to the HTML it needs to be present in Menu.jsx when it is compiled. This is something we can achieve by passing the rule into the Menu from the Header.
 
-When the header renders the Menu we pass our new item rule:
+When the header renders the Menu we pass our new `.item` rule:
 ```jsx
 //Header.jsx
-import { item } from './Header.css'
+import Menu from '../Menu.jsx'
+import { item } from './Header.css' // the item rule REMOVES the separators
 ...
 
 <header>
-  {% raw %}<Menu classes={{item}}></Menu>{% endraw %}
+  {% raw %}<Menu classes={{item}} />{% endraw %}
 </header>
 ```
-Menu.jsx accepts these extra classes and applies them to each menu item.
+The Menu component accepts this extra class from the Header component and applies it to each Menu item. Note the use of `cn` to allow us to add multiple classes to the element: the `item` class from Menu.css, and the `item` class from Header.css. Any component that renders a Menu now has this option to provide its own implementation of the `.item` CSS rule.
 ```jsx
 //Menu.jsx
+import {menu item } from './Menu.css' // rule to ADD the separators
 import cn from 'classnames'
 ...
 
-const Menu = ({ className, classes = {}}) => (
-  <div className={className}>
+const Menu = ({ classes = {}}) => (
+  <div className={menu}>
     <button className={cn(item, classes.item)}>HOME</button>
     <button className={cn(item, classes.item)}>STORE</button>
     <button className={cn(item, classes.item)}>CONTACT</button>
   </div>
 )
 ```
-
-Menu items will still have the `item` class defined in Menu.css,
-but when rendered from the Header, they will also have the `item` class that was defined in Header.css.
- This pattern of an HTML element sharing classes from two different components is defined as the [Adopted Child Pattern](http://simurai.com/blog/2015/05/11/nesting-components) by Simurai.
-
-As the class belongs to Header.css it will still be compiled in the Header namespace.
-
-
+Let's check the developer tools to see if these classes are really added:
 
 
 ![compiled menu and header scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-with-header-classes.46.20.png){:class="dev-tools-image"}
 
 
-
-
-Now we have two item classes on our element.  `Menu_item--3FNtb` and `Header_item--1NKCj`. So which styles will be used? Our old friend specificity will determine that!
+Looks good! Now we have both `Menu_item--3FNtb` and `Header_item--1NKCj` on our elements. As the class was defined in Header.css we can see that it is still compiled with the Header prefix.
+ One class adds a separator, one class takes it away. So which styles will be used? Will specificity come back to us? Let's see if we managed to remove the separators.
 
 ![menu with no separators between items][menu]
 
-The header styles, that remove the separator has won.
+The header styles that remove the separator has won.
 We have successfully used specificity to override a style using CSS Modules.
+ This pattern of an HTML element sharing classes from two different components is defined as the [Adopted Child Pattern](http://simurai.com/blog/2015/05/11/nesting-components) by Simurai.
 
 
 ## What's next?
-Wanting a parent component to alter the styles of a child component turns out to not be such a rare scenario. Thankfully there is a great discussion in progress and a new [CSS-Modules proposal](https://github.com/css-modules/css-modules/issues/147) to make this issue simpler with the introduction of a new `:external` keyword in CSS. The proposal is a recommended read with some interesting discussions. In the mean time, always go for the simplest solution, and know that your old friend specificity is always there for you.
+Wanting a parent component to alter the styles of a child component turns out to not be such a rare scenario. Thankfully there is a great discussion in progress and a new [CSS Modules proposal](https://github.com/css-modules/css-modules/issues/147) to make this issue simpler with the introduction of a new `:external`. The proposal is a recommended read with some interesting discussions. In the mean time, always go for the simplest solution, and know that your old friend specificity is always there for you.
 
 
 _Have you had this problem? How did you solve it? Let us know your thoughts in the comments below!_
