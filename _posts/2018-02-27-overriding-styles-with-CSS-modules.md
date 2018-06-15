@@ -9,7 +9,7 @@ tags: CSS-Modules, CSS, React, JavaScript, Component
 [menu-separated]: /images/posts/overriding-styles-with-CSS-modules/menu-separated.png
 I'm a fan of [CSS Modules](https://github.com/css-modules/css-modules). This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules, for fear of unexpected style changes in murky corners of your application. No longer do you have to implement complex CSS naming schemes that are slowly forgotten or implemented inconsistently.
 
-We get these benefits when we use CSS Modules because we write small and simple CSS files. Each of these files (modules) has its own scope, allowing you to reuse simple class names like `button` in several different modules. Build tools such as [css-loader](https://github.com/webpack-contrib/css-loader#modules) for Webpack then take care of scoping and naming issues during compilation. This scoped naming reduces the complexity around which CSS declarations the browser will choose to implement; leaving you free from the weighting called [Specificity](https://css-tricks.com/specifics-on-css-specificity/).
+We get these benefits when we use CSS Modules because we write small and simple CSS files. Each of these files (modules) has its own scope, allowing you to reuse simple class names like `button` in several different modules. Build tools such as [css-loader](https://github.com/webpack-contrib/css-loader#modules) for Webpack then take care of scoping and naming issues during compilation. Having modular CSS means you're free to ignore the issues of which CSS declarations the browser will choose to implement; the concept called [specificity](https://css-tricks.com/specifics-on-css-specificity/).
 
  After some joyful months of using CSS Modules a seemingly simple problem stumped me, and I found myself longing for my old friend specificity. I set out to find out if my longing was a code smell, a limitation of CSS Modules, or something else.
 
@@ -60,7 +60,7 @@ This sounds like a job for specificity.
 
 ## The attempt at overriding a CSS rule
 
-Let's try it. The basic principles of CSS tell me that if I want my rule to be picked up then it needs to be more specific than the other rules with the same name. If I simply make a new rule that is more specific of course it will be used  ...right?
+Let's try it. The principles of CSS tell me that if I want my rule to be picked up then it needs to be more specific than the other rules with the same name. If I simply make a new rule that is more specific of course it will be used  ...right?
 
 ```css
 /* Menu.css */
