@@ -25,11 +25,15 @@ This Menu component has an outer div, containing three menu items, each with the
 import { item, menu } from '..Menu.css'
 ...
 
-<div className={menu}>
-  <button className={item}>HOME</button>
-  <button className={item}>STORE</button>
-  <button className={item}>CONTACT</button>
-</div>
+const Menu = () => (
+  <div className={menu}>
+    <button className={item}>HOME</button>
+    <button className={item}>STORE</button>
+    <button className={item}>CONTACT</button>
+  </div>
+)
+
+export default Menu
 ```
 To create the pipe separator between the items we are using the pseudo element `::after`.
 ```css
@@ -60,7 +64,7 @@ This sounds like a job for specificity.
 
 ## The attempt at overriding a CSS rule
 
-Let's try it. The principles of CSS tell me that if I want my rule to be picked up then it needs to be more specific than the other rules with the same name. If I simply make a new rule that is more specific of course it will be used  ...right?
+Let's try it. The principles of CSS tell me that if I want my `content` declaration to be implemented by the browser then it's rule needs to be the most specific rule on the element. If I simply make a new rule that is more specific of course it will be used  ...right?
 
 ```css
 /* Menu.css */
@@ -108,14 +112,6 @@ Getting compiled class names from two different CSS modules into an HTML element
 
 #### Wrap the element?
 If we are struggling to target a class inside our Menu, could we simply wrap the menu in another element, and apply extra styles to that?
-```jsx
-// Header.jsx
-<header>
-  <div className={extraMenuStyles}> // wrapper element with styles
-    < Menu />
-  </div>
-</header>
-```
 This approach works well for things like positioning the Menu, but for trying to target an `::after` selector on a nested element this solution will fail.
 
 #### Two components?
@@ -141,9 +137,13 @@ import Menu from '../Menu.jsx'
 import { item } from './Header.css' // rule to REMOVE the separators
 ...
 
-<header>
-  {% raw %}<Menu classes={{ item }} />{% endraw %}
-</header>
+const Header = () => (
+  <header>
+    {% raw %}<Menu classes={{ item }} />{% endraw %}
+  </header>
+)
+
+export default Header
 ```
 The Menu component accepts this extra class from the Header component and applies it to each Menu item. Note the use of `cn` to allow us to add multiple classes to the element: the `item` class from Menu.css, and the `item` class from Header.css. In fact any component that renders a Menu now has this option to provide its own implementation of `.item`.
 ```jsx
@@ -159,11 +159,13 @@ const Menu = ({ classes = {} }) => (
     <button className={cn(item, classes.item)}>CONTACT</button>
   </div>
 )
+
+export default Menu
 ```
 Let's check the developer tools to see if these classes are really added:
 
 
-![compiled menu and header scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-with-header-classes.46.20.png){:class="dev-tools-image"}
+![compiled menu and header scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-with-header-classes.png){:class="dev-tools-image"}
 
 
 Looks good! Now we have both `Menu_item--3FNtb` and `Header_item--1NKCj` on our elements.
