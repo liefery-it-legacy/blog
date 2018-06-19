@@ -15,11 +15,11 @@ We get these benefits when we use CSS Modules because we write small and simple 
 
 ## The seemingly simple problem
 
-In our application we have a reusable Menu component that is used on every page. In reality it contains some very long German words, but let's pretend for now that it looks like this:
+In our application we have a reusable menu component that is used on every page. In reality it contains some very long German words, but let's pretend for now that it looks like this:
 
 ![menu with separators between items][menu-separated]
 
-This Menu component has an outer div, containing three menu items, each with the class `item`.
+This menu component has an outer div, containing three menu items, each with the class `item`.
 ```jsx
 // Menu.jsx
 import { item, menu } from '..Menu.css'
@@ -45,7 +45,7 @@ To create the pipe separator between the items we are using the pseudo element `
 So far so good.
 ## The special case
 
-As with all applications, we have a special case. When the Menu is inside a Header we want to remove the separator lines:
+As with all applications, we have a special case. When the menu is inside a Header we want to remove the separator lines:
  
 ![menu with no separators between items][menu]
 
@@ -57,7 +57,7 @@ will remove the separator and replace it with empty content:
   content: ' ';
 }
 ```
-When the Menu is inside a Header we need this new rule to be used. It must override our existing rule from Menu.css.
+When the menu is inside a Header we need this new rule to be used. It must override our existing rule from Menu.css.
 
 
 This sounds like a job for specificity.
@@ -87,7 +87,7 @@ With two classes, the selector `.menu .item` defined in the Header.css is much m
  No.
 
 We still have separators. Our more specific CSS is not being used. Don't be sad though, this is exactly how things should behave when we use CSS Modules! All the glory of CSS Modules comes from the amazing ability to scope CSS classes uniquely. The reason you are allowed to reuse `button` classes in several components is because these classes, once compiled, are given scoped names with a unique hash. If we use our developer tools to look at
-the Menu, we can see this happening to the Menu's `item` class:
+the menu, we can see this happening to the menu's `item` class:
 
 
 ![compiled menu scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-menu-classes.png){:class="dev-tools-image"}
@@ -104,33 +104,33 @@ The menu items elements do not have the class `item`. Instead, they have been gi
 }
 ```
 So while our CSS rule may have won the specificity battle, no element had this class name!
-For our rule to be picked up, we would need its compiled name `.Header__item--1NKCj` to be present in the HTML Menu item elements.
+For our rule to be picked up, we would need its compiled name `.Header__item--1NKCj` to be present in the HTML menu item elements.
 
 
 ## Stepping back for a second
 Getting compiled class names from two different CSS modules into an HTML element sounds complicated. Maybe there are simpler solutions to override our separator style.
 
 #### Wrap the element?
-If we are struggling to target a class inside our Menu, could we simply wrap the menu in another element, and apply extra styles to that?
-This approach works well for things like positioning the Menu, but for trying to target an `::after` selector on a nested element this solution will fail.
+If we are struggling to target a class inside our menu, could we simply wrap the menu in another element, and apply extra styles to that?
+This approach works well for things like positioning the menu, but for trying to target an `::after` selector on a nested element this solution will fail.
 
 #### Two components?
 You can argue that if we want two different types of menus, then we should have two different components. Sometimes components that look similar
 actually represent different concepts and should indeed be separated.
 In this case however, the menus represent the same concept, and I wanted them to be the same component.
 
-#### Smart Menu component?
-What if the Menu component knew where it was being rendered? It could then display the separators by default, and hide them if it was rendered from the Header component. While this is easy in the short term it means our
-component is no longer 'dumb', it has to deal with things it should not have to worry about. We want our Menu to provide a Menu, and then be done with it.
+#### Smart menu component?
+What if the menu component knew where it was being rendered? It could then display the separators by default, and hide them if it was rendered from the Header component. While this is easy in the short term it means our
+component is no longer 'dumb', it has to deal with things it should not have to worry about. We want our menu to provide a menu, and then be done with it.
 
 #### Global CSS?
- When all else fails we could add our rule to the global CSS. However while useful for site-wide styles, global CSS is not a good solution for contained components like our Menu. We would start to lose the benefits of scoped CSS.
+ When all else fails we could add our rule to the global CSS. However, while useful for site-wide styles, global CSS is not a good solution for contained components like our menu. We would start to lose the benefits of scoped CSS.
 
 ## A solution
-So we just eliminated many of the common solutions and alternatives for overriding CSS. It's time to reapproach the idea of adding the compiled class from Header.css into each of our Menu item elements.
-We know that for our new Header.css rule to be added to the HTML it needs to be present in Menu.jsx when it is compiled. This is something we can achieve by passing the rule into the Menu from the Header.
+So we just eliminated many of the common solutions and alternatives for overriding CSS. It's time to reapproach the idea of adding the compiled class from Header.css into each of our menu item elements.
+We know that for our new Header.css rule to be added to the HTML it needs to be present in Menu.jsx when it is compiled. This is something we can achieve by passing the rule into the menu from the Header.
 
-When the header renders the Menu we pass in our new `.item` rule:
+When the header renders the menu we pass in our new `.item` rule:
 ```jsx
 //Header.jsx
 import Menu from '../Menu.jsx'
@@ -145,7 +145,7 @@ const Header = () => (
 
 export default Header
 ```
-The Menu component accepts this extra class from the Header component and applies it to each Menu item. Note the use of `cn` to allow us to add multiple classes to the element: the `item` class from Menu.css, and the `item` class from Header.css. In fact any component that renders a Menu now has this option to provide its own implementation of `.item`.
+The menu component accepts this extra class from the Header component and applies it to each menu item. We are using the classnames library `cn` to allow us to add multiple classes to the element: the `item` class from Menu.css, and the `item` class from Header.css. In fact any component that renders a menu now has this option to provide its own implementation of `.item`.
 ```jsx
 //Menu.jsx
 import { menu item } from './Menu.css' // rule to ADD the separators
