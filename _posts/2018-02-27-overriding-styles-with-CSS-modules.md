@@ -9,7 +9,7 @@ tags: CSS-Modules, CSS, React, JavaScript, Component
 [menu-separated]: /images/posts/overriding-styles-with-CSS-modules/menu-separated.png
 I'm a fan of [CSS Modules](https://github.com/css-modules/css-modules). This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules, for fear of unexpected style changes in murky corners of your application. No longer do you have to implement complex CSS naming schemes that are slowly forgotten or implemented inconsistently.
 
-We get these benefits when we use CSS Modules because we write small and simple CSS files. Each of these files (modules) has its own scope, allowing you to reuse simple class names like `button` in several different modules. Build tools such as [css-loader](https://github.com/webpack-contrib/css-loader#modules) for Webpack then take care of scoping and naming issues during compilation. Having modular CSS means you're free to ignore the issues of which CSS declarations the browser will choose to implement; the concept called [specificity](https://css-tricks.com/specifics-on-css-specificity/).
+We get these benefits when we use CSS Modules because we write small and simple CSS files. Each of these files (modules) has its own scope, allowing you to reuse simple class names like `button` in several different modules. Build tools such as [css-loader](https://github.com/webpack-contrib/css-loader#modules) for Webpack then take care of scoping and naming issues during compilation. These scoped class names let you forget about complex selectors, and for the most part [specificity](https://css-tricks.com/specifics-on-css-specificity/).
 
  After some joyful months of using CSS Modules a seemingly simple problem stumped me, and I found myself longing for my old friend specificity. I set out to find out if my longing was a code smell, a limitation of CSS Modules, or something else.
 
@@ -64,7 +64,7 @@ This sounds like a job for specificity.
 
 ## The attempt at overriding a CSS rule
 
-Let's try it. The principles of CSS tell me that if I want my `content` declaration to be implemented by the browser then it's rule needs to be the most specific rule on the element. If I simply make a new rule that is more specific of course it will be used  ...right?
+Let's try it. The principles of specificity tell me that if I want my `content` declaration to be implemented by the browser then its selector (i.e. `.item::after`) must have the highest specificity. If I simply make a new rule that is more specific of course it will be used  ...right?
 
 ```css
 /* Menu.css */
@@ -74,11 +74,11 @@ Let's try it. The principles of CSS tell me that if I want my `content` declarat
 ```
 ```css
 /* Header.css */
-.menu .item::after { /* more specific new rule */
+.menu .item::after { /* new rule with more specific selector */
   content: ' ';
 }
 ```
-With two classes, the selector `.menu .item` defined in the Header.css is much more specific than the `.item` we have defined in Menu.css. But does it work?
+With two classes, the selector `.menu .item::after` defined in the Header.css is much more specific than the `.item::after` we have defined in Menu.css. But does it work?
 
 
 ![menu with separators between items][menu-separated]
@@ -93,7 +93,7 @@ the menu, we can see this happening to the menu's `item` class:
 ![compiled menu scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-menu-classes.png){:class="dev-tools-image"}
 
 
-The menu items elements do not have the class `item`. Instead, they have been given the compiled class name `Menu__item--3FNtb`. Likewise the CSS itself is also compiled with a new name.
+The menu item elements do not have the class `item`. Instead, they have been given the compiled class name `Menu__item--3FNtb`. Likewise the CSS itself is also compiled with a new name.
 ```css
 .Menu__item--3FNtb::after {
   content: '|';
@@ -169,7 +169,10 @@ Let's check the developer tools to see if these classes are really added:
 
 
 Looks good! Now we have both `Menu_item--3FNtb` and `Header_item--1NKCj` on our elements.
- One class adds a separator, one class takes it away. So which style with the browser choose? Will specificity come back to us and allow our more specific Header.css style to win? Let's see if we managed to remove the separators.
+ One class adds a separator, one class takes it away. So which style with the browser choose? Will specificity come back to us and allow our more specific Header.css style to win?
+
+
+ Let's see if we managed to remove the separators.
 
 ![menu with no separators between items][menu]
 
@@ -181,7 +184,7 @@ We have successfully used specificity to override a style using CSS Modules.
 
 
 ## What's next?
-Wanting a parent component to override the styles of a child component turns out to be a common issue in the community. Thankfully a new `:external` keyword has been proposed to ease the pain. I recommend reading the [proposal](https://github.com/css-modules/css-modules/issues/147) for some interesting discussions on the topic. In the mean time, always go for the simplest solution, and know that your old friend specificity is always there for you.
+Wanting a parent component to override the styles of a child component turns out to be a common issue in the community. Thankfully a new `:external` keyword has been proposed to ease the pain. I recommend reading the [proposal](https://github.com/css-modules/css-modules/issues/147) for some interesting discussions on the topic. In the mean time, always go for the simplest solution, and know that your friend specificity is always there for you.
 
 
 _Have you had this problem? How did you solve it? Let us know your thoughts in the comments!_
