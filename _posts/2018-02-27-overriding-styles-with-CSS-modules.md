@@ -124,10 +124,10 @@ What if the menu component knew where it was being rendered? It could then displ
 component is no longer 'dumb', it has to deal with things it should not have to worry about. We want our menu to provide a menu, and then be done with it.
 
 #### Global CSS?
- When all else fails we could add our rule to the global CSS. However, while useful for site-wide styles, global CSS is not a good solution for contained components like our menu. We would start to lose the benefits of scoped CSS.
+ If all else fails we could add our rule to the global CSS. However, while useful for site-wide styles, global CSS is not a good solution for contained components like our menu. We would start to lose the benefits of scoped CSS.
 
 ## A solution
-So we just eliminated many of the common solutions and alternatives for overriding CSS. It's time to reapproach the idea of adding the compiled class from Header.css into each of our menu item elements.
+So we just eliminated many of the common solutions and alternatives for overriding the CSS of a child component from the parent component. It's time to reapproach the idea of adding the compiled class from Header.css into each of our menu item elements.
 We know that for our new Header.css rule to be added to the HTML it needs to be present in Menu.jsx when it is compiled. This is something we can achieve by passing the rule into the menu from the Header.
 
 When the header renders the menu we pass in our new `.item` rule:
