@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Overriding styles with CSS Modules: Where's my specificity? "
-date: 2018-05-07
+date: 2018-06-27
 author: Ali Churcher
 tags: CSS-Modules, CSS, React, JavaScript, Component
 ---
