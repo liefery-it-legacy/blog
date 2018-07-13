@@ -38,7 +38,7 @@ It's all about providing the required context to work on a task with a tool in s
 
 We at Liefery have also made up our mind about the most efficient and enjoyable way of integrating external services into our custom workflow based on our specific requirements.
 
-At the core of a team developing software is the code itself. We host it on [GitHub](https://github.com/). Therefore we also review code there. Disclaimer: we decided for it before Microsoft acquired it - but might need to reevaluate now :wink:.
+At the core of a team developing software is the code itself. We host it on [GitHub](https://github.com/). Therefore we also review code there.
 
 Tickets help us to organize our work. We use [Jira](https://www.atlassian.com/software/jira) to assign people to and track the progress of bugfixes and features from idea to deployment.
 
