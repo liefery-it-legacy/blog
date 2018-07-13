@@ -3,7 +3,7 @@ layout: post
 title: "Ticket management doesn't need to be a hassle"
 date: 2018-07-12
 author: Jonas Hübotter
-tags: process tools
+tags: workflow process tools
 ---
 
 Teams grow, businesses grow. In great companies, individuals grow - and along
