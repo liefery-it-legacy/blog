@@ -10,10 +10,11 @@ Teams grow, businesses grow. In great companies, individuals grow - and along
 with them the work they're pursuing. While everything in a team changes and
 improves, there is something that is not so likely to change, not so likely to
 adapt to new challenges. More often than not, the workflow of a team remains
-the same. And while it probably was useful in the beginning, by now it became a
-hassle.
+the same. And while it probably was useful in the beginning, by now it has
+become a hassle. To make the workflow adhere to its goals - you have to make it
+disappear.
 
-When teams grow, proven systems quickly become a hurdle. The bigger a team 
+When teams grow, proven systems quickly become a hurdle. The bigger a team
 gets, the harder it becomes to keep everything in check. But it's not only your
 requirements that change. The tools you use are changing too. Some of them
 quicker than others. Don't stick with one, because you used it for a long time
@@ -69,24 +70,16 @@ with just a few defined tasks, it is likely that you ended up with at least two
 separate services on your list. The more complex and specific your requirements
 are, the quicker you ramp up this number of tools.
 
-To make the workflow adhere to his goals - making your and your teams work more
-efficient and enjoyable -, you have to make it disappear. At the very moment
-you've acquired a large bag of tools for to help you with your tasks. But while
-your tasks are intertwined, your tools are not. They have to become one thing.
-This does not mean that you have to build custom software to make these tools
-look like they're one. It is way simpler: for one specific task, you should
-only ever need to use the one exact tool, you found to be the best for this
-purpose.
+To optimize your workflow, you have to make it disappear. That is to say, the
+goal should be to integrate your tools and processes so smoothly with each
+other that your team barely even has to think about them. At the very moment
+you've acquired a large bag of tools to help you with your tasks. But while
+your tasks are intertwined, your tools are not.
 
-When the tools you use are great, and you don't have to switch between them
-every two minutes - work is enjoyable. Enjoyable workflows lead to great work.
-Bad workflows - not so much. Think about how dependent every business is on the
-systems it uses to assign and track work. Each and every little improvement to
-these systems can have a big impact.
-
-To transform your big bag of tools and services into an enjoyable and efficient
-workflow, you have to make each and every tool which is being used for a task
-feel like a continuation of the tool used for the previous task. Then
+For one specific task, you should only ever need to use the one exact tool, you
+defined to be the best for its purpose. To then transform your big bag of tools
+and services into an enjoyable and efficient workflow, you have to make each
+tool feel like a continuation of the tool used for the previous task. Then
 seamlessly hand over to the tool used for the next task.
 
 It's all about providing the required context to work on a task with a tool in
@@ -94,6 +87,12 @@ such a way that one does not need to switch to a different tool in between.
 I mean, you defined this tool to work best for the task at hand, why leave it?
 :smiley:. Forcing people into switching services just to work on one specific
 task is neither efficient nor enjoyable.
+
+When the tools you use are great, and you don't have to switch between them
+every two minutes - work is enjoyable. Enjoyable workflows lead to great work.
+Bad workflows - not so much. Think about how dependent every business is on the
+systems it uses to assign and track work. Each and every little improvement to
+these systems can have a big impact.
 
 ## Our workflow @ Liefery
 
