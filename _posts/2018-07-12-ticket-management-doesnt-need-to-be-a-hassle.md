@@ -113,29 +113,32 @@ There are also a number of other services we use every day: Jenkins, Slack
 ## Bridge the gap
 
 When you are using all of these external services and want to do so to your
-benefit - you got to make sure they work well with each other. This is
-especially true for GitHub and Jira. Because in reality code changes and the
+benefit - you've got to make sure they work well with each other. This is
+especially true for GitHub and Jira. Because in reality pull requests and the
 tickets they belong to are connected tightly, they should be equally connected
 within their tools.
 
-For that we use [Tickety-tick](https://github.com/bitcrowd/tickety-tick).
-Tickety-tick is a browser extension made by our friends at
-[Bitcrowd](https://bitcrowd.net/) which manages the naming of branches, commits
+We use [Tickety-Tick](https://github.com/bitcrowd/tickety-tick) to solve this problem.
+Tickety-Tick is a browser extension made by our friends at
+[Bitcrowd](https://bitcrowd.net/). It manages the naming of branches, commits
 and pull request titles in code depending on the ticket they belong to.
-Tickety-tick does not only recognize tickets from Jira. It also supports
+Tickety-Tick does not only recognize tickets from Jira. It also supports
 GitHub, [Trello](https://trello.com/), [GitLab](https://about.gitlab.com/) and
 [Pivotal Tracker](https://www.pivotaltracker.com/).
 
-While using Tickety-tick is a great way to reference Jira tickets from GitHub,
-it did not solve our problem of having to use both for just one task. GitHub
-depended on Jira and Jira depended on GitHub. If you used one, you had to use
-the other. When reviewing a pull request for example, you had to go look for
+While for us using Tickety-Tick was a great way to reference Jira tickets from
+GitHub, it did not solve our problem of having to use both for just one task.
+GitHub depended on Jira and Jira depended on GitHub. If we used one, we had to
+use the other. When reviewing a pull request for example, we had to go look for
 the original ticket in Jira to read the ticket description. When doing QA in
-Jira, one had to look at the pull request on GitHub to see if any requirements
-changed. Having two services be so tightly coupled can be a mess. But it does
-not have to be.
+Jira, we had to look at the pull request on GitHub to see if any requirements
+changed. It did not make our workflow "disappear". Instead it resulted in
+everyone playing the maniac game of
+who-can-have-more-browser-tabs-opened-at-once. Trust me, the game is more
+frightening than the name I gave it.
 
-That's why we created the
+Having two services be so tightly coupled can be a mess. But it does not have
+to be. That's why we created the
 [GitHub-Jira-Bot](https://github.com/liefery/github-jira-bot). The bot helps us
 in two ways: It moves relevant information from a Jira ticket into the pull
 request an GitHub. And it moves relevant information from GitHub back to Jira.
@@ -143,4 +146,5 @@ The goal being, to provide the right context in every tool to help solve the
 task at hand and to remove the need of switching to a different service.
 
 
-_How did your team solve the issue of creating a workflow that scales? Write us in the comments!_
+_How did your team solve the issue of creating a workflow that scales? Write us
+in the comments!_
