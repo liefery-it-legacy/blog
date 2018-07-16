@@ -1,27 +1,29 @@
 ---
 layout: default
 ---
-<div id="blog" class="container">
-  <div class="row">
-    <div class="page-content col-md-8">
-      <header class="post-header">
-        <h1 class="post-title">{{ page.title }}</h1>
-      </header>
+<header>
+	<a id="logo" href="/">{{page.title}}</a>
+</header>
 
-      <div class="post-list">
-        {% for post in site.posts %}
-          <article>
-            <p class="post-meta small">{{ post.date | date: "%b %-d, %Y" }}</span>
-            <h2>
-              <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-            </h2>
-            <p>{{ post.excerpt }}</p>
-            <hr>
-          </article>
-        {% endfor %}
-      </div>
-    </div>
+<main>
+	{% assign posts_slice = 3 %}
+	{% assign sliced_posts = "" | split: "/" %}
+	{% for post in site.posts %}
+	  {% assign reminder = forloop.index | modulo: posts_slice %}
+	  {% if reminder == 1 %}{% assign posts = "" | split: "/" %}{% endif %}
+	  {% assign posts = posts | push: post %}
+	  {% if reminder == 0 or forloop.last %}{% assign sliced_posts = sliced_posts | push: posts %}{% endif %}
+	{% endfor %}
 
-    {% include sidebar.html %}
-  </div>
-</div>
+  {% for posts in sliced_posts %}
+    <section id="page{{forloop.index}}">
+      {% for post in posts %}
+  	    <article>
+          {% if forloop.index == 0 %}<h1>{{post.title}}</h1>{% else %}<h3>{{post.title}}</h3>{% endif %}
+          <p>{{post.excerpt}}</p>
+          <p>{{post.author}} · {{post.date | date_to_string}}</p>
+  			</article>
+      {% endfor %}
+    </section>
+  {% endfor %}
+</main>

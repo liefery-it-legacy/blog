@@ -9,5 +9,3 @@ url: "http://engineering.liefery.com" # the base hostname & protocol for your si
 markdown: kramdown
 
 exclude: [CNAME, Guardfile, invoker.ini, Gemfile, Gemfile.lock, README.md]
-plugins:
-  - jemoji
