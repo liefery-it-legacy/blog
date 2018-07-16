@@ -2,15 +2,15 @@
 layout: default
 ---
 <header>
-	<a id="back">&lt;-</a>
-	<h2>{{page.title}}</h2>
-	<p>{{page.author}} · {{page.date | date_to_string}}</p>
+  <a id="back">&lt;-</a>
+  <h2>{{page.title}}</h2>
+  <p>{{page.author}} · {{page.date | date_to_string}}</p>
 </header>
 
 <main>
   <article>
-		<p>{{content}}</p>
-	</article>
+    <p>{{content}}</p>
+  </article>
 
   <section id="comments">
     {% include disqus.html %}

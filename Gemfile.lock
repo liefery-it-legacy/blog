@@ -301,6 +301,7 @@ DEPENDENCIES
   github-pages
   guard-livereload
   invoker
+  jemoji
   rake
 
 BUNDLED WITH
