@@ -1,8 +1,9 @@
 ---
 layout: post
-title:  "Our Favourite Podcasts"
-date:   2017-07-27
+title: "Our Favourite Podcasts"
+date: 2017-07-27
 categories: podcasts learning ruby
+excerpt: "We're often looking for ways to expand our knowledge, whether by reading a book, visiting a conference, or engaging in code reviews. A recent discussion ..."
 ---
 
 We're often looking for ways to expand our knowledge, whether by reading a book, visiting a conference, or engaging in code reviews. A recent discussion in our Slack channel last week revealed that many of us also listen to podcasts, and we couldn't think of a better inaugural engineering blogpost than to share that info with you.
@@ -48,4 +49,3 @@ So here are our picks. Let us know if you agree or suggest your own in the comme
 1. [Bits of Berlin](http://bitsofberlin.org/) - English
 
    Bits of Berlin is a podcast about anything loosely related to tech in Berlin. They invite panelists to dive into their topics of choice, and then chat with them about it, so you can learn about local projects like sending satellites into space, robots playing football and the "Freifunk". They also often gets in touch with initiatives for learning such as FrauenLoop and Rails Girls Summer of Code. Our very own Tam is one of the creators of this one!
-

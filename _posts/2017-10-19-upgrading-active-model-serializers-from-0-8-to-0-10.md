@@ -4,7 +4,9 @@ title: "Upgrading ActiveModelSerializers from 0.8 to 0.10"
 date: 2017-11-07
 author: Adam Niedzielski
 tags: ruby rails rubyonrails api json active_model_serializers
+excerpt: "This blog post presents our battle story from upgrading ActiveModelSerializers from version 0.8 to 0.10. Version 0.10 introduces significant changes in the library ..."
 ---
+
 This blog post presents our battle story from upgrading ActiveModelSerializers
 from version 0.8 to 0.10. Version 0.10 introduces significant changes in the
 library, including **backwards incompatible changes**. That's to be expected,

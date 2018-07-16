@@ -1,9 +1,10 @@
 ---
 layout: post
-title:  "We want to be your RGSoC coaching company!"
-date:   2018-02-12
+title: "We want to be your RGSoC coaching company!"
+date: 2018-02-12
 author: Tam Eastley and Adam Niedzielski
 tags: rails rubyonrails ruby rgsoc women summer code railsgirls
+excerpt: "Rails Girls Summer of Code (RGSoC) is a three month long program that aims to get more women and non-binary people into the world of open source by offering them a monthly stipend ..."
 ---
 
 [Rails Girls Summer of Code (RGSoC)](https://railsgirlssummerofcode.org) is a three month long program that aims to get more women and non-binary people into the world of open source by offering them a monthly stipend, a welcoming community, and experienced coaches.

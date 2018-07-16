@@ -4,6 +4,7 @@ title: "Overriding styles with CSS Modules: Where's my specificity? "
 date: 2018-06-27
 author: Ali Churcher
 tags: CSS-Modules, CSS, React, JavaScript, Component
+excerpt: "I'm a fan of CSS Modules. This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules ..."
 ---
 
 [menu]: /images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png
