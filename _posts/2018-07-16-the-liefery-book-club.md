@@ -13,7 +13,7 @@ And so, the Liefery Book Club was born.
 ### The rules of book club are simple:
 
 1. _Insert Fight Club Joke here_
-2. We meet Wednesdays at lunch. Everyone is busy after work an no one wants to stay longer than they have to. This way we avoid scheduling conflicts.
+2. We meet Wednesdays at lunch. Everyone is busy after work and no one wants to stay longer than they have to. This way we avoid scheduling conflicts.
 3. Book Club is entirely optional.
 4. Everyone should come armed with a few talking points. If someone hasn't read the agreed upon section and just want to hang out, that's fine too.
 5. Someone takes notes and pushes them to our GitHub repo.
