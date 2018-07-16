@@ -2,12 +2,12 @@
 layout: default
 ---
 <header>
-  <a id="back">&lt;-</a>
+  <a id="back" href="javascript:history.back();">&lt;-</a>
   <h2>{{page.title}}</h2>
   <p>{{page.author}} · {{page.date | date_to_string}}</p>
 </header>
 
-<main>
+<main id="post">
   <article>
     <p>{{content}}</p>
   </article>

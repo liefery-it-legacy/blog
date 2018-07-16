@@ -5,7 +5,7 @@ layout: default
   <a id="logo" href="/">{{page.title}}</a>
 </header>
 
-<main>
+<main id="blog">
   {% assign posts_slice = 3 %}
   {% assign sliced_posts = "" | split: "/" %}
   {% for post in site.posts %}
