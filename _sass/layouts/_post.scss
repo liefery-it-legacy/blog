@@ -6,6 +6,9 @@ main#post {
     background: map-get($palette, blue);
     color: map-get($palette, lightest);
     text-align: center;
+    a {
+      font-size: 2.5em;
+    }
     h2 {
       max-width: 900px;
       margin: 0 auto;
