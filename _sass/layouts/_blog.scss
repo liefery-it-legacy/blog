@@ -33,6 +33,11 @@ main#blog {
         margin: 0.5em 0 0.7em;
         font-size: 2.5em;
       }
+      &:first-child {
+        h3 {
+          margin-top: 0;
+        }
+      }
       p {
         font-size: 1.25em;
         &:last-child {
