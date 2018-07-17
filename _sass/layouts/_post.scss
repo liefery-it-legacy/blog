@@ -25,7 +25,7 @@ main#post {
   article {
     margin: 2em auto;
     max-width: 650px;
-    p {
+    p, ol, ul {
       font-family: georgia, serif;
       font-size: 1.45em;
     }
