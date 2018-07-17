@@ -1,3 +1,8 @@
 footer {
-  
+  background: map-get($palette, light);
+  @media screen and (min-width: map-get($breakpoints, small)) {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
 }
