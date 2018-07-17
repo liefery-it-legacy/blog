@@ -37,3 +37,25 @@ a {
     }
   }
 }
+
+code {
+  margin: 0 0.25em;
+  padding: 0.1em 0.3em;
+  background: map-get($palette, lighter);
+  border-radius: 2px;
+  font-size: 0.87em;
+  font-family: inconsolata, monospace;
+}
+
+pre {
+  margin: 1em 0;
+  padding: 0.5em 0.75em;
+  background: map-get($palette, lighter) !important;
+  border-radius: 2px;
+  font-size: 1.3em;
+  overflow: auto;
+  code {
+    margin: 0;
+    padding: 0;
+  }
+}

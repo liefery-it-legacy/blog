@@ -72,10 +72,12 @@ main#blog {
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       flex: 1;
       padding: 3.5em 3.25em;
       article {
         padding: 2em 0;
+        max-width: 750px;
         &:not(:last-of-type) {
           border-bottom: 1px solid map-get($palette, light);
         }

@@ -1,15 +1,15 @@
 ---
 layout: default
 ---
-<header>
-  <a id="back" href="javascript:history.back();">&lt;-</a>
-  <h2>{{page.title}}</h2>
-  <p>{% if page.author %}{{page.author}} · {% endif %}{{page.date | date_to_string}}</p>
-</header>
-
 <main id="post">
+  <header>
+    {% include back.html %}
+    <h2>{{page.title}}</h2>
+    <p class="copy">{% if page.author %}{{page.author}} · {% endif %}{{page.date | date_to_string}}</p>
+  </header>
+
   <article>
-    <p>{{content}}</p>
+    {{content}}
   </article>
 
   <section id="comments">

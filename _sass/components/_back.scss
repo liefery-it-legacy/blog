@@ -1,0 +1,16 @@
+#back {
+  position: absolute;
+  z-index: 1;
+  top: 3.5rem;
+  left: 3.25rem;
+  color: map-get($palette, lightest) !important;
+  font-size: 2.5em;
+  font-weight: bold;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out;
+  &:active, &:focus, &:hover {
+    color: inherit;
+    opacity: 1;
+  }
+}

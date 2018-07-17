@@ -1,0 +1,37 @@
+main#post {
+  display: flex;
+  flex-direction: column;
+  header {
+    padding: 3.5em 3.25em;
+    background: map-get($palette, blue);
+    color: map-get($palette, lightest);
+    text-align: center;
+    h2 {
+      max-width: 900px;
+      margin: 0 auto;
+      color: map-get($palette, lightest);
+      font-size: 4em;
+      font-weight: bold;
+    }
+    p {
+      margin-bottom: 0;
+      font-size: 1.25em;
+      opacity: 0.7;
+    }
+  }
+  article {
+    margin: 2em auto;
+    max-width: 650px;
+    p {
+      font-family: georgia, serif;
+      font-size: 1.35em;
+    }
+    pre, code {
+      max-width: 650px;
+    }
+  }
+  section#comments {
+    margin: 2em auto 4em;
+    width: 650px;
+  }
+}
