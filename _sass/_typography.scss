@@ -1,7 +1,39 @@
+p {
+  &.copy {
+    font-family: georgia, serif;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 1.75em 0 1em;
+  color: map-get($palette, darkest);
+  font-weight: 500;
+  line-height: 1.25em;
+}
+
 h1 {
   font-weight: bold;
 }
 
-h2, h3, h4, h5, h6 {
-  font-weight: 500;
+a {
+  color: inherit;
+  text-decoration: underline;
+  transition: color 0.2s ease-in-out;
+  &:active, &:focus, &:hover {
+    color: map-get($palette, blue);
+  }
+  &.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+  }
+  &.arrow {
+    font-size: 1.5em;
+    text-decoration: none;
+    transition: opacity 0.2s ease-in-out;
+    &:active, &:focus, &:hover {
+      color: inherit;
+      opacity: 0.5;
+    }
+  }
 }

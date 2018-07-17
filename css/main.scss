@@ -11,14 +11,18 @@
   "emoji",
   "syntax-highlighting",
   "components/footer",
+  "components/logo",
   "layouts/blog"
 ;
 
 body {
   margin: 0;
   padding: 0;
+  color: map-get($palette, dark);
+  font-size: 14px;
   font-family: inter-ui, sans-serif;
-  font-feature-settings: "calt", "tnum", "zero", "ss01", "case";
+  font-weight: normal;
+  line-height: 2.35em;
 }
 
 * {
