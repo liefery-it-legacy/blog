@@ -82,6 +82,6 @@ pre {
   }
 }
 
-img {
+img:not(.emoji) {
   border-radius: 2px;
 }

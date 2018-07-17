@@ -14,7 +14,10 @@ footer {
     margin-bottom: 0;
     font-size: 1.125em;
     &#copyright {
-      color: map-get($palette, darkgrey)
+      color: map-get($palette, darkgrey);
+      @media screen and (max-width: map-get($breakpoints, small)) {
+        margin-top: 2em;
+      }
     }
     a {
       &:not(:last-child) {
