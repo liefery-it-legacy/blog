@@ -1,6 +1,8 @@
 main#blog {
-  height: 100vh;
   display: flex;
+  @media screen and (min-width: map-get($breakpoints, large)) {
+    height: 100vh;
+  }
   & > section {
     display: none;
     &:target {
@@ -51,9 +53,12 @@ main#blog {
       justify-content: flex-end;
       flex: 1;
       position: relative;
-      padding: 3.5em 3.25em 8em;
+      padding: 12em 3.25em 8em;
       color: map-get($palette, lightest);
       background: map-get($palette, blue);
+      @media screen and (min-width: map-get($breakpoints, large)) {
+        padding-top: 3.5em;
+      }
       h3, p {
         color: map-get($palette, lightest) !important;
       }
@@ -76,19 +81,25 @@ main#blog {
     & > section {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       flex: 1;
       padding: 3.5em 3.25em;
+      overflow-y: auto;
       article {
         padding: 2em 0;
         max-width: 750px;
+        &:first-child {
+          padding-top: 0;
+        }
         &:not(:last-of-type) {
           border-bottom: 1px solid map-get($palette, light);
         }
       }
       nav {
         text-align: center;
+        @media screen and (min-width: map-get($breakpoints, large)) {
+          padding-bottom: 4em;
+        }
         a {
           color: map-get($palette, lightgrey);
           &:not(:last-child) {
