@@ -53,9 +53,12 @@ main#blog {
       justify-content: flex-end;
       flex: 1;
       position: relative;
-      padding: 12em 3.25em 8em;
+      padding: 11em 3.25em 8em;
       color: map-get($palette, lightest);
       background: map-get($palette, blue);
+      @media screen and (min-width: map-get($breakpoints, small)) {
+        padding-top: 12em;
+      }
       @media screen and (min-width: map-get($breakpoints, large)) {
         padding-top: 3.5em;
       }
@@ -64,8 +67,11 @@ main#blog {
       }
       h3 {
         margin-bottom: 0.35em;
-        font-size: 4.5em;
+        font-size: 3.5em;
         font-weight: bold;
+        @media screen and (min-width: map-get($breakpoints, small)) {
+          font-size: 4.5em;
+        }
       }
       p {
         font-size: 1.5em;
