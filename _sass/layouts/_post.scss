@@ -37,12 +37,12 @@ main#post {
       width: 650px;
       max-width: 100%;
     }
-    ol, ul {
-      max-width: calc(100% - 2em);
-    }
-    p, ol, ul {
+    & > p, ol, ul {
       font-family: georgia, serif;
       font-size: 1.45em;
+    }
+    ol, ul {
+      max-width: calc(100% - 2em);
     }
     img:not(.emoji) {
       width: 100%;

@@ -49,6 +49,6 @@ The week before we finished *99 Bottles of OOP* we started thinking about the ne
 
 We didn't love *99 Bottles of OOP*, but so far, book club is going well, and we're eager to get started on the next one. As Metz and Owen say in their book: "Have faith, and iterate." :smile:
 
-<br><br><br>
+<br>
 
 \* Lean back and squint. You should still be able to see your code but not be able to read it. Look for changes in shape and colour. Changes in shape mean multiple execution paths which make the code hard to read. If lots of your methods have the "if/else" pattern, they're a good candidate for abstraction. Changes in colour represent different levels of abstraction which can also make the code hard to understand.
