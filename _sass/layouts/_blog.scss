@@ -88,6 +88,9 @@ main#blog {
       flex: 1;
       padding: 3.5em 3.25em;
       overflow-y: auto;
+      @media screen and (min-width: map-get($breakpoints, large)) {
+        justify-content: center;
+      }
       article {
         padding: 2em 0;
         max-width: 750px;
@@ -100,9 +103,6 @@ main#blog {
       }
       nav {
         text-align: center;
-        @media screen and (min-width: map-get($breakpoints, large)) {
-          padding-bottom: 4em;
-        }
         a {
           color: map-get($palette, lightgrey);
           &:not(:last-child) {
