@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "Ticket management doesn't need to be a hassle"
+title: "To make the workflow adhere to its goals, you have to make it
+disappear"
 date: 2018-07-12
 author: Jonas Hübotter
 tags: workflow process tools
@@ -85,7 +86,7 @@ seamlessly hand over to the tool used for the next task.
 It's all about providing the required context to work on a task with a tool in
 such a way that one does not need to switch to a different tool in between.
 I mean, you defined this tool to work best for the task at hand, why leave it?
-:smiley:. Forcing people into switching services just to work on one specific
+:smile:. Forcing people into switching services just to work on one specific
 task is neither efficient nor enjoyable.
 
 When the tools you use are great, and you don't have to switch between them
@@ -101,7 +102,9 @@ way of integrating external services into our custom workflow based on our
 specific requirements.
 
 At the core of a team developing software is the code itself. We host it on
-[GitHub](https://github.com/). Therefore we also review code there.
+[GitHub](https://github.com/). Therefore we also
+[review code](https://engineering.liefery.com/2018/02/21/how-we-do-code-reviews)
+there.
 
 Tickets help us to organize our work. We use
 [Jira](https://www.atlassian.com/software/jira) to assign people to and track
