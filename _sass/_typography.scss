@@ -1,6 +1,6 @@
 p {
   &.copy {
-    font-family: georgia, serif;
+    font-family: "Georgia", serif;
   }
 }
 
@@ -65,7 +65,7 @@ code {
   background: map-get($palette, lighter);
   border-radius: 2px;
   font-size: 0.87em;
-  font-family: inconsolata, monospace;
+  font-family: "Inconsolata", monospace;
 }
 
 pre {
