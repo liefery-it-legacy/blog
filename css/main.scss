@@ -3,45 +3,31 @@
 ---
 @charset "utf-8";
 
+@import url("https://rsms.me/inter/inter-ui.css");
+@import url("https://fonts.googleapis.com/css?family=Inconsolata:400,700");
+
 @import
-        "bootstrap-overrides",
-        "bootstrap/bootstrap",
-        "sidebar",
-        "blog",
-        "syntax-highlighting"
+  "variables",
+  "typography",
+  "emoji",
+  "syntax-highlighting",
+  "components/back",
+  "components/footer",
+  "components/logo",
+  "layouts/blog",
+  "layouts/post"
 ;
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800);
-
-h1{
-  text-transform: uppercase;
+body {
+  margin: 0;
+  padding: 0;
+  color: map-get($palette, dark);
+  font-size: 12.6px;
+  font-family: "Inter UI", sans-serif;
+  font-weight: normal;
+  line-height: 2.5em;
 }
 
-header {
-  .navbar {
-    font-weight: 800;
-    margin-bottom: 0px;
-  }
-}
-
-footer#page_footer {
-  margin-top: 50px;
-  color: #767676;
-}
-
-#hero{
-  background-image: url(/images/banner.jpg);
-  height: 300px;
-  background-size: cover;
-  box-shadow: inset 0px 0 5px rgba(0,0,0,.5);
-  margin-bottom: 20px;
-}
-
-#disqus_thread {
-  margin-top: 40px;
-}
-
-.dev-tools-image {
-  padding: 1em;
-  border: 1px solid black;
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

@@ -1,27 +1,47 @@
 ---
 layout: default
 ---
-<div id="blog" class="container">
-  <div class="row">
-    <div class="page-content col-md-8">
-      <header class="post-header">
-        <h1 class="post-title">{{ page.title }}</h1>
-      </header>
+<header>
+  {% include logo.html %}
+</header>
 
-      <div class="post-list">
-        {% for post in site.posts %}
-          <article>
-            <p class="post-meta small">{{ post.date | date: "%b %-d, %Y" }}</span>
-            <h2>
-              <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-            </h2>
-            <p>{{ post.excerpt }}</p>
-            <hr>
-          </article>
-        {% endfor %}
-      </div>
-    </div>
+<main id="blog">
+  {% assign posts_slice = 3 %}
+  {% assign sliced_posts = "" | split: "/" %}
+  {% for post in site.posts %}
+    {% assign reminder = forloop.index | modulo: posts_slice %}
+    {% if reminder == 1 %}{% assign posts = "" | split: "/" %}{% endif %}
+    {% assign posts = posts | push: post %}
+    {% if reminder == 0 or forloop.last %}{% assign sliced_posts = sliced_posts | push: posts %}{% endif %}
+  {% endfor %}
 
-    {% include sidebar.html %}
-  </div>
-</div>
+  {% assign pages_count = sliced_posts | size %}
+  {% for posts in sliced_posts %}
+    <section id="page{{forloop.index}}">
+      {% assign page_index = forloop.index %}
+      {% assign posts_count = posts | size %}
+      {% for post in posts %}
+        {% if forloop.index == 2 %}<section>{% endif %}
+        <article>
+          <a href="{{ post.url | prepend: site.baseurl }}">
+            <h3>{{post.title}}</h3>
+            <p class="copy">{{post.excerpt}}</p>
+            <p class="copy">{% if post.author %}{{post.author}} · {% endif %}{{post.date | date_to_string}}</p>
+          </a>
+          <a class="arrow" href="{{ post.url | prepend: site.baseurl }}">Read -&gt;</a>
+        </article>
+        {% if posts_count == 2 or forloop.index == 3 %}
+          {% if forloop.index == 2 or forloop.index == 3 %}
+            {% assign newer = page_index | minus: 1 %}
+            {% assign older = page_index | plus: 1 %}
+            <nav>
+              <a class="arrow {% if newer == 0 %}disabled{% endif %}" href="#page{{newer}}">&lt;- Newer</a>
+              <a class="arrow {% if older > pages_count %}disabled{% endif %}" href="#page{{older}}">Older -&gt;</a>
+            </nav>
+            </section>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </section>
+  {% endfor %}
+</main>

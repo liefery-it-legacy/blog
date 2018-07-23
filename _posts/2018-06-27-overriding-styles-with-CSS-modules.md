@@ -4,7 +4,9 @@ title: "Overriding styles with CSS Modules: Where's my specificity? "
 date: 2018-06-27
 author: Ali Churcher
 tags: CSS-Modules, CSS, React, JavaScript, Component
+excerpt: "I'm a fan of CSS Modules. This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules ..."
 ---
+
 [menu]: /images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png
 [menu-separated]: /images/posts/overriding-styles-with-CSS-modules/menu-separated.png
 I'm a fan of [CSS Modules](https://github.com/css-modules/css-modules). This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules, for fear of unexpected style changes in murky corners of your application. No longer do you have to implement complex CSS naming schemes that are slowly forgotten or implemented inconsistently.

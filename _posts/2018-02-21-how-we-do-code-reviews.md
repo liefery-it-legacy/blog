@@ -4,6 +4,7 @@ title: "How we do code reviews"
 date: 2018-02-21
 author: Adam Niedzielski
 tags: quality review process codereview
+excerpt: "Code review is an essential software development practice that we use at Liefery. It's so central to how we work that I cannot even imagine my day at work without it. In this blog post ..."
 ---
 
 Code review is an essential software development practice that we use at

@@ -4,6 +4,7 @@ title: "The Liefery Book Club"
 date: 2018-07-16
 author: Tam Eastley
 tags: book, club, reading, 99 bottles, oop
+excerpt: "A few months ago, I mentioned in one of our Slack channels that I wanted to read 99 Bottles of OOP by Sandi Metz and Katrina Owen. One of my colleagues said that he wanted to read it as well ..."
 ---
 
 A few months ago, I mentioned in one of our Slack channels that I wanted to read [*99 Bottles of OOP* by Sandi Metz and Katrina Owen](https://www.sandimetz.com/99bottles). One of my colleagues said that he wanted to read it as well. "We should start a book club!" I typed eagerly. He reacted with a :+1:.
@@ -48,6 +49,6 @@ The week before we finished *99 Bottles of OOP* we started thinking about the ne
 
 We didn't love *99 Bottles of OOP*, but so far, book club is going well, and we're eager to get started on the next one. As Metz and Owen say in their book: "Have faith, and iterate." :smile:
 
-<br><br><br>
+<br>
 
 \* Lean back and squint. You should still be able to see your code but not be able to read it. Look for changes in shape and colour. Changes in shape mean multiple execution paths which make the code hard to read. If lots of your methods have the "if/else" pattern, they're a good candidate for abstraction. Changes in colour represent different levels of abstraction which can also make the code hard to understand.

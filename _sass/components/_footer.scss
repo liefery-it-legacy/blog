@@ -1,0 +1,28 @@
+footer {
+  padding: 3em 3.25em;
+  background: map-get($palette, light);
+  @media screen and (min-width: map-get($breakpoints, small)) {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  h3 {
+    margin: 0;
+    font-size: 1.75em;
+  }
+  p {
+    margin-bottom: 0;
+    font-size: 1.125em;
+    &#copyright {
+      color: map-get($palette, darkgrey);
+      @media screen and (max-width: map-get($breakpoints, small)) {
+        margin-top: 2em;
+      }
+    }
+    a {
+      &:not(:last-child) {
+        margin-right: 1em;
+      }
+    }
+  }
+}
