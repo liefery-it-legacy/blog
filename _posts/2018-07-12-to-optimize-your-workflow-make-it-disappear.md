@@ -1,11 +1,16 @@
 ---
 layout: post
-title: "To make the workflow adhere to its goals, you have to make it
+title: "To optimize your workflow, make it
 disappear"
 date: 2018-07-12
 author: Jonas Hübotter
 tags: workflow process tools
 ---
+
+[ticket-jira]: /images/posts/to-optimize-your-workflow-make-it-disappear/ticket-jira.png
+[ticket-github]: /images/posts/to-optimize-your-workflow-make-it-disappear/ticket-github.png
+[qa-comment-github]: /images/posts/to-optimize-your-workflow-make-it-disappear/qa-comment-github.png
+[qa-comment-jira]: /images/posts/to-optimize-your-workflow-make-it-disappear/qa-comment-jira.png
 
 Teams grow, businesses grow. In great companies, individuals grow - and along
 with them the work they're pursuing. While everything in a team changes and
@@ -77,15 +82,9 @@ other that your team barely even has to think about them. At the very moment
 you've acquired a large bag of tools to help you with your tasks. But while
 your tasks are intertwined, your tools are not.
 
-For one specific task, you should only ever need to use the one exact tool, you
-defined to be the best for its purpose. To then transform your big bag of tools
-and services into an enjoyable and efficient workflow, you have to make each
-tool feel like a continuation of the tool used for the previous task. Then
-seamlessly hand over to the tool used for the next task.
-
-It's all about providing the required context to work on a task with a tool in
-such a way that one does not need to switch to a different tool in between.
-I mean, you defined this tool to work best for the task at hand, why leave it?
+It is the responsibility of the workflow to provide the required context to work
+on a task with one tool so that you do not need to switch to a different tool in
+between. I mean, you defined this tool to work best for the task at hand, why leave it?
 :smile:. Forcing people into switching services just to work on one specific
 task is neither efficient nor enjoyable.
 
@@ -95,7 +94,7 @@ Bad workflows - not so much. Think about how dependent every business is on the
 systems it uses to assign and track work. Each and every little improvement to
 these systems can have a big impact.
 
-## Our workflow @ Liefery
+## Our tools @ Liefery
 
 We at Liefery have also made up our mind about the most efficient and enjoyable
 way of integrating external services into our custom workflow based on our
@@ -107,7 +106,7 @@ At the core of a team developing software is the code itself. We host it on
 there.
 
 Tickets help us to organize our work. We use
-[Jira](https://www.atlassian.com/software/jira) to assign people to and track
+[Jira](https://www.atlassian.com/software/jira) to pick tasks to and track
 the progress of bugfixes and features from idea to deployment.
 
 There are also a number of other services we use every day: Jenkins, Slack
@@ -121,13 +120,14 @@ especially true for GitHub and Jira. Because in reality pull requests and the
 tickets they belong to are connected tightly, they should be equally connected
 within their tools.
 
-We use [Tickety-Tick](https://github.com/bitcrowd/tickety-tick) to solve this problem.
-Tickety-Tick is a browser extension made by our friends at
+We use [Tickety-Tick](https://github.com/bitcrowd/tickety-tick) to solve this
+problem. Tickety-Tick is a browser extension made by our friends at
 [Bitcrowd](https://bitcrowd.net/). It manages the naming of branches, commits
-and pull request titles in code depending on the ticket they belong to.
-Tickety-Tick does not only recognize tickets from Jira. It also supports
-GitHub, [Trello](https://trello.com/), [GitLab](https://about.gitlab.com/) and
-[Pivotal Tracker](https://www.pivotaltracker.com/).
+and pull request titles in code depending on the ticket they belong to. We use
+Tickety-Tick in such a way that every commit on our `master` branch is linked to
+a specific Jira ticket. We squash and rebase every pull request because then the
+name of a commit provides the necessary business context to explain written
+code.
 
 While for us using Tickety-Tick was a great way to reference Jira tickets from
 GitHub, it did not solve our problem of having to use both for just one task.
@@ -147,6 +147,55 @@ in two ways: It moves relevant information from a Jira ticket into the pull
 request an GitHub. And it moves relevant information from GitHub back to Jira.
 The goal being, to provide the right context in every tool to help solve the
 task at hand and to remove the need of switching to a different service.
+
+We also use a couple of Jira's other GitHub integrations to improve our
+workflow. To move tickets around in our agile board. From `In progress` to
+`Ready for review` and from thereon to `On master`.
+
+## Our workflow
+
+So how does our workflow exactly help us in being more effective tackling our tasks?
+Let's say someone on our team has created a new ticket to Jira. `Add more kitten
+pictures` it says. When I see this, I cannot resist to implement it - so I start
+my progress.
+
+![Jira ticket][ticket-jira]
+
+I use Tickety-Tick to copy a Git command for creating a new branch and a first
+commit to my clipboard. I then paste it into the command line. Now let's get to
+the real work I mumble.
+
+When that is done, I just amend my changes to the pre-made commit.
+
+```
+$ git commit --amend --no-edit
+```
+
+Then I push to GitHub:
+
+```
+$ git push origin HEAD
+```
+
+In GitHub's UI I now create the pull request. I don't have to describe the
+ticket requirements though as bot handles this. After I created the pull
+request, it immediately adds all the required information with a comment.
+
+![Jira ticket description in the pull request on GitHub][ticket-github]
+
+Usually what follows immediately is a lengthy discussion about the
+implementation. But after a pull request has been merged, quality assurance just
+begins. To assist QA, you can add a comment to GitHub saying something like:
+
+![QA comment][qa-comment-github]
+
+The bot transfers the comment to Jira so that QA never has to look at the actual
+code on GitHub.
+
+![QA comment in the Jira ticket][qa-comment-jira]
+
+So that is it. While our code has not been deployed yet, it has been written,
+discussed and battle-tested. And our workflow assisted with all of these tasks.
 
 
 _How did your team solve the issue of creating a workflow that scales? Write us
