@@ -1,10 +1,14 @@
 footer {
-  padding: 3em 3.25em;
+  padding: 3em 0;
   background: map-get($palette, light);
-  @media screen and (min-width: map-get($breakpoints, small)) {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+  & > div {
+    width: 85%;
+    margin: 0 auto;
+    @media screen and (min-width: map-get($breakpoints, small)) {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
   }
   h3 {
     margin: 0;
