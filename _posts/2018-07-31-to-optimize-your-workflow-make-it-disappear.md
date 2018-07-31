@@ -20,7 +20,7 @@ outcome of our work.
 
 We at Liefery have made up our mind about the most efficient and enjoyable
 way of integrating external services into our custom workflow based on our
-specific requirements
+specific requirements.
 
 First some background on our tools.
 
@@ -44,11 +44,11 @@ especially true for GitHub and Jira. Because in reality pull requests and the
 tickets they belong to are connected tightly, they should be equally connected
 within their tools.
 
-It is the responsibility of the workflow to provide the required context to
-on a task with one tool so that you do not need to switch to a different tool in
-between. I mean, you defined this tool to work best for the task at hand, why
-leave it? :smile:. Forcing people into switching services just to work on one
-specific task is neither efficient nor enjoyable.
+It is the workflow's responsibility to provide the required context to
+the tool which is used for a task so that you do not need to switch to a
+different tool in between. I mean, you defined this tool to work best for the
+task at hand, why leave it? :smile:. Forcing people into switching services just
+to work on one specific task is neither efficient nor enjoyable.
 
 We use [Tickety-Tick](https://github.com/bitcrowd/tickety-tick) to solve this
 problem. Tickety-Tick is a browser extension made by our friends at
@@ -79,7 +79,7 @@ The goal being, to provide the right context in every tool to help solve the
 task at hand and to remove the need of switching to a different service.
 
 We also use a couple of Jira's other GitHub integrations to improve our
-workflow. To move tickets around in our agile board. From `In progress` to
+workflow. Tickets move around our agile board from `In progress`, to
 `Ready for review` and from thereon to `On master`.
 
 ## Our workflow
@@ -108,7 +108,7 @@ $ git push origin HEAD
 ```
 
 In GitHub's UI I now create the pull request. I don't have to describe the
-ticket requirements though as bot handles this. After I created the pull
+ticket requirements though as the bot handles this. After I created the pull
 request, it immediately adds all the required information with a comment.
 
 ![Jira ticket description in the pull request on GitHub][ticket-github]
