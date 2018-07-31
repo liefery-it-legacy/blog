@@ -22,10 +22,10 @@ We at Liefery have made up our mind about the most efficient and enjoyable
 way of integrating external services into our custom workflow based on our
 specific requirements.
 
-First some background on our tools.
+First, some background on our tools.
 
 At the core of a team developing software is the code itself. We host it on
-[GitHub](https://github.com/). Therefore we also
+[GitHub](https://github.com/). Therefore, we also
 [review code](https://engineering.liefery.com/2018/02/21/how-we-do-code-reviews)
 there.
 
@@ -39,10 +39,10 @@ There are also a number of other services we use every day: Jenkins, Slack
 ## Bridge the tool-gap
 
 When you are using all of these external services and want to do so to your
-benefit - you've got to make sure they work well with each other. This is
+benefit, you've got to make sure they work well with each other. This is
 especially true for GitHub and Jira. Because in reality pull requests and the
-tickets they belong to are connected tightly, they should be equally connected
-within their tools.
+tickets they belong to are connected tightly, so they should be equally
+connected within their tools.
 
 It is the workflow's responsibility to provide the required context to
 the tool which is used for a task so that you do not need to switch to a
@@ -75,12 +75,12 @@ to be. That's why we created the
 [GitHub-Jira-Bot](https://github.com/liefery/github-jira-bot). The bot helps us
 in two ways: It moves relevant information from a Jira ticket into the pull
 request an GitHub. And it moves relevant information from GitHub back to Jira.
-The goal being, to provide the right context in every tool to help solve the
+The goal being to provide the right context in every tool to help solve the
 task at hand and to remove the need of switching to a different service.
 
 We also use a couple of Jira's other GitHub integrations to improve our
-workflow. Tickets move around our agile board from `In progress`, to
-`Ready for review` and from thereon to `On master`.
+workflow. Tickets move around our agile board from `In progress` to
+`Ready for review`, and from there to `On master`.
 
 ## Our workflow
 
@@ -108,7 +108,7 @@ $ git push origin HEAD
 ```
 
 In GitHub's UI I now create the pull request. I don't have to describe the
-ticket requirements though as the bot handles this. After I created the pull
+ticket requirements, though, as the bot handles this. After I create the pull
 request, it immediately adds all the required information with a comment.
 
 ![Jira ticket description in the pull request on GitHub][ticket-github]
