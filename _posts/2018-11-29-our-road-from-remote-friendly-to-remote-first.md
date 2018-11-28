@@ -149,7 +149,7 @@ So how do I **define remote-first**?
 people that all work from different locations.​ Sometimes people come to the office
 to hang out with each other, but our processes don’t depend on it​.
 
-During my professional work I noticed that the communication in fully colocated
+During my professional work I noticed that the communication in fully co-located
 teams works well and that the communication in fully remote teams also works well.
 **What doesn't work are the solutions in the middle** - like our remote-friendly
 approach. In this model remote people are being left out. By switching to
