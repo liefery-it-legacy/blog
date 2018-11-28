@@ -231,7 +231,7 @@ a bit annoying and requires getting used to.
 ### Reviewing the experiment
 
 After some time we reviewed the transition to remote-first again. As nobody
-expressed concerns that the new approach was worse than the old one - we decided
+expressed concerns that the new approach was worse than the old one we decided
 to stay remote-first. The transition was finished by updating our team handbook.
 
 It took us about a year to move from remote-friendly to remote-first. The last two
