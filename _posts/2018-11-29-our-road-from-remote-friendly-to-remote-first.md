@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Our road from remote-friendly to remote-first"
-date: 2018-11-26
+date: 2018-11-29
 author: Adam Niedzielski
 tags: remote remote-first remote-friendly fully-remote
 excerpt: "When I joined Liefery the IT team was remote-friendly. Today it's
@@ -63,9 +63,10 @@ I started by gathering my thoughts and writing them down. This resulted in a [bl
 post on my personal blog - "Make your meetings more async"](https://blog.sundaycoding.com/blog/2017/08/27/make-your-meetings-more-async/).
 I encourage you to read it, but the key points are:
 
-1. Create a live editable agenda
+1. Create a live editable agenda and share the document as early as possible
 2. Invite many people, but make the participation optional
-3. Find time that works for most people, but don't strive to find a time that works for everybody. It's really hard when the team is bigger.
+3. Find time that works for most people, but don't strive to find time that works
+   for everybody. It's really hard when the team is bigger.
 4. Record the meeting
 5. Start the meeting on time.
 6. Follow the order in the agenda.
@@ -143,9 +144,9 @@ We continued like that for a while until I decided to bring up the topic during
 our weekly retrospective again. I expressed my wish to improve the remote
 communication further. As an action item from that meeting I volontueered to
 prepare a presentation. I called this presentation "Remote-first vision", because
-I was thinking about it as something we could do, but I expected some push back in
-the team, so I didn't want to start the discussion immediately, but rather present
-the whole idea.
+I was thinking about it as a big change to do and I expected some push back in
+the team. I wanted to present the complete idea without immediately jumping to
+implementation details.
 
 So how do I **define remote-first**?
 
@@ -224,8 +225,9 @@ My colleagues were reporting that participating in meetings when working from ho
 is way better than it was before. Because of this positive feedback we forgot
 about our two weeks timebox and continued with the remote-first approach.
 
-In the meantime we had a meeting where we explored more advanced capabilities
-of Zoom together - for example how to use the whiteboard when presenting. Most importantly, we learned how to use the "Raise hand" feature for signaling that you
+In the meantime we had a meeting where we explored together more advanced
+capabilities of Zoom - for example how to use the whiteboard when presenting. Most
+importantly, we learned how to use the "Raise hand" feature for signaling that you
 want to speak. Apparently only the meeting host can see the raised hands which is
 a bit annoying and requires getting used to.
 
@@ -237,7 +239,7 @@ to stay remote-first. The transition was finished by updating our team handbook.
 
 It took us about a year to move from remote-friendly to remote-first. The last two
 and a half months were the most intensive - that's the time between the
-"Remote-first vision" presentation and documenting the new approach.
+"Remote-first vision" presentation and committing to the new approach.
 
 ### The future
 
@@ -245,5 +247,5 @@ Now we are looking forward to see how the remote-first way influences our team
 culture in the long term. It also opens a lot of future opportunities for our team.
 
 I'm typing this blog post from Melbourne in Australia. Thanks to the remote-first
-approach communication with the rest of the team works as smoothly as if I was
+approach the communication with the rest of the team works as smoothly as if I was
 sitting in our office in Berlin. The biggest difference is the temperature.
