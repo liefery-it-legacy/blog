@@ -202,7 +202,9 @@ We discussed possible video conference tools and decided to go with with Zoom,
 that I knew from GitLab. Zoom is able to handle a call with 100 participants
 maintaining excellent quality (I'm impressed to this day) and has automatic effortless recording.
 
-We also decided to order dedicated headsets for everyone who needed one.
+We agreed that a stable internet connection is a requirement for working remotely,
+so that a video call is possible at any time. We also decided to order dedicated
+headsets for everyone who needed one.
 
 ### Awkward at the beginning
 
