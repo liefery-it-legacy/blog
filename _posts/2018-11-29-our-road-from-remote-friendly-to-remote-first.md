@@ -241,8 +241,11 @@ and a half months were the most intensive - that's the time between the
 ### The future
 
 Now we are looking forward to see how the remote-first way influences our team
-culture in the long term. It also opens a lot of future opportunities for our team.
+culture in the long term. We are a remote-first team, but we are not fully-remote.
+Currently (November 2018) all our full-time employees live in Berlin and regularly
+come to the office.
 
+That said, remote-first already opened a lot of opportunities for our team.
 I'm typing this blog post from Melbourne in Australia. Thanks to the remote-first
 approach the communication with the rest of the team works as smoothly as if I was
 sitting in our office in Berlin. The biggest difference is the temperature.
