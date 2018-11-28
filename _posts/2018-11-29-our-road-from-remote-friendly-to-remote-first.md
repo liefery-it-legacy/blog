@@ -9,10 +9,9 @@ remote-first. Read on to learn the difference and how all this happened."
 ---
 
 When I joined Liefery the IT team was remote-friendly. What do I mean here by
-"remote-friendly"? Let me explain. People were allowed to work remotely one day
-of the week on average. Some of my colleagues were working from home more often
-(2-3 days in certain weeks) and it was not uncommon that somebody travels for 2
-weeks and works remotely during that time.
+"remote-friendly"? Let me explain. People were allowed to work remotely every now
+and then and it was not uncommon that somebody travels and works remotely during
+that time.
 
 ### Remote work as something special
 
@@ -44,20 +43,15 @@ colleagues physically present in the office, because they will have to take the
 workload from you. This in turn pushes more and more people to retreat into the
 communication black hole.
 
-### Fix real problems
-
 > If your reason for working remotely is that you can't focus in the office then
 your office setup is wrong and your communication patterns in the team are broken.
 (**me**)
 
-Escaping into remote work is not going to solve your problems if your
-communication patterns are broken.
-
 ### Learning from others
 
 Having worked at a remote-only company before, I knew how effective remote work
-could be. I decided to use this experience to improve how remote work looks like
-at Liefery.
+could be. I decided to use this experience to improve how we work remotely at
+Liefery.
 
 I started by gathering my thoughts and writing them down. This resulted in a [blog
 post on my personal blog - "Make your meetings more async"](https://blog.sundaycoding.com/blog/2017/08/27/make-your-meetings-more-async/).
@@ -79,37 +73,38 @@ in the team and decided to include the above points in our team handbook (which
 we call "Don't panic"). We also added some important points aiming to improve the
 communication in general:
 
-1. "If you have a question and you are 95% sure that person A can answer it, don't
+1. If you have a question and you are 95% sure that person A can answer it, don't
 reach out to this person directly. Instead formulate your question on Slack, in
 the shared channel and mention person A. It is possible that some other people
 will be able to answer the question as well. It is also likely that some other
-people will be interested in knowing the answer for the question."
-2. "If you have a question that should not be posted in a shared channel, please
+people will be interested in knowing the answer.
+2. If you have a question that should not be posted in a shared channel, please
 consider sending a Slack direct message first, instead of going to the desk of
-your coworker and asking. This allows them to respond at the time convenient to
+your coworker and asking. This allows them to respond at a time convenient to
 them, without interrupting their flow. When deciding whether to send a Slack
-message or ask directly, take into account how urgent your question is."
-3. "If you want to propose changes in the existing company processes or general
+message or ask directly, take into account how urgent your question is.
+3. If you want to propose changes in the existing company processes or general
 code techniques, open a pull request that documents the changed situation. Other
-team members can then leave comments at the time convenient to them. If there is a
+team members can then leave comments at a time convenient to them. If there is a
 general agreement, the PR can be merged. If not, it is time for a meeting. Do not
 default to scheduling a meeting, start with an asynchronous discussion in a PR
-first."
-4. "If you go back and forth with somebody in a chat conversation or during the
+first.
+4. If you go back and forth with somebody in a chat conversation or during the
 code review, talk with them offline (when both of you are in the office) or start
 a video call (when one of you is not in the office). Rule of thumb: if you have
-gone back and forth 3 times, it's time for synchronous communication."
-5. "When working remotely make it clear to your co-workers that you're starting
+gone back and forth 3 times, it's time for synchronous communication.
+5. When working remotely make it clear to your co-workers that you're starting
 your work day - for example say "Hi" on Slack. It's fine to turn off notifications
 for some time to focus on a task, but be sure to check them a few times during the
 day. Let other team members know that you are available for help by posting it
-explicitly on Slack from time to time."
+explicitly on Slack from time to time.
 
 ### ...and first results
 
 Of course, just documenting the principles won't change the behaviour of the team.
 Every change is a process and this process requires time and reminders. But at
-least we had a shared understanding how we want to work and a goal to strive to.
+least we had a shared understanding how we want to work and a goal to strive
+towards.
 
 The communication patterns in the team started to change slowly and we also
 changed our office space to a bigger one, which reduced the distractions. We were
@@ -142,7 +137,7 @@ citizens.**
 
 We continued like that for a while until I decided to bring up the topic during
 our weekly retrospective again. I expressed my wish to improve the remote
-communication further. As an action item from that meeting I volontueered to
+communication further. As an action item from that meeting I volunteered to
 prepare a presentation. I called this presentation "Remote-first vision", because
 I was thinking about it as a big change to do and I expected some push back in
 the team. I wanted to present the complete idea without immediately jumping to
@@ -207,12 +202,11 @@ We discussed possible video conference tools and decided to go with with Zoom,
 that I knew from GitLab. Zoom is able to handle a call with 100 participants
 maintaining excellent quality (I'm impressed to this day) and has automatic efortless recording.
 
-We also decided to order dedicated headset for everybody who doesn't use their
-own private one.
+We also decided to order dedicated headsets for everyone who needed one.
 
-### Akward at the beginning
+### Awkward at the beginning
 
-At the beginning we struggled with akwardness when most people in the call were
+At the beginning we struggled with awkwardness when most people in the call were
 also in the office. It didn't seem natural to talk using the headset when the
 conversation partner was sitting next to you. We also had problems with echo when
 people didn't mute themselves after finishing to speak.
