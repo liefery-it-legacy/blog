@@ -11,3 +11,6 @@ markdown: kramdown
 exclude: [CNAME, Guardfile, invoker.ini, Gemfile, Gemfile.lock, README.md]
 plugins:
   - jemoji
+
+paginate: 5
+paginate_path: "/blog/page/:num/"
