@@ -200,7 +200,7 @@ benefit from the recording.
 
 We discussed possible video conference tools and decided to go with with Zoom,
 that I knew from GitLab. Zoom is able to handle a call with 100 participants
-maintaining excellent quality (I'm impressed to this day) and has automatic efortless recording.
+maintaining excellent quality (I'm impressed to this day) and has automatic effortless recording.
 
 We also decided to order dedicated headsets for everyone who needed one.
 
