@@ -10,7 +10,7 @@ remote-first. Read on to learn the difference and how all this happened."
 
 When I joined Liefery the IT team was remote-friendly. What do I mean here by
 "remote-friendly"? Let me explain. People were allowed to work remotely every now
-and then and it was not uncommon that somebody travels and works remotely during
+and then and it wasn't uncommon for somebody to travel and work remotely during
 that time.
 
 ### Remote work as something special
