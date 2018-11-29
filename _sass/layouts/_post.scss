@@ -28,6 +28,9 @@ main#post {
       font-size: 1.25em;
       opacity: 0.7;
     }
+    blockquote {
+      font-size: 1.5em;
+    }
   }
   article {
     margin: 2em auto;
@@ -37,9 +40,12 @@ main#post {
       width: 650px;
       max-width: 100%;
     }
-    & > p, ol, ul {
+    & > p, ol, ul, blockquote {
       font-family: "Georgia", serif;
       font-size: 1.45em;
+    }
+    blockquote {
+      font-style: italic;
     }
     ol, ul {
       max-width: calc(100% - 2em);
