@@ -20,25 +20,27 @@ layout: default
     {% include article_teaser.html post=highlighted_post css_class="article-teaser article-teaser--highlighted" %}
   </section>
 
-  <section class="article-teaser-list">
-    {% for post in not_highlighted_posts %}
-      {% include article_teaser.html post=post css_class="article-teaser" %}
-    {% endfor %}
+  <section class="container__section">
+    <div class="article-teaser-list">
+      {% for post in not_highlighted_posts %}
+        {% include article_teaser.html post=post css_class="article-teaser" %}
+      {% endfor %}
 
-    <nav class="article-teaser-list__nav">
-      {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path }}" class="article-teaser-list__nav-element">
-          &lt;- Newer
-        </a>
-      {% else %}
-        <span class="article-teaser-list__nav-element article-teaser-list__nav-element--disabled">&lt;- Newer</span>
-      {% endif %}
+      <nav class="article-teaser-list__nav">
+        {% if paginator.previous_page %}
+          <a href="{{ paginator.previous_page_path }}" class="article-teaser-list__nav-element">
+            &lt;- Newer
+          </a>
+        {% else %}
+          <span class="article-teaser-list__nav-element article-teaser-list__nav-element--disabled">&lt;- Newer</span>
+        {% endif %}
 
-      {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path }}" class="article-teaser-list__nav-element">Older -&gt;</a>
-      {% else %}
-        <span class="article-teaser-list__nav-element article-teaser-list__nav-element--disabled">Older -&gt;</span>
-      {% endif %}
-    </nav>
+        {% if paginator.next_page %}
+          <a href="{{ paginator.next_page_path }}" class="article-teaser-list__nav-element">Older -&gt;</a>
+        {% else %}
+          <span class="article-teaser-list__nav-element article-teaser-list__nav-element--disabled">Older -&gt;</span>
+        {% endif %}
+      </nav>
+    </div>
   </section>
 </main>
