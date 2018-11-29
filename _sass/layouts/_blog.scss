@@ -5,17 +5,20 @@
   }
 
   &__section {
+    padding: 2em;
+
     @media screen and (min-width: map-get($breakpoints, large)) {
       display: flex;
+      flex-basis: 60%;
     }
 
     &--highlighted {
       color: map-get($palette, lightest);
-      flex-basis: 40%;
-      padding: 12em 1em 4em;
+      padding: 12em 2em 4em;
 
       @media screen and (min-width: map-get($breakpoints, large)) {
-        padding: 7rem;
+        padding: 10rem 7rem 6rem;
+        flex-basis: 40%;
       }
     }
 
@@ -68,11 +71,10 @@
   display: flex;
   flex-direction: column;
   font-size: 1.25em;
-  justify-content: flex-end;
+  justify-content: center;
   margin: 0 auto;
   max-width: 600px;
   padding: 2em 0;
-  width: 85%;
 
   &:not(:last-of-type) {
     border-bottom: 1px solid map-get($palette, light);
@@ -88,21 +90,18 @@
     font-family: "Georgia", serif;
   }
 
+  &__footer {
+    display: flex;
+  }
+
   &__author {
     opacity: 0.5;
   }
 
   &__read-more {
-    display: block;
-    margin-top: 4em;
-    margin: 0 auto;
-    text-align: right;
+    margin-left: auto;
+    min-width: 5em;
     text-decoration: none;
-    width: 85%;
-
-    @media screen and (min-width: map-get($breakpoints, large)) {
-      width: 100%;
-    }
   }
 
   &--highlighted {
@@ -110,18 +109,14 @@
     max-width: 850px;
     padding: 0;
 
-    @media screen and (min-width: map-get($breakpoints, large)) {
-      max-width: none;
-      margin: 0;
-    }
-
     .article-teaser__title {
       color: map-get($palette, lightest);
+      line-height: 1em;
       font-weight: bold;
       margin-bottom: 0.35em;
 
       @media screen and (min-width: map-get($breakpoints, small)) {
-        font-size: 3.5em;
+        font-size: 3em;
       }
     }
 

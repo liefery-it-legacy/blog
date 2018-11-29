@@ -2,7 +2,9 @@
   <div class="js--link-to" data-link="{{ include.post.url | prepend: site.baseurl }}">
     <h3 class="article-teaser__title">{{include.post.title}}</h3>
     <p class="article-teaser__excerpt">{{include.post.excerpt}}</p>
-    <p class="article-teaser__author">{% if include.post.author %}{{include.post.author}} · {% endif %}{{include.post.date | date_to_string}}</p>
+    <div class="article-teaser__footer">
+      <span class="article-teaser__author">{% if include.post.author %}{{include.post.author}} · {% endif %}{{include.post.date | date_to_string}}</span>
+      <a class="article-teaser__read-more" href="{{ include.post.url | prepend: site.baseurl }}">Read -&gt;</a>
+    </div>
   </div>
-  <a class="article-teaser__read-more" href="{{ include.post.url | prepend: site.baseurl }}">Read -&gt;</a>
 </article>
