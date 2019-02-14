@@ -1,13 +1,13 @@
 ---
 layout: post
 title: "Wanting to learn is the most important part"
-date: 2019-02-18
+date: 2019-02-13
 author: Tam & Nicole
 tags:
 excerpt: "We are a relatively large IT-team here at Liefery. We have a handful of mobile developers, front-end developers, work students, backend developers, and QA people. We have senior developers, leads, mid level developers, junior developers, and also take on trainees."
 ---
 
-We are a relatively large IT-team here at Liefery. We have a handful of mobile developers, front-end developers, work students, backend developers, and QA people. We have senior developers, leads, mid level developers, junior developers, and we also take on trainees.
+We are a relatively large IT-team here at Liefery. We have a handful of mobile developers, front-end developers, work students, backend developers, and QA people. We have senior developers, leads, mid level developers, junior developers, and a role we find particularly important: the trainee.
 
 Training developers is incredibly important to us. Senior developers don't grow on trees. They were once mid-levels, who were once juniors, who were once newbies, trying to make sense of their first piece of code. Everyone has to start somewhere. Training new developers gives us the opportunity to pass on our knowledge, level up people with diverse educational backgrounds, and create thoughtful caretakers for our codebase.
 
@@ -17,7 +17,7 @@ _**Tam: Why did you want to learn how to program?**_
 
 **Nicole:** In El Salvador, programming is not a common choice of study and is not considered to be a successful career path. There is little support from parents, teachers, and society compared to traditional professions. Even though I have always had a passion for science and mathematical logic, I wrongly believed that computers and programming were definitely not interesting or "cool". I was truly convinced that programming was a world exclusively for men and had no space for me in it.
 
-When I started traveling and discovering different cultures, societies, and mindsets, I also found myself being more curious about what programming can create. I had different ideas about what I wanted to develop, however I didn’t have the knowledge or courage to do so. I felt frustrated and limited. Finally, in Berlin, I took the courage to explore my curiosity for programming and started talking about it with different friends who are involved in the coding community, I found huge support and reassurance that programming is not just for men, nor solely for those with a computer science degree. I then started to learn from different online sources, such as The Odin Project, Codecademy, and free code camp. Over time, I realized I was really enjoying programming and wanted to learn it officially. Over the next few months I continued learning online and I also started to build a website from scratch. The more time I spend improving my programming skills, the more passionate I become about it.
+When I started traveling and discovering different cultures, societies, and mindsets, I also found myself being more curious about what programming can create. I had different ideas about what I wanted to develop, however I didn’t have the knowledge or courage to do so. I felt frustrated and limited. Finally, in Berlin, I took the courage to explore my curiosity for programming and started talking about it with different friends who are involved in the coding community. I found huge support and reassurance that programming is not just for men, nor solely for those with a computer science degree. I then started to learn from different online sources, such as The Odin Project, Codecademy, and free code camp. Over time, I realized I was really enjoying programming and wanted to learn it officially. Over the next few months I continued learning online and I also started to build a website from scratch. The more time I spend improving my programming skills, the more passionate I become about it.
 
 In conclusion I learned to program because I had many ideas I wanted to implement and bring to life, but couldn't. That was my first motivation, but after I started to learn more and code more, it became extremely fun.
 
@@ -45,7 +45,7 @@ Now as a new junior developer, I’m the most grateful to everyone in our team, 
 
 _**Tam: What advice would you give to people who are thinking about applying for a traineeship? OR What advice would you give people who are learning to code?**_
 
-**Nicole:** I would tell people who are learning how to code that the hardest thing is to lose the fear of looking stupid and incompetent and get yourself out there. Go to meet-ups, get-togethers, hackathons, workshops, apply for internships even though you might think you're not killed enough, let them decide. Stay motivated, surround yourself with people who could help you keep on track and progress. And ultimately, don’t worry, keep a steady slow pace and you will get there, it might seem impossible now and you might even hear some discouraging words, but as long as you keep focused, things will come. Our CTO once told me something that stuck with me: "even if you don't feel you are making progress, you are so keep going".
+**Nicole:** I would tell people who are learning how to code that the hardest thing is to lose the fear of looking stupid and incompetent and get yourself out there. Go to meet-ups, get-togethers, hackathons, workshops, apply for internships even though you might think you're not skilled enough, let them decide. Stay motivated, surround yourself with people who could help you keep on track and progress. And ultimately, don’t worry, keep a steady slow pace and you will get there, it might seem impossible now and you might even hear some discouraging words, but as long as you keep focused, things will come. Our CTO once told me something that stuck with me: "even if you don't feel you are making progress, you are so keep going".
 
 I would advise to some someone applying for a traineeship to do it! Don’t think about it too long, even if all the requirements don't fit. Staying motivated and wanting to learn is the most important part. Show the company you are applying to that you are willing to put in the work to become a developer. Don't be afraid of being the person with least amount of knowledge in the room, embrace it and grow.
 
