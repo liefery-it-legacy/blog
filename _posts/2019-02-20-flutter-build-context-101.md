@@ -4,7 +4,7 @@ title: "todo "
 date: todo
 author: Ali Churcher
 tags: todo
-excerpt: "todo"
+excerpt: "In this post I want to talk about a situation that required me step back and learn one of Flutters core concepts - the BuildContext of Widgets."
 ---
 
 For the last few months I've been working on Liefery's Flutter team to help rewrite our android app with a more modern Framework. Coming from a background of zero app development I've found Flutter surprisingly beginner friendly. Its amazing documentation and tutorials allow you to start building screens fast - sometimes so fast that you don't stop to properly learn the fundamentals.
@@ -12,7 +12,7 @@ In this post I want to talk about a situation that required me step back and lea
 
  The first thing you learn in flutter is that everything is a widget. Not just small components of the page like a form or a menu, but _everything_. A single button is a widget. A line of text is a widget. Padding and margins are also achieved with widgets. After a long day at the office you start to question if you too are widget.
 
- ![monkey looking at self in mirror](/images/posts/flutter/existential_crisis_monkey.jpg)
+ <img alt="monkey looking at self in mirror" src="/images/posts/flutter/existential_crisis_monkey.jpg" align="middle" width="300"/>
 
 
 Each widget is created from a `build` method, and every build method takes a `BuildContext` as an argument.
@@ -40,7 +40,7 @@ mySnackBar = SnackBar(content: "Saving all changes...")
 This `mySnackBar` is now created but not visible. To display it on the screen we must use `Scaffold`. A Scaffold is the way to display Material elements such as AppBar, Body, and SnackBars.
 Different screens will each have their own Scaffold and display different content in the appBar and the body.
 
-(image of app with heading (appbar)  content (body) and a dialog(snackbar) with labels)
+(image of app with heading (Appbar)  content (body) and a dialog(SnackBar) with labels)
 
 To display the SnackBar on the screen you simply get the Scaffold with a method called Scaffold.of then call `showSnackBar`.
 
@@ -51,7 +51,7 @@ Scaffold.of(context).showSnackBar(myCoolSnackBar)
 Let's try it out.
 
 In the code below we are creating a Scaffold.
-Inside the scaffold we create an app bar with a title, and a body. In the body we create a button that, when pressed, will display the snackbar.
+Inside the scaffold we create an AppBar with a Title, and a Body. In the Body we create a button that, when pressed, will display the SnackBar.
 
 ```dart
 class MyDocumentsScreen extends StatelessWidget {
@@ -69,48 +69,61 @@ class MyDocumentsScreen extends StatelessWidget {
   }
 }
 ```
-Sadly when we try to run this we get the following error.
+<img align="middle" src="/images/posts/flutter/sad_no_snackbar.png" width="200"  />
 
-Show error screen on phone?
+When we click the button no SnackBar is displayed, and the following error is printed to the console:
+
 ```error
 Scaffold.of() called with a context that does not contain a Scaffold.
 ```
 
-From the looks of StackOverflow this is a very common first error for people like myself who hadn't bothered to understand the BuildContext.
+A quick look at StackOverflow reveals that this is a very common first error for people like myself who hadn't yet delved into the BuildContext.
 
 
-To find out what went wrong we need to know what this Of() function really does.
+To find out what went wrong we need to know what this `of()` function really does.
 
 ## Of
 
-  `Scaffold.of(context)`  says: From the given `BuildContext`, return the nearest Scaffold widget.
-This `of` method can be used elsewhere for example `Theme.of(context)` takes the supplied context and returns the nearest Theme.
+  `Scaffold.of(context)`  says "From the given `BuildContext`, return the nearest Scaffold widget".
+The `of` method can be used elsewhere for example `Theme.of(context)` takes the supplied context and returns the nearest Theme.
 
-So putting that all together, the line that caused the failure:
+The line of code that caused the failure:
 ```dart
 Scaffold.of(context).showSnackBar(myCoolSnackBar)
 ```
 says “Go and find me the nearest Scaffold to the given BuildContext and then display myCoolSnackBar inside it."
-It could not find a Scaffold in the given BuildContext, even though we created a Scaffold in the code block above.
+So why did the error say that there was no Scaffold in the given BuildContext, even though we created a Scaffold in the code block above?
 
- ## So what is the BuildContext?
+ ## BuildContext
 
-_Each widget has its own BuildContext, which becomes the parent of the widget returned by the StatelessWidget.build_ _-Flutter docs_
+>Each widget has its own BuildContext, which becomes the parent of the widget returned by the StatelessWidget.build.  
 
-(image of a blue widget with a red widget Inside)
 
-Lets say we are inside the Build method for the red widget; a method that returns a red widget. The context that this build method receives is not the red widget, but rather a reference to the parent/Blue widget. If you think about it this makes sense, if we haven’t built the red widget yet, how could the context possibly be a reference to this unbuild widget?
+<img src="/images/posts/flutter/login_screen.png" alt="login screen" width="195"/> <img src="/images/posts/flutter/arrow.png" alt="arrow" width="70"/> <img src="/images/posts/flutter/full_screen_no_snackbar.png" alt="my documents screen" width="200"/>
+
+That means that if we are building the MyDocuments screen (as per the code above) the BuildContext in the Build method is the parent - in this case the login screen.
+
+```dart
+class MyDocumentsScreen extends StatelessWidget {
+  build(BuildContext context) {
+    //context is login screen
+ }
+```
+If you think about it this makes sense, if we haven’t built the MyDocumentsScreen widget yet, how could the context possibly be a reference to this unbuild widget?
 
 ## So what caused the error
 We know that Scaffold.of takes the given context and finds the nearest scaffold. And even though we create a Scaffold, we also know that the `context` provided to the build Function is not the widget itself, but rather it's parent - a parent who has no scaffold.
 As a result Scaffold.of(context) finds no Scaffold and throws an error.
 
 ## A solution
-We need to call `Scaffold.of(context)`  providing a context that is a child of our new scaffold.
-Luckily Flutter has just the tool for creating a new buildContext.
+What we need is to call `Scaffold.of(context)`  providing a context that is a _child_ of our new scaffold.
+Luckily Flutter has just the tool for creating a new buildContext. A class call `Builder`
 
+>A platonic widget that calls a closure to obtain its child widget.
+
+let's enclose the body code in a Builder to create a new context:
 ```dart
-class SendEmailScreen extends StatelessWidget {
+class MyDocumentsScreen extends StatelessWidget {
    build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -127,7 +140,10 @@ class SendEmailScreen extends StatelessWidget {
   }
 }
 ```
-Image of working snackbar.
+Success! We now have
 
+<img align="middle" src="/images/posts/flutter/snackbar.png" width="200"  />
+
+![screen with snackbar]()
 BuildContext is an important part of Flutter environment, but from looking at stackoverflow, I'm not the first person who ignored it until it came time to render a snackBar.
 So be warned, always learn the fundamentals!
