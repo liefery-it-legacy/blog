@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Flutter for newbies: why you should care about the BuildContext"
-date: 20-01-2019
+date: 15-02-2019
 author: Ali Churcher
-tags: todo
+tags: flutter snackbar scaffold of buildcontext dart
 excerpt: "In this post I want to talk about a situation that required me step back and learn one of Flutter's core concepts - the BuildContext of Widgets."
 ---
 
@@ -17,7 +17,7 @@ In this post I want to talk about a situation that required me step back and lea
  </figure>
 
 Every widget in Flutter is created from a `build` method, and every build method takes a `BuildContext` as an argument.
-```Dart
+```dart
  build(BuildContext context) {
    // return widget
  }
