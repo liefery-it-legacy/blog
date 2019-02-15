@@ -112,7 +112,7 @@ class MyDocumentsScreen extends StatelessWidget {
 If you think about it this makes sense, if we haven’t built the MyDocumentsScreen widget yet, how could the context possibly be a reference to this unbuild widget?
 
 ## So what caused the error
-We know that Scaffold.of takes the given context and finds the nearest scaffold. And even though we create a Scaffold, we also know that the `context` provided to the build Function is not the widget itself, but rather it's parent - a parent who has no scaffold.
+We know that Scaffold.of takes the given context and finds the nearest visible scaffold. And even though we create a Scaffold, we also know that the `context` provided to the build Function is not the widget itself, but rather it's parent - a parent who has no visible scaffold.
 As a result `Scaffold.of(context)` finds no Scaffold and throws an error.
 
 ## A solution
