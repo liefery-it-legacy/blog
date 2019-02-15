@@ -147,7 +147,7 @@ Success! We now have rendered a SnackBar into our Scaffold.
 Putting aside our disappointment that SnackBars are unrelated to food, we can see the importance of the BuildContext for the everyday task of rendering something into a Scaffold after build time. As a Flutter beginner you will find the BuildContext useful for much more, such as getting your current location for navigation, adding colour themes, and translating your text.
 
 
-#### Enjoy Flutter!
+##### Enjoy Flutter!
 
 
 <figure>
