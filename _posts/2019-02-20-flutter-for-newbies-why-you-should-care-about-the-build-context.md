@@ -39,10 +39,10 @@ mySnackBar = SnackBar(content: "Saving all changes...")
 (Note that you can omit the `new` keyword when calling constructors such as `SnackBar()` in the Dart language).
 
 
-`mySnackBar` is now created but not visible. To display it on the screen we must use `Scaffold`. A Scaffold is the way to display [Material](https://flutter.io/docs/development/ui/widgets/material) elements such as the AppBar (the top bar on the screen), Body, and SnackBars.
+`mySnackBar` is now created but not visible. To display it on the screen we must use `Scaffold`.  A Scaffold is the way to display [Material](https://flutter.io/docs/development/ui/widgets/material) elements such as the AppBar (the top bar on the screen), Body, and SnackBars.
 Different screens each have their own Scaffold where they display different information into the Body or AppBar.
 
-To display the SnackBar on the screen you must get a reference to the Scaffold with the method `Scaffold.of` then display the SnackBar with `showSnackBar`.
+To display the SnackBar on the screen you must get a reference to the Scaffold with the method `Scaffold.of` then display the SnackBar with the method `showSnackBar`
 
 ```dart
 Scaffold.of(context).showSnackBar(myCoolSnackBar)
@@ -77,7 +77,7 @@ When we click the button no SnackBar is displayed, and the following error is pr
 Scaffold.of() called with a context that does not contain a Scaffold.
 ```
 
-A quick look at StackOverflow reveals that this is a very common first error for people like myself who hadn't yet delved into the BuildContext.
+A quick search on StackOverflow reveals a bunch of questions with the exact error and indicates this is a common first error for people like myself who hadn't yet delved into the BuildContext.
 
 
 To find out what went wrong we need to know what this `of()` function really does.
@@ -101,7 +101,7 @@ So why did the error say that there was no Scaffold in the given BuildContext, e
 
 <img class="userDefined" src="/images/posts/flutter/login_screen.png" width="245"  /><img class="userDefined" src="/images/posts/flutter/arrow.png" width="70"  /><img class="userDefined" src="/images/posts/flutter/full_screen_no_snackbar.png" width="250"  />
 
-That means that if we are building the MyDocuments screen then the BuildContext in the Build method is the parent - in this case the Login Screen on the left side.
+That means that if we are building the MyDocuments screen then the BuildContext in the MyDocument's screen Build method is the parent widget - in this case the Login Screen on the left side.
 
 ```dart
 class MyDocumentsScreen extends StatelessWidget {
@@ -151,5 +151,5 @@ Putting aside our disappointment that SnackBars are unrelated to food, we can se
 
 
 <figure>
-<img  alt="monkey looking at self in mirror" src="/images/posts/flutter/snacks.jpg" />   <figcaption>Photo by rawpixel on Unsplash.</figcaption>
+<img  alt="monkey looking at self in mirror" src="/images/posts/flutter/snacks.jpg" />   <figcaption>A better SnackBar.   Photo by rawpixel on Unsplash.</figcaption>
 </figure>
