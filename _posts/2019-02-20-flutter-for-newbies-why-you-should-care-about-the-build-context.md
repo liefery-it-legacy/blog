@@ -89,7 +89,7 @@ The line of code that caused the failure:
 ```dart
 Scaffold.of(context).showSnackBar(mySnackBar)
 ```
-says “Go and find me the nearest scaffold to the given build context and then display myCoolSnackBar inside it."
+says “Go and find me the nearest scaffold to the given build context and then display `mySnackBar` inside it."
 So why did the error say that there was no scaffold in the given build context, even though we created a scaffold in the code block above?
 
 ## BuildContext
