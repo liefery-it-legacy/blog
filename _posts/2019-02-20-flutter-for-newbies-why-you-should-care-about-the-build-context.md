@@ -132,8 +132,8 @@ class MyDocumentsScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('My documents'),
         ),
-        body: Builder(
-          builder: (context) => //this new BuildContext has a reference to the scaffold
+        body: Builder( //body now wrapped in a Builder
+          builder: (context) => // new BuildContext has a reference to the scaffold
            RaisedButton(
                 child: Text('Save all'),
                 onPressed: () => Scaffold.of(context).showSnackBar(mySnackBar),
