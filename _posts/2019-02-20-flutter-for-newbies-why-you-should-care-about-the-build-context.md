@@ -10,7 +10,7 @@ excerpt: "In this post I want to talk about a situation that required me step ba
 For the last few months I've been working on Liefery's Flutter team to help rewrite our Android app with a more modern framework. Coming from a background of zero mobile development I've found Flutter surprisingly beginner friendly. Its amazing documentation and tutorials allow you to start building screens fast - sometimes so fast that you don't stop to properly learn the fundamentals.
 In this post I want to talk about a situation that required me step back and learn one of Flutters core concepts - the `BuildContext` of widgets.
 
- The first thing you learn in flutter is that everything is a widget. Not just small components of the page like a form or a menu, but _everything_. A single button is a widget. A line of text is a widget. Padding and margins are also achieved with widgets. After a long day at the office you start to question if you too are widget.
+ The first thing you learn in Flutter is that everything is a widget. Not just small components of the page like a form or a menu, but _everything_. A single button is a widget. A line of text is a widget. Padding and margins are also achieved with widgets. After a long day at the office you start to question if you too are widget.
 
  <figure>
  <img  alt="monkey looking at self in mirror" src="/images/posts/flutter/existential_crisis_monkey.jpg" />   <figcaption>Photo by Andre Mouton on Unsplash.</figcaption>
@@ -45,7 +45,7 @@ Different screens each have their own scaffold where they display different info
 To display the snackbar on the screen you must get a reference to the scaffold with the method `Scaffold.of` then display the snackbar with the method `showSnackBar`
 
 ```dart
-Scaffold.of(context).showSnackBar(myCoolSnackBar)
+Scaffold.of(context).showSnackBar(mySnackBar)
 ```
 
 Let's try it out.
@@ -117,7 +117,7 @@ As a result `Scaffold.of(context)` finds no scaffold and throws an error.
 
 ## A solution
 What we need is to call `Scaffold.of(context)`  providing a context that is a _child_ of our new scaffold.
-Luckily Flutter has just the tool for creating a new build context. A class call `Builder`
+Luckily Flutter has just the tool for creating a new build context. It is called a `Builder`:
 
 >A platonic widget that calls a closure to obtain its child widget.
 
