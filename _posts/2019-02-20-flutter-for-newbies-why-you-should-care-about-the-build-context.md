@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Flutter for newbies: why you should care about the BuildContext"
-date: 15-02-2019
+date: 18-02-2019
 author: Ali Churcher
 tags: flutter snackbar scaffold of buildcontext dart
 excerpt: "In this post I want to talk about a situation that required me step back and learn one of Flutter's core concepts - the BuildContext of Widgets."
