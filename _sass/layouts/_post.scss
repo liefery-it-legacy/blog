@@ -50,8 +50,16 @@ main#post {
     ol, ul {
       max-width: calc(100% - 2em);
     }
-    img:not(.emoji) {
+    figure{
+      margin:0
+    }
+    img:not(.userDefined) {
       width: 100%;
+    }
+
+    img.centered {
+      display: block;
+      margin: auto;
     }
   }
   section#comments {
