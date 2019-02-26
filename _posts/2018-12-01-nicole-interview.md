@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Wanting to learn is the most important part"
-date: 2019-02-13
+date: 2019-02-26
 author: Tam & Nicole
 tags:
 excerpt: "Training new developers gives us the opportunity to pass on our knowledge, level up people with diverse educational backgrounds, and create thoughtful caretakers for our codebase. Nicole is one such developer who has been learning to code with us since last year."
