@@ -301,7 +301,6 @@ DEPENDENCIES
   github-pages
   guard-livereload
   invoker
-  jekyll-paginate
   jemoji
   rake
 
