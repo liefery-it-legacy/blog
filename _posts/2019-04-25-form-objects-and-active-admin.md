@@ -7,7 +7,9 @@ tags: activeadmin form objects ruby inherited resources
 excerpt:
 ---
 
-We introduced form objects into our code base about a year ago, and since then we've slowly been trying to integrate them into our project more and more. We have a handful of them, but they are all a little bit different and implement similar things in slightly different ways. Refactoring them to all be the same seemed easy enough, but there one problem, we use ActiveAdmin.
+We introduced form objects into our code base about a year ago, and since then we've slowly been trying to integrate them into our project more and more. We have a handful of them, but they are all a little bit different and implement similar things in slightly different ways. Refactoring them to all be the same seemed easy enough, but there one problem, we use [ActiveAdmin](https://activeadmin.info/).
+
+<div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/1isfHC4xV65mvjqGth" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/1isfHC4xV65mvjqGth">via GIPHY</a></p>
 
 ActiveAdmin is great for quickly putting together simple CRUD based user interfaces, but as soon as your forms become more complex and more workflow based, things get a bit tricky. Soon you'll find yourself with lots of form specific validations in your models and things can quickly get out of hand.
 
@@ -23,7 +25,7 @@ ActiveAdmin.register User do
 end
 ```
 
-And :tada:, with just three lines of code you can do all the things. However, this magic doesn't actually come from ActiveAdmin. It comes from Inherited Resources which is a dependency of ActiveAdmin and which is also now maintained by the ActiveAdmin people. And if you want to use form objects with ActiveAdmin, you might find yourself digging in the Inherited Resources source code every once in a while. Fortunately, ActiveAdmin's methods have inline documentation and (at least in our case) explicitly tell you when they are using Inherited Resources.
+And :tada:, with just three lines of code you can do all the things. However, this magic doesn't actually come from ActiveAdmin. It comes from [Inherited Resources](https://github.com/activeadmin/inherited_resources) which is a dependency of ActiveAdmin and which is also now maintained by the ActiveAdmin organization. And if you want to use form objects with ActiveAdmin, you might find yourself digging in the Inherited Resources source code every once in a while. Fortunately, ActiveAdmin's methods have inline documentation and (at least in our case) explicitly tell you when they are using Inherited Resources.
 
 ### Let's get started
 
@@ -37,8 +39,7 @@ def build_new_resource
 end
 ```
 
-Doing this makes sure your hidden Inherited Resources `new` and `create` actions are using your form object. [According to the docs](https://github.com/activeadmin/activeadmin/blob/master/lib/active_admin/resource_controller/data_access.rb#L126), this method "uses the method_for_build provided by inherited resources", so once you've overwritten that, you also get access to all standard Inherited Resources methods such as `resource` (which will return your form object) and `resource_class`, `parent_path` etc...
-
+Doing this makes sure your hidden Inherited Resources `new` and `create` actions are using your form object. [According to the docs](https://github.com/activeadmin/activeadmin/blob/master/lib/active_admin/resource_controller/data_access.rb#L126), this method "uses the method_for_build provided by inherited resources". [The Inherited Resources docs](https://github.com/activeadmin/inherited_resources/blob/master/lib/inherited_resources/base_helpers.rb#L188) say that `method_for_build` "returns the appropriated method to build the resource". A `resource` here is the object you're handling in your in your controller.
 
 #### Handling your params
 
@@ -61,6 +62,8 @@ After some experimentation we decided to embrace, instead of fight, ActiveAdmin,
 ```
 
 (some explanation of the new code example)
+
+<div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/BpRyocAi6VDBFol4bj" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/foxtv-BpRyocAi6VDBFol4bj">via GIPHY</a></p>
 
 In the process, we learned a few things.
 
