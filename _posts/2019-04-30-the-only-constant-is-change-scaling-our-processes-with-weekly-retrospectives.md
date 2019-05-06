@@ -3,7 +3,7 @@ layout: post
 title: "The only constant is change - scaling our processes with weekly retrospectives"
 date: 30-04-2019
 author: Adam Niedzielski
-excerpt: "How much process do you need for our current team size? How do you change that as the team grows? That's how we approached these questions."
+excerpt: "How much process do you need for your current team size? How do you change that as the team grows? That's how we approached these questions."
 ---
 
 I noticed that a lot of software developers have an allergic reaction to the
