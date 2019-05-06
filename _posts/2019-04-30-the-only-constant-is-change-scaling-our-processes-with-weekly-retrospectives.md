@@ -52,9 +52,9 @@ Our retrospectives have a lightweight format. We start by asking everybody two
 questions: "what did you like in the last iteration?" and "what do you wish
 for?".
 
-The first question allows to express appreciation for particular improvements
-done by others, brings positive atmosphere to the meeting, and reminds us about
-these parts of our team culture that we shouldn't lose.
+The first question allow the person to express appreciation for particular
+improvements done by others, brings positive atmosphere to the meeting, and
+reminds us about these parts of our team culture that we shouldn't lose.
 
 The second question suggests problematic areas, and potentially surfaces pain
 points that have to be addressed.
@@ -89,10 +89,10 @@ principle only a few months ago. When I read the definition and motivation of
 the rule I immediately thought "that's exactly the philosophy that we follow in
 our team!".
 
-When we want to introduce any kind of process change we give a chance to
-everybody to express their opinion. Some people will be more interested in the
-topic, some people less - that's fine. It's not obligatory to express your
-opinion. It's the possibility of expressing an opinion that matters.
+When we want to introduce any kind of process change we give everyone a chance
+to express their opinion. Some people will be more interested in the topic,
+some people less - that's fine. It's not obligatory to express your opinion.
+It's the possibility of expressing an opinion that matters.
 
 I prefer to refer to this phase as "discuss". We don't always "disagree",
 sometimes we mostly agree and only discuss the details. "Discuss" sounds like
@@ -113,8 +113,8 @@ Panic".
 
 ### Success stories
 
-Following this approach we did major changes in out team over the course of the
-last two years.
+Following this approach we have made major changes in our team over the course
+of the last two years.
 
 When I joined the team we worked in a weekly pace. Every week we were selecting
 tasks for the whole next week and during the iteration everybody would just
