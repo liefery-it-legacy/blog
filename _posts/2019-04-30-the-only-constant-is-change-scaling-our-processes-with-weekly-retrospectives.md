@@ -37,10 +37,10 @@ we're only doing as much as needed in the concrete present.
 The second rule provides space to give feedback. It's important for us to do it
 on a regular basis. This reduces the barrier to share your thoughts as there's
 now a dedicated time to do so. We take every bit of feedback very seriously and
-actively look for improvements with the whole team. The purpose is to make
-anyone welcome to give feedback and not feel like "the one who complains".
-That's especially vital for new team members and juniors who could otherwise
-feel that they're speaking out of turn.
+actively look for improvements with the whole team. The goal is to make anyone
+welcome to give feedback and not feel like "the one who complains". That's
+especially vital for new team members and juniors who could otherwise feel that
+they're speaking out of turn.
 
 Establishing the habit of acting reliably on given feedback creates a positive
 feedback loop that results in more feedback given, which in turn results in
