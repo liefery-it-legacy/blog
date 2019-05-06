@@ -61,10 +61,11 @@ points that have to be addressed.
 
 After everybody has spoken, we go back to the "wishes", review them, and
 discuss. Some of the "wishes" can immediately generate a "decision" - for
-example "I wish that the slides from the company meeting would be sent by
-email". Some of them are not really actionable - for example "I wish that I
-wasn't sick last week". And some of them require a longer discussion - for
-example "I wish that we were updating our JavaScript dependencies more often".
+example "I wish we had a dedicated Slack channel for company news
+announcements". Some of them are not really actionable - for example "I wish
+that I wasn't sick last week". And some of them require a longer discussion -
+for example "I wish that we were updating our JavaScript dependencies more
+often".
 
 When we realize that we can't quickly reach an agreement and an issue requires
 a longer discussion, we schedule a dedicated meeting for it. In such a case the
