@@ -48,38 +48,38 @@ more improvements, even more motivation to give feedback, and so on.
 
 ### Retrospective format
 
-Our retrospectives have a lightweight format. We start by asking everybody two
-questions: "what did you like in the last iteration?" and "what do you wish
-for?".
+Our retrospectives have a lightweight format. We start by picking a note taker,
+and asking everybody two questions: "what did you like in the last iteration?"
+and "what do you wish for?".
 
-The first question allow the person to express appreciation for particular
+The first question allows the person to express appreciation for particular
 improvements done by others, brings positive atmosphere to the meeting, and
 reminds us about these parts of our team culture that we shouldn't lose.
 
 The second question suggests problematic areas, and potentially surfaces pain
-points that have to be addressed.
+points that have to be addressed. After everybody has spoken, we go back to the
+"wishes", review them, and discuss. The goal now is to generate "decisions"
+("action items") from the meeting. For every action item we try to assign a
+person responsible for it.
 
-After everybody has spoken, we go back to the "wishes", review them, and
-discuss. Some of the "wishes" can immediately generate a "decision" - for
-example "I wish we had a dedicated Slack channel for company news
-announcements". Some of them are not really actionable - for example "I wish
-that I wasn't sick last week". And some of them require a longer discussion -
-for example "I wish that we were updating our JavaScript dependencies more
-often".
+Some of the "wishes" can immediately generate a "decision" - for example "I
+wish we had a dedicated Slack channel for company news announcements". Some of
+them are not really actionable - for example "I wish that I wasn't sick last
+week". And some of them require a longer discussion - for example "I wish that
+we were updating our JavaScript dependencies more often".
 
 When we realize that we can't quickly reach an agreement and an issue requires
 a longer discussion, we schedule a dedicated meeting for it. In such a case the
-decision (action item) may be "Schedule a meeting to talk about updating
-JavaScript dependencies (Jonas)". This allows us to keep our retrospectives
-focused and with predictable duration.
+decision may be "Schedule a meeting to talk about updating JavaScript
+dependencies". This allows us to keep our retrospectives focused and with
+predictable duration. An additional advantage of scheduling separate meetings
+is that a lot of discussions can [happen asynchronously](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
 
-An additional advantage of scheduling separate meetings is that a lot of
-discussions can happen asynchronously.
-[We create a shared document where everybody can add their items to the agenda and present their arguments](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
-
-As the last step we go back to the action items from the previous week. We go
-one by one and check if we made some progress there. If we didn't follow up on
-an action item, we carry it over to the next retrospective. This keeps us
+We store store meeting notes and make them available to everyone on the team.
+Thanks to this it's easy to review the action items from the previous
+iteration. We do it at the end of our retrospective - go through the points one
+by one and check if we made some progress there. If we didn't follow up on an
+action item, we carry it over to the next retrospective. This keeps us
 accountable and makes sure that the changes really happen.
 
 ### Discuss and experiment
