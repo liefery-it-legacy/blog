@@ -144,6 +144,12 @@ monitoring across the team
 
 ...and many, many more.
 
+What's also worth mentioning is that our process not always expands as the
+result of the feedback. From time to time we remove some elements that no
+longer bring value to us. When we realized that a standup meeting with the
+whole team doesn't work anymore for the current team size, we replaced it with
+a Slack bot.
+
 Embracing constant change is the foundation of our culture. The constant
 element that we have is the retrospective. We use the retrospective to generate
 topics for discussions. Then we discuss and experiment.
