@@ -32,12 +32,19 @@ actually have. If things are starting to get a bit messy and disorganized,
 people quickly notice the issue. Something is hampering their productivity
 right now, so they have both a good understanding of the problem and the
 motivation to solve it. We're not creating processes for an abstract future,
-we're only doing as much as need in the concrete present.
+we're only doing as much as needed in the concrete present.
 
 The second rule provides space to give feedback. It's important for us to do it
 on a regular basis. This reduces the barrier to share your thoughts as there's
-now a dedicated time to do so. You don't feel like "the one who complains".
-Instead you're searching for improvements with the rest of the team.
+now a dedicated time to do so. We take every bit of feedback very seriously and
+actively look for improvements with the whole team. The purpose is to make
+anyone welcome to give feedback and not feel like "the one who complains".
+That's especially vital for new team members and juniors who could otherwise
+feel that they're speaking out of turn.
+
+Establishing the habit of acting reliably on given feedback creates a positive
+feedback loop that results in more feedback given, which in turn results in
+more improvements, even more motivation to give feedback, and so on.
 
 ### Retrospective format
 
