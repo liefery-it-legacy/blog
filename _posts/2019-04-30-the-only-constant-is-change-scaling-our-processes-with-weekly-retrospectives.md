@@ -28,11 +28,11 @@ Our core two rules are extremely simple:
 2. run weekly retrospectives
 
 The first rule makes sure that we only create solutions for the problems we
-actually have. If things are starting to get a bit messy and disorganized, you
-notice it. Let it continue for a few weeks, and everybody starts to understand
-the problem, because everybody has a chance to feel the pain. The whole
-discussion changes now to finding a very specific solution for a very specific
-problem that impacts directly most of the people.
+actually have. If things are starting to get a bit messy and disorganized,
+people quickly notice the issue. Something is hampering their productivity
+right now, so they have both a good understanding of the problem and the
+motivation to solve it. We're not creating processes for an abstract future,
+we're only doing as much as need in the concrete present.
 
 The second rule provides space to give feedback. It's important for us to do it
 on a regular basis. This reduces the barrier to share your thoughts as there's
