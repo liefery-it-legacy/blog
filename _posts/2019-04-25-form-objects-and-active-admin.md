@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Form Objects and Active Admin: There is a way!"
-date: 25-04-2019
+date: 03-06-2019
 author: Tam Eastley and Irmela Göhl
 tags: active admin form objects ruby inherited resources
-excerpt:
+excerpt: We want to move towards using more form objects in our code base, but we first had to properly integrate them with Active Admin. Learn how we did it in this post.
 ---
 
 We introduced Form Objects into our code base about a year ago. We have a handful of them, but we realized that despite being similar, they're all implemented in slightly different ways. We'd like to convert more of our code into Form Objects, but we first thought it would be a good idea to take a look at the ones we have and try to streamline them a bit. Refactoring seemed easy enough, but there's one issue to take into consideration, we use [Active Admin](https://activeadmin.info/).
@@ -15,7 +15,7 @@ Active Admin is great for quickly putting together simple CRUD based user interf
 
 ### What are we going to talk about?
 
-There are a few different ways to use Form Objects, and they correspond to your controller actions: `new/create`, and `edit/update`. This blogpost will focus on Form Objects that use the `new` and `create` actions. In the future we hope to publish some more blogposts about `edit/update`, as well as Form Objects with nested resources. We are also assuming you already know what a Form Object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
+There are a few different ways to use Form Objects, and they correspond to your controller actions: `new/create`, and `edit/update`. This blogpost will focus on Form Objects that use the `new` and `create` actions. In the future we hope to publish some more blogposts about `edit/update`, as well as Form Objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
 
 ### A quick example
 
@@ -49,7 +49,7 @@ ActiveAdmin.register Issue do
 end
 ```
 
- We've had to add some "fake" validations in our `create` method in order to make sure the `Issue` has a description and short description. This is only needed when creating a new `Issue` via the UI. We don't want to add model validations because maybe we don't care if all of our old issues have descriptions, or maybe this isn't needed when creating an issue via the Api. When you see something like this happening, it's a good use case for a Form Object.
+ We've had to add some "fake" validations in our `create` method in order to make sure the `Issue` has a description and short description. This is only needed when creating a new `Issue` via the UI. We don't want to add model validations because maybe we don't care if all of our old issues have descriptions, or maybe this isn't needed when creating an issue via the Api. When you see something like this happening, it's a good use case for a form object.
 
 
 
@@ -63,7 +63,7 @@ One of Active Admin's strong points is drying up your controllers. If you're jus
 
 #### Using build_new_resource
 
-In a standard Rails project that uses Form Objects, you are able to just define and instantiate your Form Object in the `new` and `create` actions of your controller. However, as we've just learned, Inherited Resources gives you all of these controller actions already, so you can either overwrite them and include your Form Object in them, or instead you can _just_ overwrite Active Admin's `build_new_resource` method. This is what we are doing and an example of how we refactored our controllers to incorporate Form Objects:
+In a standard Rails project that uses Form Objects, you are able to just define and instantiate your form object in the `new` and `create` actions of your controller. However, as we've just learned, Inherited Resources gives you all of these controller actions already, so you can either overwrite them and include your form object in them, or instead you can _just_ overwrite Active Admin's `build_new_resource` method. This is what we are doing and an example of how we refactored our controllers to incorporate Form Objects:
 
 ```ruby
 
@@ -82,7 +82,7 @@ ActiveAdmin.register Issue do
     end
 
     def build_new_resource
-      # This is our Form Object and it will handle our validations
+      # This is our form object and it will handle our validations
       IssueForm.new(issue_params)
     end
 
@@ -93,13 +93,13 @@ ActiveAdmin.register Issue do
 end
 ```
 
-Doing this makes sure your `new` and `create` actions provided by Inherited Resources are using your Form Object. [According to the docs](https://github.com/activeadmin/activeadmin/blob/master/lib/active_admin/resource_controller/data_access.rb#L126), this method "uses the method_for_build provided by inherited resources". [The Inherited Resources docs](https://github.com/activeadmin/inherited_resources/blob/master/lib/inherited_resources/base_helpers.rb#L188) say that `method_for_build` "returns the appropriated method to build the resource". A `resource` here is the object you're handling in your in your controller, aka, your Form Object.
+Doing this makes sure your `new` and `create` actions provided by Inherited Resources are using your form object. [According to the docs](https://github.com/activeadmin/activeadmin/blob/master/lib/active_admin/resource_controller/data_access.rb#L126), this method "uses the method_for_build provided by inherited resources". [The Inherited Resources docs](https://github.com/activeadmin/inherited_resources/blob/master/lib/inherited_resources/base_helpers.rb#L188) say that `method_for_build` "returns the appropriated method to build the resource". A `resource` here is the object you're handling in your in your controller, aka, your form object.
 
 #### Handling your params
 
-So you've overwritten `build_new_resource` and you're ready to submit your form, but what happens to all your params? We need to pass them to your Form Object.
+So you've overwritten `build_new_resource` and you're ready to submit your form, but what happens to all your params? We need to pass them to your form object.
 
-Prior to our refactoring, we had handled our params differently across a few of our Form Object controllers. As you can see, in some places we were using `ActionController::Parameters#permit`, in some places we were using Active Admin's `permit_params`, in another place were were just accessing keys from the `params` hash, and somewhere else we were using Active Admin's `resource_params`.
+Prior to our refactoring, we had handled our params differently across a few of our form object controllers. As you can see in the examples below, in some places we were using `ActionController::Parameters#permit`, in some places we were using Active Admin's `permit_params`, in another place were were just accessing keys from the `params` hash, and somewhere else we were using Active Admin's `resource_params`.
 
 
 Accessing params directly from the params hash:
@@ -160,7 +160,7 @@ ActiveAdmin.register Issue do
 end
 ```
 
-Using A`ctionController:Parameters#permit`:
+Using `ActionController:Parameters#permit`:
 ```ruby
 ActiveAdmin.register Issue do
   belongs_to :project
@@ -192,7 +192,7 @@ ActiveAdmin.register Issue do
 end
 ```
 
-We were obviously doing this so many different ways, and everytime we added a new Form Object we had to struggle with which never-really-defined guideline to follow.
+We were obviously doing this so many different ways, and everytime we added a new form object we had to struggle with which never-really-defined guideline to follow.
 After some experimentation we decided to embrace, instead of fight, Active Admin, and came up with the following solution.
 
 ```ruby
@@ -225,16 +225,24 @@ and we were handling both `new` and `create` actions. This solution was easily i
 
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/BpRyocAi6VDBFol4bj" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/foxtv-BpRyocAi6VDBFol4bj">via GIPHY</a></p>
 
+### What we learned
+
 In the process of figuring this out, we got super familiar with `permit_params`. When you add it to the top of your Active Admin controller, this defines for you a `permitted_params` method which returns your params to you as an `ActionController::Parameters` object. Interestingly, `permitted_params` comes from Inherited Resources. [According to the docs](https://github.com/activeadmin/inherited_resources#strong-parameters):
 
 > If your controller defines a method named `permitted_params`, InheritedResources
 will call it where it would normally call params.
 
-This is yet another place where Active Admin and Inherited Resources are heavily intertwined.
+Sometimes we weren't using `permit_params`, but using this helper was a big step in allowing us to refactor everything nicely and make our controllers super clear. This is yet another place where Active Admin and Inherited Resources are heavily intertwined.
 
-We also had to keep in mind that `build_new_resource` is used both for the `new` and the `create` action we need to be able handle a case where params are present, and where they are not.
+We also had to keep in mind that `build_new_resource` is used both for the `new` and the `create` action, so we need to be able handle a case where params are present, and where they are not.
 
-We also spent some time looking at Inherited Resource's `resource_params` method, which returns the permitted parameters in an array (ex: `[ActionController::Parameters{"name" => "Amy Santiago", "email" => "brooklyn_99@example.com}]`). Without our gained knowledge of `permitted_params`, we were sometimes trying to access our params by calling `resource_params.first` which doesn't look or feel very nice. We're glad that we can get rid of that. [The docs also suggest overriding this](https://github.com/activeadmin/inherited_resources#strong-parameters), but this seems unnecessary when using Active Admin's `permit_params` method.
+We also spent some time looking at Inherited Resource's `resource_params` method, which returns the permitted parameters in an array. For example:
+
+```ruby
+[ActionController::Parameters{"name" => "Amy Santiago", "email" => "brooklyn_99@example.com}]`)
+```
+
+ Without our gained knowledge of `permitted_params`, we were sometimes trying to access our params by calling `resource_params.first` which doesn't look or feel very nice. We're glad that we can get rid of that. [The docs also suggest overriding this](https://github.com/activeadmin/inherited_resources#strong-parameters), but this seems unnecessary when using Active Admin's `permit_params` method.
 
 ### Conclusion
 
