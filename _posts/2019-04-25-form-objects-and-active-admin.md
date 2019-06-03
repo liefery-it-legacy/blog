@@ -7,19 +7,21 @@ tags: active admin form objects ruby inherited resources
 excerpt: We want to move towards using more form objects in our code base, but we first had to properly integrate them with Active Admin. Learn how we did it in this post.
 ---
 
-We introduced Form Objects into our code base about a year ago. We have a handful of them, but we realized that despite being similar, they're all implemented in slightly different ways. We'd like to convert more of our code into Form Objects, but we first thought it would be a good idea to take a look at the ones we have and try to streamline them a bit. Refactoring seemed easy enough, but there's one issue to take into consideration, we use [Active Admin](https://activeadmin.info/).
+We introduced form objects into our code base about a year ago. We have a handful of them, but we realized that despite being similar, they're all implemented in slightly different ways. We'd like to convert more of our code into form objects, but we first thought it would be a good idea to take a look at the ones we have and try to streamline them a bit. Refactoring seemed easy enough, but there's one issue to take into consideration, we use [Active Admin](https://activeadmin.info/).
 
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/1isfHC4xV65mvjqGth" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/1isfHC4xV65mvjqGth">via GIPHY</a></p>
 
 Active Admin is great for quickly putting together simple CRUD based user interfaces, but as soon as your forms become more complex and more workflow based, things start to get tricky. Soon you'll find yourself with lots of form specific code in places it doesn't belong and things can quickly get out of hand.
 
-### What are we going to talk about?
+### Introduction
 
-There are a few different ways to use Form Objects, and they correspond to your controller actions: `new/create`, and `edit/update`. This blogpost will focus on Form Objects that use the `new` and `create` actions. In the future we hope to publish some more blogposts about `edit/update`, as well as Form Objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
+#### What are we going to talk about?
 
-### A quick example
+This blogpost will focus on how to implement form objects with Active Admin. There are a few different ways to use them, and they correspond to your controller actions: `new/create`, and `edit/update`. We're just going to take a look at the `new` and `create` actions for now. In the future we hope to publish some more blogposts about `edit/update`, as well as form objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
 
-This Active Admin controller is pretty representative of a lot of the controllers in our code base.
+#### Why make the switch?
+
+One of the reasons why we wanted to make the switch to form objects was because we had a few controllers like this one:
 
 ```ruby
 ActiveAdmin.register Issue do
@@ -49,21 +51,28 @@ ActiveAdmin.register Issue do
 end
 ```
 
- We've had to add some "fake" validations in our `create` method in order to make sure the `Issue` has a description and short description. This is only needed when creating a new `Issue` via the UI. We don't want to add model validations because maybe we don't care if all of our old issues have descriptions, or maybe this isn't needed when creating an issue via the Api. When you see something like this happening, it's a good use case for a form object.
+We've had to add some "fake" validations in our `create` method in order to make sure the `Issue` has a description and short description. This is only needed when creating a new `Issue` via the UI. We don't want to add model validations because maybe we don't care if all of our old issues have descriptions, or maybe this isn't needed when creating an issue via the Api. Controllers like this are annoying to test (especially as they grow) and are just begging to be turned into form objects, which are nice and compact and can be tested easily.
 
+Another reason we wanted to make the switch is because we don't like using [`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for). In the words of one of our colleagues, `accepts_nested_attributes_for` isn't nice to use because
 
+> it adds methods to the model, which only serve to help with the forms. But why should a model care about forms?
 
-### What is Active Admin doing?
+If we switch to form objects, we can get rid of this and can still persist multiple records in one form.
 
-One of the big problems we ran up against when trying to implement Form Objects was weeding out what is Active Admin and what is actually something else.
-
-One of Active Admin's strong points is drying up your controllers. If you're just using all the basic actions in your controller and you're not doing anything beyond that, you don't actually have to write any of those actions. Your controller will be essentially empty. However, this magic doesn't come from Active Admin. It comes from [Inherited Resources](https://github.com/activeadmin/inherited_resources) which is a dependency of Active Admin and which is also now maintained by the Active Admin organization. And if you want to use Form Objects with Active Admin, you might find yourself digging through the Inherited Resources source code every once in a while. Fortunately, Active Admin's methods have inline documentation and (at least in our case) explicitly tell you when they are using Inherited Resources.
+Our old colleague, Tobi Pfeiffer, gave a great talk at Ruby on Ice and touched on form objects and when they're a good idea. [His talk is well worth a watch (also because there's bunny pictures).](https://rubyonice.com/speakers/tobias_pfeiffer)
 
 ### Let's get started
 
+#### What is Active Admin doing?
+
+One of the big problems we initially ran up against when trying to implement form objects was weeding out what is Active Admin and what is actually something else.
+
+One of Active Admin's strong points is drying up your controllers. If you're just using all the basic actions in your controller and you're not doing anything beyond that, you don't actually have to write any of those actions. Your controller will be essentially empty. However, this magic doesn't come from Active Admin. It comes from [Inherited Resources](https://github.com/activeadmin/inherited_resources) which is a dependency of Active Admin and which is also now maintained by the Active Admin organization. And if you want to use form objects with Active Admin, you might find yourself digging through the Inherited Resources source code every once in a while. Fortunately, Active Admin's methods have inline documentation and (at least in our case) explicitly tell you when they are using Inherited Resources.
+
+
 #### Using build_new_resource
 
-In a standard Rails project that uses Form Objects, you are able to just define and instantiate your form object in the `new` and `create` actions of your controller. However, as we've just learned, Inherited Resources gives you all of these controller actions already, so you can either overwrite them and include your form object in them, or instead you can _just_ overwrite Active Admin's `build_new_resource` method. This is what we are doing and an example of how we refactored our controllers to incorporate Form Objects:
+In a standard Rails project that uses form objects, you are able to just define and instantiate your form object in the `new` and `create` actions of your controller. However, as we've just learned, Inherited Resources gives you all of these controller actions already, so you can either overwrite them and include your form object in them, or instead you can _just_ overwrite Active Admin's `build_new_resource` method. This is what we are doing and an example of how we refactored our controllers to incorporate form objects:
 
 ```ruby
 
@@ -99,7 +108,7 @@ Doing this makes sure your `new` and `create` actions provided by Inherited Reso
 
 So you've overwritten `build_new_resource` and you're ready to submit your form, but what happens to all your params? We need to pass them to your form object.
 
-Prior to our refactoring, we had handled our params differently across a few of our form object controllers. As you can see in the examples below, in some places we were using `ActionController::Parameters#permit`, in some places we were using Active Admin's `permit_params`, in another place were were just accessing keys from the `params` hash, and somewhere else we were using Active Admin's `resource_params`.
+Prior to our refactoring, we had handled our params differently across a few of our form object controllers. As you can see in the examples below, in some places we were using `ActionController::Parameters#permit`, in some places we were using Active Admin's `permit_params`, in another place were were just accessing keys from the `params` hash, and somewhere else we were using Active Admin's `resource_params` (this will be discussed below).
 
 
 Accessing params directly from the params hash:
@@ -246,5 +255,5 @@ We also spent some time looking at Inherited Resource's `resource_params` method
 
 ### Conclusion
 
-After making a plan and discussing refactoring our Form Objects, we were surprised to see that we hadn't touched our Form Objects at all! We'd just touched our controllers and how Active Admin integrates Form Objects. This means that our Form Objects are seriously decoupled from Active Admin, which is great for testing, and also if we someday decide to move parts of our code away from Active Admin.
+After making a plan and discussing refactoring our form objects, we were surprised to see that we hadn't touched our form objects at all! We'd just touched our controllers and how Active Admin integrates form objects. This means that our form objects are seriously decoupled from Active Admin, which is great for testing, and also if we someday decide to move parts of our code away from Active Admin.
 
