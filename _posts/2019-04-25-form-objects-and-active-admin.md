@@ -201,8 +201,7 @@ ActiveAdmin.register Issue do
 end
 ```
 
-We were obviously doing this so many different ways, and everytime we added a new form object we had to struggle with which never-really-defined guideline to follow.
-After some experimentation we decided to embrace, instead of fight, Active Admin, and came up with the following solution.
+We were obviously doing this so many different ways, and everytime we added a new form object we had to struggle with which never-really-defined guideline to follow. After some experimentation we decided to embrace, instead of fight, Active Admin, and came up with the following solution.
 
 ```ruby
 ActiveAdmin.register Issue do
