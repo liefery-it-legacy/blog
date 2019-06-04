@@ -1,23 +1,23 @@
 ---
 layout: post
 title: "Form Objects and Active Admin: There is a way!"
-date: 03-06-2019
+date: 04-06-2019
 author: Tam Eastley and Irmela Göhl
-tags: active admin form objects ruby inherited resources
+tags: active admin form objects ruby inherited resources rails
 excerpt: We want to move towards using more form objects in our code base, but we first had to properly integrate them with Active Admin. Learn how we did it in this post.
 ---
 
-We introduced form objects into our code base about a year ago. We have a handful of them, but we realized that despite being similar, they're all implemented in slightly different ways. We'd like to convert more of our code into form objects, but we first thought it would be a good idea to take a look at the ones we have and try to streamline them a bit. Refactoring seemed easy enough, but there's one issue to take into consideration, we use [Active Admin](https://activeadmin.info/).
+We introduced form objects into our code base about a year ago. We have a handful of them, but we realized that despite being similar, they're all implemented in slightly different ways. We'd like to convert more of our code into form objects, but we first thought it would be a good idea to take a look at the ones we have and try to streamline them a bit. Refactoring seemed easy enough, but there's one issue to take into consideration - we use [Active Admin](https://activeadmin.info/).
 
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/1isfHC4xV65mvjqGth" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/1isfHC4xV65mvjqGth">via GIPHY</a></p>
 
-Active Admin is great for quickly putting together simple CRUD based user interfaces, but as soon as your forms become more complex and more workflow based, things start to get tricky. Soon you'll find yourself with lots of form specific code in places it doesn't belong and things can quickly get out of hand.
+Active Admin is great for quickly putting together simple CRUD based user interfaces, but as soon as your forms become more complex, things start to get tricky. Soon you'll find yourself with lots of form-specific code in places it doesn't belong and things can quickly get out of hand.
 
 ### Introduction
 
 #### What are we going to talk about?
 
-This blogpost will focus on how to implement form objects with Active Admin. There are a few different ways to use them, and they correspond to your controller actions: `new/create`, and `edit/update`. We're just going to take a look at the `new` and `create` actions for now. In the future we hope to publish some more blogposts about `edit/update`, as well as form objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
+We using using Rails 5.2 and Active Admin 2.0. This blogpost will focus on how to implement form objects with Active Admin. There are a few different ways to use them, and they correspond to your controller actions: `new/create`, and `edit/update`. We're just going to take a look at the `new` and `create` actions for now. In the future we hope to publish some more blogposts about `edit/update`, as well as form objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
 
 #### Why make the switch?
 
@@ -53,9 +53,9 @@ end
 
 We've had to add some "fake" validations in our `create` method in order to make sure the `Issue` has a description and short description. This is only needed when creating a new `Issue` via the UI. We don't want to add model validations because maybe we don't care if all of our old issues have descriptions, or maybe this isn't needed when creating an issue via the Api. Controllers like this are annoying to test (especially as they grow) and are just begging to be turned into form objects, which are nice and compact and can be tested easily.
 
-Another reason we wanted to make the switch is because we don't like using [`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for). In the words of one of our colleagues, `accepts_nested_attributes_for` isn't nice to use because
+Another reason we wanted to make the switch is because we don't like using [`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for). In the words of one of our colleagues, `accepts_nested_attributes_for` isn't nice to use because:
 
-> it adds methods to the model, which only serve to help with the forms. But why should a model care about forms?
+> it adds methods to the model which only serve to help with the forms. But why should a model care about forms?
 
 If we switch to form objects, we can get rid of this and can still persist multiple records in one form.
 
@@ -108,7 +108,7 @@ Doing this makes sure your `new` and `create` actions provided by Inherited Reso
 
 So you've overwritten `build_new_resource` and you're ready to submit your form, but what happens to all your params? We need to pass them to your form object.
 
-Prior to our refactoring, we had handled our params differently across a few of our form object controllers. As you can see in the examples below, in some places we were using `ActionController::Parameters#permit`, in some places we were using Active Admin's `permit_params`, in another place were were just accessing keys from the `params` hash, and somewhere else we were using Active Admin's `resource_params` (this will be discussed below).
+Prior to our refactoring, we had handled our params differently across a few of our form object controllers. As you can see in the examples below, in some places we were using `ActionController::Parameters#permit`, in some places we were using Active Admin's `permit_params`, in another place we were just accessing keys from the `params` hash, and somewhere else we were using Active Admin's `resource_params` (this will be discussed below).
 
 
 Accessing params directly from the params hash:
@@ -201,7 +201,7 @@ ActiveAdmin.register Issue do
 end
 ```
 
-We were obviously doing this so many different ways, and everytime we added a new form object we had to struggle with which never-really-defined guideline to follow. After some experimentation we decided to embrace, instead of fight, Active Admin, and came up with the following solution.
+We were obviously doing this so many different ways, and every time we added a new form object we had to struggle with which never-really-defined guideline to follow. After some experimentation we decided to embrace, instead of fight, Active Admin, and came up with the following solution.
 
 ```ruby
 ActiveAdmin.register Issue do
@@ -228,7 +228,7 @@ ActiveAdmin.register Issue do
 end
 ```
 
-With this solution we could remove a lot of code, we were using Active Admin's built in behaviour,
+With this solution we could remove a lot of code, we were using Active Admin's built-in behaviour,
 and we were handling both `new` and `create` actions. This solution was easily implemented across all our controllers.
 
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/BpRyocAi6VDBFol4bj" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/foxtv-BpRyocAi6VDBFol4bj">via GIPHY</a></p>
@@ -242,7 +242,7 @@ will call it where it would normally call params.
 
 Sometimes we weren't using `permit_params`, but using this helper was a big step in allowing us to refactor everything nicely and make our controllers super clear. This is yet another place where Active Admin and Inherited Resources are heavily intertwined.
 
-We also had to keep in mind that `build_new_resource` is used both for the `new` and the `create` action, so we need to be able handle a case where params are present, and where they are not.
+We also had to keep in mind that `build_new_resource` is used both for the `new` and the `create` action, so we need to be able to handle cases where params are present, and where they are not.
 
 We also spent some time looking at Inherited Resource's `resource_params` method, which returns the permitted parameters in an array. For example:
 
