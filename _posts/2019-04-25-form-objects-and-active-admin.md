@@ -53,13 +53,13 @@ end
 
 We've had to add some "fake" validations in our `create` method in order to make sure the `Issue` has a description and short description. This is only needed when creating a new `Issue` via the UI. We don't want to add model validations because maybe we don't care if all of our old issues have descriptions, or maybe this isn't needed when creating an issue via the Api. Controllers like this are annoying to test (especially as they grow) and are just begging to be turned into form objects, which are nice and compact and can be tested easily.
 
-Another reason we wanted to make the switch is because we don't like using [`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for). In the words of one of our colleagues, `accepts_nested_attributes_for` isn't nice to use because:
+Another reason we wanted to make the switch is because we don't like using [`accepts_nested_attributes_for`](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for). In the words of one of our colleagues, `accepts_nested_attributes_for`:
 
-> it adds methods to the model which only serve to help with the forms. But why should a model care about forms?
+> [...] adds methods to the model which only serve to help with the forms. But why should a model care about forms?
 
-If we switch to form objects, we can get rid of this and can still persist multiple records in one form.
+Moving to form objects enables us to get rid of this and we can can still persist multiple records in one form.
 
-Our old colleague, Tobi Pfeiffer, gave a great talk at Ruby on Ice and touched on form objects and when they're a good idea. [His talk is well worth a watch (also because there's bunny pictures).](https://rubyonice.com/speakers/tobias_pfeiffer)
+Our old colleague, [Tobi Pfeiffer](https://twitter.com/PragTob), gave a great talk at Ruby on Ice and touched on form objects and when they're a good idea. [His talk is well worth a watch (also because there's bunny pictures).](https://rubyonice.com/speakers/tobias_pfeiffer)
 
 ### Let's get started
 
@@ -89,6 +89,8 @@ ActiveAdmin.register Issue do
         failure.html { render :new }
       end
     end
+
+    private
 
     def build_new_resource
       # This is our form object and it will handle our validations
@@ -124,6 +126,8 @@ ActiveAdmin.register Issue do
       # this doesn't change
     end
 
+    private
+
     def build_new_resource
       # this doesn't change
     end
@@ -155,6 +159,8 @@ ActiveAdmin.register Issue do
       # this doesn't change
     end
 
+    private
+
     def build_new_resource
       # this doesn't change
     end
@@ -182,6 +188,8 @@ ActiveAdmin.register Issue do
       # this doesn't change
     end
 
+    private
+
     def build_new_resource
       # this doesn't change
     end
@@ -195,7 +203,7 @@ ActiveAdmin.register Issue do
                         {}
                       end
       default_params = { project: parent }
-      issue_params.merge(default_params)
+      default_params.merge(issue_params)
     end
   end
 end
@@ -214,6 +222,8 @@ ActiveAdmin.register Issue do
     def create
       # this doesn't change
     end
+
+    private
 
     def build_new_resource
       # this doesn't change
