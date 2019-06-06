@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Form Objects and Active Admin: There is a way!"
-date: 04-06-2019
+date: 06-06-2019
 author: Tam Eastley and Irmela Göhl
 tags: active admin form objects ruby inherited resources rails
 excerpt: We want to move towards using more form objects in our code base, but we first had to properly integrate them with Active Admin. Learn how we did it in this post.
