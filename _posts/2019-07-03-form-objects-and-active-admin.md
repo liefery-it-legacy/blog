@@ -138,8 +138,8 @@ ActiveAdmin.register Issue do
                         short_description: params[:issue_form][:short_description],
                         description:       params[:issue_form][:description]
                       }
-      default_params = { project: parent }
-      default_params.merge(issue_params)
+      additional_params = { project: parent }
+      additional_params.merge(issue_params)
     end
   end
 end
@@ -166,10 +166,10 @@ ActiveAdmin.register Issue do
     end
 
     def issue_params
-      default_params = { project: parent }
+      additional_params = { project: parent }
       issue_params   = resource_params.first
 
-      default_params.merge(issue_params)
+      additional_params.merge(issue_params)
     end
   end
 end
@@ -202,8 +202,8 @@ ActiveAdmin.register Issue do
                       else
                         {}
                       end
-      default_params = { project: parent }
-      default_params.merge(issue_params)
+      additional_params = { project: parent }
+      additional_params.merge(issue_params)
     end
   end
 end
@@ -230,9 +230,9 @@ ActiveAdmin.register Issue do
     end
 
     def issue_params
-      default_params = { project: parent }
+      additional_params = { project: parent }
 
-      (permitted_params[:issue_form] || {}).merge(default_params)
+      (permitted_params[:issue_form] || {}).merge(additional_params)
     end
   end
 end
