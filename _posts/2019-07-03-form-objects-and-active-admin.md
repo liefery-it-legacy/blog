@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Form Objects and Active Admin: There is a way!"
-date: 06-12-2019
+date: 03-07-2019
 author: Tam Eastley and Irmela Göhl
 tags: active admin form objects ruby inherited resources rails
 excerpt: We want to move towards using more form objects in our code base, but we first had to properly integrate them with Active Admin. Learn how we did it in this post.
@@ -17,7 +17,7 @@ Active Admin is great for quickly putting together simple CRUD based user interf
 
 #### What are we going to talk about?
 
-We using using Rails 5.2 and Active Admin 2.0. This blogpost will focus on how to implement form objects with Active Admin. There are a few different ways to use them, and they correspond to your controller actions: `new/create`, and `edit/update`. We're just going to take a look at the `new` and `create` actions for now. In the future we hope to publish some more blogposts about `edit/update`, as well as form objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
+We are using using Rails 5.2 and Active Admin 2.0. This blogpost will focus on how to implement form objects with Active Admin. There are a few different ways to use them, and they correspond to your controller actions: `new/create`, and `edit/update`. We're just going to take a look at the `new` and `create` actions for now. In the future we hope to publish some more blogposts about `edit/update`, as well as form objects with nested resources. We are also assuming you already know what a form object is. If you don't, [this is a good (albeit a slightly out of date) introduction](https://thoughtbot.com/blog/activemodel-form-objects).
 
 #### Why make the switch?
 
@@ -59,13 +59,13 @@ Another reason we wanted to make the switch is because we don't like using [`acc
 
 Moving to form objects enables us to get rid of this and we can can still persist multiple records in one form.
 
-Our old colleague, [Tobi Pfeiffer](https://twitter.com/PragTob), gave a great talk at Ruby on Ice and touched on form objects and when they're a good idea. [His talk is well worth a watch (also because there's bunny pictures).](https://rubyonice.com/speakers/tobias_pfeiffer)
+Our old colleague, [Tobi Pfeiffer](https://twitter.com/PragTob), gave a great talk at Ruby on Ice and touched on form objects and when they're a good idea. [His talk is well worth a watch (also because of the bunny pictures).](https://rubyonice.com/speakers/tobias_pfeiffer)
 
 ### Let's get started
 
 #### What is Active Admin doing?
 
-One of the big problems we initially ran up against when trying to implement form objects was weeding out what is Active Admin and what is actually something else.
+One of the big problems we initially ran up against when trying to implement form objects was weeding out what is Active Admin behaviour and what is actually something else.
 
 One of Active Admin's strong points is drying up your controllers. If you're just using all the basic actions in your controller and you're not doing anything beyond that, you don't actually have to write any of those actions. Your controller will be essentially empty. However, this magic doesn't come from Active Admin. It comes from [Inherited Resources](https://github.com/activeadmin/inherited_resources) which is a dependency of Active Admin and which is also now maintained by the Active Admin organization. And if you want to use form objects with Active Admin, you might find yourself digging through the Inherited Resources source code every once in a while. Fortunately, Active Admin's methods have inline documentation and (at least in our case) explicitly tell you when they are using Inherited Resources.
 
