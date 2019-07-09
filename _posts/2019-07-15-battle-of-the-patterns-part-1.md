@@ -225,6 +225,6 @@ So we've seen that the selector pattern dictates wanting to access values at any
 We must decide to either have full easy access to the state and accept full responsibility for nulls (selector pattern)
 or limited access to the state and have no responsibility for nulls (option pattern).
 
-So are we seconds away from redux/OptionType eutopia or are we hammering a square peg into a round hole? All patterns come with trade offs. Perhaps it’s a level of indirection, high learning curve, boilerplating code, etc. If there’s no way to get the benefits full benefits then removing a pattern is also an option. 
+So are we seconds away from redux/OptionType eutopia or are we hammering a square peg into a round hole? All patterns come with trade offs. Perhaps it’s a level of indirection, high learning curve, boilerplating code, etc. If there’s no way to get the full benefits then removing a pattern is also an option. 
 
 Join us after our tech design meeting to find out what we choose in part 2 - a shiny new solution!
