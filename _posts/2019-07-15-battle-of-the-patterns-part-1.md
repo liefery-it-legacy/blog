@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Battle of the patterns part 1"
+title: "Battle of the patterns: part 1"
 date: 4-07-2019
 author: Ali Churcher
 tags: flutter flutter_redux redux optiontypes
@@ -217,12 +217,14 @@ This pattern fits well with our option types pattern, but means we must
 have selectors that return values that are not actually in the state object - namely errors.
 
 
-## Accept defeat?
+## What next?
 
-So we've seen that the selector pattern dictates wanting to access values at any time in the lifecycle of the application, while the Option pattern encourages using application knowledge to only ask for information when it makes sense.
-We must decide to either have full easy access to the state and accept full responsibility for nulls (selector pattern)
-or limited access to the state and have no responsibility for nulls (option pattern).
+So we've seen two very different patterns. The selector pattern - which values access to all application state at any time in the lifecycle of the application, and the Option pattern - which encourages using application knowledge to only ask for information when it makes sense, for example only asking for the session's userName if we have a session.
 
-So are we seconds away from redux/OptionType utopia or are we hammering a square peg into a round hole? All patterns come with trade-offs. Perhaps it’s a level of indirection, high learning curve, boilerplating code, etc. If there’s no way to get the full benefits then removing a pattern is also an option. 
+We must decide to either have full easy access to the state and accept full responsibility for nulls and other 'empty' values such as `''` (selector pattern)
+or limited access to the state and have no responsibility for nulls (Option pattern).
 
+ We know that patterns come with trade-offs. Sometimes it’s an added level of indirection, high learning curve, or boilerplating code. We have now learnt that sometimes the trade off is having to give up an existing pattern.
+
+So are we seconds away from Redux/OptionType utopia or will we need to accept defeat and cut one from our application?
 Join us after our tech design meeting to find out what we choose in part 2 - a shiny new solution!
