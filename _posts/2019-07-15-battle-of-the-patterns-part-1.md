@@ -12,16 +12,16 @@ excerpt: "Discovering an incompatibility between Redux Selector pattern and Opti
 The members of Liefery's Flutter development team come from a wide range of backgrounds - from React and Elm to Java and Scala. While rewriting our mobile application in Flutter we were able to pick and chose different design patterns that we knew from experience were good for a particular problem. Two of the patterns we chose were well established and solved clear problems that we had. After some time however, we found ourselves battling with these patterns, or rather, these patterns battling each other. When we needed to write code that bypassed the best practices of one pattern to satisfy the other we realized we needed to rethink our design. In this blog post I want to describe these two patterns, how they are currently conflicting in our state management code, and some ideas that the wider team has discussed for improvements. I hope that part 2 of this blog post will show the approach we took solving this problem and creating a slick new state management design.  
 
 ## The two patterns in question: Redux Selectors and Option Types
-Background information: we use [flutter_redux](https://pub.dev/packages/flutter_redux) for our state management. It allows us to centralise our application state in a single place and control how it is updated. It behaves mostly like the original Redux from JavaScript, and a very nice explanation of the main concepts can be found [here.](https://redux.js.org/introduction/three-principles)
+Background information: we use [flutter_redux](https://pub.dev/packages/flutter_redux) for our state management. It allows us to centralize our application state in a single place and control how it is updated. It behaves mostly like the original Redux from JavaScript, and a very nice explanation of the main concepts can be found [here.](https://redux.js.org/introduction/three-principles)
 
 ### Redux Selectors
 _A pattern of writing helper functions that take the state object and return a specific part of the state._
 
-When using flutter_redux, all  application state is stored in a single place - the state object. Rather than access this information by being aware of its structure, we encapsulate away this information and access the data with selectors. This provides the benefit of allowing the underlying state structure to change without having to change all our code.
+When using flutter_redux, all application state is stored in a single place - the state object. Rather than access this information by being aware of its structure, we encapsulate away this information and access the data with selectors. This provides the benefit of allowing the underlying state structure to change without having to change all our code.
 
 Without selectors:
 ```dart
-cont int count = state.session.user.orders.unpaid.length  // directly access the state field
+const int count = state.session.user.orders.unpaid.length  // directly access the state field
 ```
 
 With Selectors:
@@ -35,12 +35,12 @@ int getNumberUnpaidBills(state) {
 ```
 
 ### Option Types
-_A way to remove nulls by  by providing a type to represent an optional/unknown value_
+_A way to remove nulls by providing a type to represent an optional/unknown value_
 
-Option types are a language feature implemented in many function languages such as Haskell (called `maybe`), Rust, Swift and Scala. Our project uses a Dart implementation of Scala Option Types. Option types provide a safe way to handle the absense
+Option types are a language feature implemented in many function languages such as Haskell (called `maybe`), Rust, Swift and Scala. Our project uses a Dart implementation of Scala Option Types. Option types provide a safe way to handle the absence
 of a value. The concept of null/nil/undefined is completely avoided and replaced with a type that is optional - i.e. a value that maybe present or not.
 
-For example if we have a variable `comment` that might be present or not, we can model it like this:
+For example, if we have a variable `comment` that might be present or not, we can model it like this:
 
 ```dart
 const Option<String> comment;
@@ -55,7 +55,7 @@ If the value is absent then `comment` holds an instance of `None`.
 ```dart
 comment = None();
 ``` 
-Implemented correctly, OptionTypes mean that you should never be surprised by a null value or have any errors caused by that. The type forces you to handle both the presense and absence of the value at compile time. 
+Implemented correctly, OptionTypes mean that you should never be surprised by a null value or have any errors caused by that. The type forces you to handle both the presence and absence of the value at compile time. 
 
 ## Where the problem starts
 We encountered some situations where OptionTypes and Selectors do not play nicely together. Let’s look at an example involving one important part of our application state – the session. 
@@ -68,7 +68,7 @@ class SessionState {
   final List<Order> userOrders;
 }
 ```
-The session is present in the application state, the centralised state object that we access and update with Redux.
+The session is present in the application state, the centralized state object that we access and update with Redux.
 
 ```dart
 Class state  {
@@ -81,7 +81,7 @@ Class state  {
 
 In this design, there is no session when the user is logged out. When the user logs in we create a session object that contains information about the currently logged in user, and their orders. This made session a prime candidate for using Option type, which we have done with  Option<SessionState> 
 
-When we go to use this session we handle it with a Fold function
+When we go to use this session, we handle it with a Fold function
 that takes 2 callbacks - one for if the option value is None() and one for if there is a value (Some) 
 
 ```dart
@@ -100,7 +100,7 @@ String getLoggedInUserName(state){
    return state.session.userName;
 }  
 ```
-however this code wouldnt compile yet. As session is a  Option<Session>
+however, this code wouldn't compile yet. As session is an Option<Session>
 We must handle the case where the value is None:
 
 ```dart
@@ -138,13 +138,13 @@ Class state  {
 ```
 
 we can see that if session is not there, then the concept of ‘session.username’ does not even exist. It’s not None() it’s just not there at all!
-This design also means added hassle of dealing with the None() scenario of an OptinType in situations when we know for sure that the value is present - in this case when the user is logged in. 
+This design also means added hassle of dealing with the None() scenario of an OptionType in situations when we know for sure that the value is present - in this case when the user is logged in. 
 
 
 ## Second fix idea 
-_Favour seletor pattern over option when the patterns clashed_
+_Favour selector pattern over option when the patterns clashed_
 
-To better fit with the fact that our selectors returned empty strings etc, we remodeled our state to match. Rather than the session being an option type, we remodeled it as an object that was always present. When the user is logged out the session object has empty values. When the user is logged in the values are present. 
+To better fit with the fact that our selectors returned empty strings etc, we remodelled our state to match. Rather than the session being an option type, we remodelled it as an object that was always present. When the user is logged out the session object has empty values. When the user is logged in the values are present. 
 
 ```dart
 Class state  {
@@ -197,7 +197,7 @@ String getLoggedInUserName(SessionState session) =>
  session.userName;
 
 ```
-This restricts us to only ever calling this selector when the session exists, but it means we are guaranteed a non null return value. By passing something other than state however, we are no longer hiding away the state structure. For example if the state was refactored and session was renamed to `userDetails` and restructured, we would have to refactor every selector. We will have lost the main benefit of redux selectors – to encapsulate away the inner structure of the state object.
+This restricts us to only ever calling this selector when the session exists, but it means we are guaranteed a non-null return value. By passing something other than state however, we are no longer hiding away the state structure. For example if the state was refactored and session was renamed to `userDetails` and restructured, we would have to refactor every selector. We will have lost the main benefit of redux selectors – to encapsulate away the inner structure of the state object.
 
 #### Bonus idea:
 
@@ -225,6 +225,6 @@ So we've seen that the selector pattern dictates wanting to access values at any
 We must decide to either have full easy access to the state and accept full responsibility for nulls (selector pattern)
 or limited access to the state and have no responsibility for nulls (option pattern).
 
-So are we seconds away from redux/OptionType eutopia or are we hammering a square peg into a round hole? All patterns come with trade offs. Perhaps it’s a level of indirection, high learning curve, boilerplating code, etc. If there’s no way to get the full benefits then removing a pattern is also an option. 
+So are we seconds away from redux/OptionType utopia or are we hammering a square peg into a round hole? All patterns come with trade-offs. Perhaps it’s a level of indirection, high learning curve, boilerplating code, etc. If there’s no way to get the full benefits then removing a pattern is also an option. 
 
 Join us after our tech design meeting to find out what we choose in part 2 - a shiny new solution!
