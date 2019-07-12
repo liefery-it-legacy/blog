@@ -55,7 +55,7 @@ If the value is absent then `comment` holds an instance of `None`.
 ```dart
 comment = None();
 ``` 
-Implemented correctly, OptionTypes mean that you should never be surprised by a null value or have any errors caused by that. The type forces you to handle both the presence and absence of the value at compile time. 
+Implemented correctly, OptionTypes prevent the errors and surprises caused by unhandled nulls. The type forces you to handle both the presence and absence of the value at compile time. 
 
 ## Where the problem starts
 We encountered some situations where OptionTypes and Selectors do not play nicely together. Let’s look at an example involving one important part of our application state – the session. 
@@ -90,11 +90,11 @@ Route currentRoute = session.fold(
         (session) => userHomepage(session) // when session is Some
       ); 
 ```
-Here you can see if the value is None() we direct the user to the LoginScreen, and if we do have a session, the user can proceed straight to the userHomepage.
+Here you can see that if the value is None() we direct the user to the LoginScreen, and if we do have a session, the user can proceed straight to the userHomepage.
 
 
 ### Adding selectors into the mix
-We know from our definition that selectors take the application state and return the given state value. A selector to get the userName might be expected to look like this:
+Selectors take the full state and return the requested value. A selector to get the userName might look like this:
 ```dart
 String getLoggedInUserName(state){
    return state.session.userName;
@@ -110,7 +110,7 @@ String getLoggedInUserName (FlutteryState state) =>
       (session) => session.userName // if it exists return the userName
       );
 ```
-You can see if the session doesn’t exist we return an empty string.
+You can see that if the session doesn’t exist we return an empty string.
 
 _This is where our two patterns first clash_
 
