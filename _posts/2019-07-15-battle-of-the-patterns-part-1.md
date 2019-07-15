@@ -9,7 +9,7 @@ excerpt: "Discovering an incompatibility between Redux Selector pattern and Opti
 
 ## Introduction
 
-The members of Liefery's Flutter development team come from a wide range of backgrounds - from React and Elm to Java and Scala. While rewriting our mobile application in Flutter we were able to pick and chose different design patterns that we knew from experience were good for a particular problem. Two of the patterns we chose were well established and solved clear problems that we had. After some time however, we found ourselves battling with these patterns, or rather, these patterns battling each other. When we needed to write code that bypassed the best practices of one pattern to satisfy the other we realized we needed to rethink our design. In this blog post I want to describe these two patterns, how they are currently conflicting in our state management code, and some ideas that the wider team has discussed for improvements. I hope that part 2 of this blog post will describe the approach we end up taking to solve this problem and create a slick new state management design.  
+The members of Liefery's Flutter development team come from a wide range of backgrounds - from React and Elm to Java and Scala. While rewriting our mobile application in Flutter we were able to pick and chose different design patterns that we knew from experience were good for a particular problem. Two of the patterns we chose were well established and solved clear problems that we had. After some time however, we found ourselves battling with these patterns, or rather, these patterns battling each other. When we needed to write code that bypassed the best practices of one pattern to satisfy the other we realized we needed to rethink our design. In this blog post I want to describe 2 patterns that we are using in our codebase, how they are currently conflicting in our state management code, and some ideas that the wider team has discussed for improvements. I hope that part 2 of this blog post will describe the approach we end up taking to solve this problem and create a slick new state management design.  
 
 ## The two patterns in question: Redux Selectors and Option Types
 Background information: we use [flutter_redux](https://pub.dev/packages/flutter_redux) for our state management. It allows us to centralize our application state in a single place and control how it is updated. It behaves mostly like the original Redux from JavaScript, and a very nice explanation of the main concepts can be found [here.](https://redux.js.org/introduction/three-principles)
@@ -26,10 +26,10 @@ const int count = state.session.user.orders.unpaid.length  // directly access th
 
 With Selectors:
 ```dart
-const int count = getNumberUnpaidBills(state) // call a selector 
+const int count = getNumberOfUnpaidBills(state) // call a selector 
 ```
 ```dart
-int getNumberUnpaidBills(state) {
+int getNumberOfUnpaidBills(state) {
   return state.session.user.orders.unpaid.length  // selector implementation
 }  
 ```
