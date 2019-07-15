@@ -15,7 +15,7 @@ The members of Liefery's Flutter development team come from a wide range of back
 Background information: we use [flutter_redux](https://pub.dev/packages/flutter_redux) for our state management. It allows us to centralize our application state in a single place and control how it is updated. It behaves mostly like the original Redux from JavaScript, and a very nice explanation of the main concepts can be found [here.](https://redux.js.org/introduction/three-principles)
 
 ### Redux Selectors
-_A pattern of writing helper functions that take the full state object and return a specific part of the state._
+_A pattern of writing helper functions that take the entire state object and return a specific part of the state._
 
 When using flutter_redux, all application state is stored in a single place - the state object. Rather than access this information by being aware of its structure, we encapsulate away this information and access the data with selectors. This provides the benefit of allowing the underlying state structure to change without having to change all our code.
 
@@ -68,10 +68,10 @@ class SessionState {
   final List<Order> userOrders;
 }
 ```
-The session is present in the application state, the centralized state object that we access and update with Redux. Since a session only exists when a user is logged in, this variable was the perfect candidate to use an OptionType.
+The session is present in the application state, the centralized state object that we access and update with Redux. Since a session only exists when a user is logged in, this variable was a perfect candidate to use an OptionType.
 
 ```dart
-Class State  {
+class State  {
     final Option<SessionState> session; // Option Type
     String languageCode;
     final Route currentRoute;
@@ -93,7 +93,7 @@ You can see that these 2 callbacks allow us to direct the user to the LoginScree
 
 
 ### Adding selectors into the mix
-Selectors take the full state and return the requested value. A selector to get the userName might look like this:
+Selectors take the entire state and return the requested value. A selector to get the userName might look like this:
 ```dart
 String getLoggedInUserName(state) {
    return state.session.userName;
@@ -128,7 +128,7 @@ Option<String> getLoggedInUserName (FlutteryState state) =>
 The problem here is that this selector is not reflecting the true value in the state. If we look at the original state again:
 
 ```dart
-Class state  {
+class state  {
     final Option<SessionState> session;
     String langugeCode;
     final Route currentRoute;
@@ -145,7 +145,7 @@ _Favour selector pattern over option when the patterns clashed_
 To better fit with the fact that our selectors returned empty strings etc, we remodelled our state to match. Rather than the session being an option type, we remodelled it as an object that was always present. When the user is logged out the session object has empty values. When the user is logged in the values are present. 
 
 ```dart
-Class state  {
+class state  {
     final SessionState session; // previously was Option<SessionState> session
     String langugeCode;
     final Route currentRoute;
@@ -195,7 +195,7 @@ String getLoggedInUserName(SessionState session) =>
  session.userName;
 
 ```
-This restricts us to only ever calling this selector when the session exists, but it means we are guaranteed a non-null return value. By passing something other than state however, we are no longer hiding away the state structure. For example if the state was refactored and session was renamed to `userDetails` and restructured, we would have to refactor every selector. We will have lost the main benefit of redux selectors – to encapsulate away the inner structure of the state object.
+This restricts us to only ever calling this selector when the session exists, but it means we are guaranteed a non-null return value. By passing something other than state however, we are no longer hiding away the state structure. For example, if the state was refactored and session was renamed to `userDetails` and restructured, we would have to refactor every selector. We will have lost the main benefit of redux selectors - to encapsulate away the inner structure of the state object.
 
 #### Bonus idea:
 
