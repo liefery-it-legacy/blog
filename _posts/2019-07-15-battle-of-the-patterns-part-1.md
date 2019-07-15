@@ -199,9 +199,10 @@ This restricts us to only ever calling this selector when the session exists, bu
 
 #### Bonus idea:
 
-There is one more idea to try to get OptionTypes and selectors to play nicely
+There is one more idea to try to get OptionTypes and selectors to play nicely.
 
-If session is `None()` then asking for the session's username could be modelled as an error rather than a `None()`.
+If session is `None()` then we could argue that our application should never be asking the username in the first place. Our application logic should be smart enough to only ask for the username when the user is logged in and we have a session. With this philosophy, if session is `None()` then asking for the session's username could be modelled as an error rather than a `None()`.
+
 `Either` is another Scala device, very similar to OptionTypes, but rather than a type, or null, it's 
 any two types. In this case, a `String` or an `error`.
 
