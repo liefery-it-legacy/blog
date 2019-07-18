@@ -3,7 +3,7 @@ layout: post
 title: "Battle of the patterns: part 1"
 date: 4-07-2019
 author: Ali Churcher
-tags: flutter flutter_redux redux optiontypes
+tags: flutter flutter_redux redux Optiontypes
 excerpt: "Discovering an incompatibility between Redux Selector pattern and Option types"
 ---
 <figure>
@@ -26,7 +26,7 @@ Without selectors:
 const int count = state.session.user.orders.unpaid.length  // directly access the state field
 ```
 
-With Selectors:
+With selectors:
 ```dart
 const int count = getNumberOfUnpaidBills(state) // call a selector 
 ```
@@ -39,7 +39,7 @@ int getNumberOfUnpaidBills(state) {
 ### Option Types
 _A way to remove nulls by providing a type to represent an optional/unknown value_
 
-Option types are a language feature implemented in many function languages such as Haskell (called `maybe`), Rust, Swift and Scala. Our project uses a Dart implementation of Scala Option Types. Option types provide a safe way to handle the absence
+Option types are a language feature implemented in many function languages such as Haskell (called `maybe`), Rust, Swift and Scala. Our project uses a Dart implementation of Scala Option types. Option types provide a safe way to handle the absence
 of a value. The concept of null/nil/undefined is completely avoided and replaced with a type that is optional - i.e. a value that maybe present or not.
 
 For example, if we have a variable `comment` that might be present or not, we can model it like this:
@@ -60,7 +60,7 @@ comment = None();
 Implemented correctly, OptionTypes prevent the errors and surprises caused by unhandled nulls. The type forces you to handle both the presence and absence of the value at compile time. 
 
 ## Where the pattern battle begins
-We encountered some situations where OptionTypes and Selectors do not play nicely together. Let’s look at an example involving one important part of our application state – the session. 
+We encountered some situations where Option types and selectors do not play nicely together. Let’s look at an example involving one important part of our application state – the session. 
 Let's simplify the session code to have three fields: an apiKey, the name of the logged in user, and some orders:
 
 ```dart
@@ -70,11 +70,11 @@ class SessionState {
   final List<Order> userOrders;
 }
 ```
-The session is present in the application state, the centralized state object that we access and update with Redux. Since a session only exists when a user is logged in, this variable is a perfect candidate to use an OptionType.
+The session is present in the application state, the centralized state object that we access and update with Redux. Since a session only exists when a user is logged in, this variable is a perfect candidate to use an Option type.
 
 ```dart
 class State  {
-    final Option<SessionState> session; // Option Type
+    final Option<SessionState> session; // Option type
     String languageCode;
     final Route currentRoute;
     . . .
@@ -122,7 +122,7 @@ This is especially dangerous in an application that uses Option types because th
 ## First fix idea 
 _Selectors should not return empty values such as `''` and `[]`_
 
-Where previously our selector returned `''` when the value was not present, what if we returned an option type?
+Where previously our selector returned `''` when the value was not present, what if we returned an Option type?
 ```dart
 Option<String> getLoggedInUsername (FlutteryState state) =>
     state.session.fold(() => None(), (session) => Some(session.username));
@@ -137,15 +137,15 @@ class state  {
     . . .
 }
 ```
-we can see that if session is not there, then the concept of ‘session.username’ does not even exist. It’s not None() it’s just not there at all!
-This design also means added hassle of dealing with the None() scenario of an OptionType in situations when we know for sure that the value is present - in this case when the user is logged in. 
+we can see that if session is not there, then the concept of `session.username` does not even exist. It’s not `None()` it’s just not there at all!
+This design also means added hassle of dealing with the `None()` scenario of an Option type in situations when we know for sure that the value is present - in this case when the user is logged in. 
 
 ![cat gif](https://media.giphy.com/media/QCHpXmYAYU0TK/giphy.gif)*intermission cat*
 
 ## Second fix idea 
-_Favour selector pattern over option when the patterns clashed_
+_Favour selector pattern over Option when the patterns clashed_
 
-To better fit with the fact that our selectors returned empty strings etc, we can remodel our state to match. Rather than the session being an option type, we can make it as an object that was always present. When the user is logged out the session object has empty values. When the user is logged in the values are present. 
+To better fit with the fact that our selectors returned empty strings etc, we can remodel our state to match. Rather than the session being an Option type, we can make it as an object that was always present. When the user is logged out the session object has empty values. When the user is logged in the values are present. 
 
 ```dart
 class state  {
@@ -179,12 +179,12 @@ String getLoggedInUsername(state) {
 ```
 and the selector return value will always match exactly what is in the state. 
 
-The problem with this? We now have to handle our own nulls. We need to check if things are empty or present when we use them – exactly what OptionTypes were added to avoid. We are dealing with the baggage of option types without the benefits of safety. Let's see if we can improve on this.
+The problem with this? We now have to handle our own nulls. We need to check if things are empty or present when we use them – exactly what Option types were added to avoid. We are dealing with the baggage of Option types without the benefits of safety. Let's see if we can improve on this.
 
 ## A compromise?
 _Follow the Option pattern strictly and be more lenient with selectors_
 
-A lot of the difficulty for a selector such as `getLoggedInUsername` arises from the fact that Session is an option. The selector has to handle either the absence or the presence of the session. We can avoid this problem by passing a subset of the state into the selector.
+A lot of the difficulty for a selector such as `getLoggedInUsername` arises from the fact that Session is an Option. The selector has to handle either the absence or the presence of the session. We can avoid this problem by passing a subset of the state into the selector.
 
 before
 ```dart
@@ -202,11 +202,11 @@ This restricts us to only ever calling this selector when the session exists, bu
 
 #### Bonus idea:
 
-There is one more idea to try to get OptionTypes and selectors to play nicely.
+There is one more idea to try to get Option types and selectors to play nicely.
 
 If session is `None()` then we could argue that our application should never be asking the username in the first place. Our application logic should be smart enough to only ask for the username when the user is logged in and we have a session. With this philosophy, if session is `None()` then asking for the session's username could be modelled as an error rather than a `None()`.
 
-`Either` is another Scala device, very similar to OptionTypes, but rather than a type, or null, it's 
+`Either` is another Scala device, very similar to Option types, but rather than a type, or null, it's 
 any two types. In this case, a `String` or an `error`.
 
 ```dart
@@ -217,18 +217,18 @@ Either<String, error> getLoggedInUsername (FlutteryState state) =>
     );
 
 ```
-This pattern fits well with our option types pattern, but means we must
+This pattern fits well with our Option types pattern, but means we must
 have selectors that return values that are not actually in the state object - namely errors.
 
 
 ## What next?
 
-So we've seen two very different patterns. The first is the selector pattern, which values access to all application state at any time in the lifecycle of the application. The second is the Option types pattern, which encourages using application knowledge to only ask for information when it makes sense, for example only asking for the session's username if we have a session.
+So now we've seen our two very different patterns. The first was the selector pattern, which values access to all application state at any time in the lifecycle of the application. The second was the Option types pattern, which encourages using application knowledge to only ask for information when it makes sense, for example only asking for the session's username if we have a session.
 
-Although these two patterns nicely solve design problems, we've seen that
-sometimes the way they interact with each other can cause trouble. For example with the selector pattern we sometimes need to forego OptionTypes and instead return (and handle) nulls and other 'empty' values such as `''`. And when using OptionTypes we sometimes weren't able to successfully access all redux state values at all times, for example not being able to access the `username` when there is no logged in user.
+Although these two patterns nicely solve design problems, we can see that
+sometimes the way they interact with each other can cause trouble. For example with the selector pattern we sometimes need to forego Option types and instead return (and handle) nulls and other 'empty' values such as `''`. And when using Option types we sometimes weren't able to successfully access all redux state values at all times, for example not being able to access the `username` when there is no logged in user.
 
  We know that patterns come with trade-offs. Sometimes it’s an added level of indirection, high learning curve, or boilerplating code. We can now see that sometimes the trade-off could even be needing give up an existing pattern.
 
-So are we seconds away from finding a Redux + OptionType utopia or will we need to accept defeat and cut one from our application?
+So are we seconds away from finding a Redux + Option type utopia or will we need to accept defeat and cut one from our application?
 Join us after our tech design meeting to find out what we choose in part 2 - a shiny new solution!
