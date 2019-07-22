@@ -11,7 +11,7 @@ excerpt: "Have we discovered an incompatibility between Redux Selectors and Opti
 </figure>
 ## Introduction
 
-The members of Liefery's Flutter development team come from a wide range of backgrounds - from React and Elm to Java and Scala. While rewriting our mobile application in Flutter we were able to pick and chose different design patterns that we knew from experience were good for a particular problem. Two of the patterns we chose were well established and solved clear problems that we had. After some time however, we found ourselves battling with these patterns, or rather, these patterns battling each other. When we needed to write code that bypassed the best practices of one pattern to satisfy the other we realized we needed to rethink our design. In this blog post I want to describe two patterns that we are using in our codebase, how they are currently conflicting in our state management code, and some ideas that the wider team has discussed for improvements. I hope that part 2 of this blog post will describe the approach we end up taking to solve this problem and create a slick new state management design.  
+The members of Liefery's Flutter development team come from a wide range of backgrounds - from React and Elm to Java and Scala. While rewriting our mobile application in Flutter we were able to pick and choose different design patterns that we knew from experience were good for a particular problem. Two of the patterns we chose were well established and solved clear problems that we had. After some time however, we found ourselves battling with these patterns, or rather, these patterns battling each other. When we needed to write code that bypassed the best practices of one pattern to satisfy the other we realized we needed to rethink our design. In this blog post I want to describe two patterns that we are using in our codebase, how they are currently conflicting in our state management code, and some ideas that the wider team has discussed for improvements. I hope that part 2 of this blog post will describe the approach we end up taking to solve this problem and create a slick new state management design.  
 
 ## The two patterns in question: Redux Selectors and Option Types
 Background information: we use [flutter_redux](https://pub.dev/packages/flutter_redux) for our state management. It allows us to centralize our application state in a single place and control how it is updated. It behaves mostly like the popular Redux library from JavaScript, and a very nice explanation of the main concepts can be found [here.](https://redux.js.org/introduction/three-principles)
@@ -61,7 +61,7 @@ Implemented correctly, Option types prevent the errors and surprises caused by u
 
 ## Where the pattern battle begins
 We encountered some situations where Option types and selectors do not play nicely together. Let’s look at an example involving one important part of our application state – the session. 
-For this example the session will have just three fields: an apiKey, the name of the logged in user, and some orders:
+For this example, the session will have just three fields: an apiKey, the name of the logged in user, and some orders:
 
 ```dart
 class SessionState {
@@ -168,7 +168,7 @@ SessionState({
   userOrders = [],
  }) 
  // this constructor provides default values for when no value is present 
- // i.e before any user has logged in.
+ // i.e. before any user has logged in.
 ```
 
 With this change, our selector can be rewritten:
@@ -179,7 +179,7 @@ String getLoggedInUsername(state) {
 ```
 and the selector return value will always match exactly what is in the state. 
 
-The problem with this? We now have to handle absense of values ourselves. We need to check if things are empty or present when we use them – exactly what Option types were added to avoid. We are dealing with the baggage of Option types without the benefits of safety. Let's see if we can improve on this.
+The problem with this? We now have to handle absence of values ourselves. We need to check if things are empty or present when we use them – exactly what Option types were added to avoid. We are dealing with the baggage of Option types without the benefits of safety. Let's see if we can improve on this.
 
 ## A compromise?
 _Follow the Option pattern strictly and be more lenient with selectors_
@@ -229,7 +229,7 @@ have selectors that return values that are not actually in the state object - na
 So now we've seen our two very different patterns. The first was the selector pattern, which values access to all application state at any time in the lifecycle of the application. The second was the Option types pattern, which encourages using application knowledge to only ask for information when it makes sense, for example only asking for the session's username if we have a session.
 
 Although these two patterns nicely solve design problems, we can see that
-sometimes the way they interact with each other can cause trouble. For example with the selector pattern we sometimes need to forego Option types and instead return (and handle) nulls and other 'empty' values such as `''`. And when using Option types we sometimes weren't able to successfully access all redux state values at all times, for example not being able to access the `username` when there is no logged in user.
+sometimes the way they interact with each other can cause trouble. For example, with the selector pattern we sometimes need to forego Option types and instead return (and handle) nulls and other 'empty' values such as `''`. And when using Option types we sometimes weren't able to successfully access all redux state values at all times, for example not being able to access the `username` when there is no logged in user.
 
  We know that patterns come with trade-offs. Sometimes it’s an added level of indirection, a high learning curve, or boilerplate code. We can now see that sometimes the trade-off of adding a new pattern could even mean giving up existing pattern.
 
