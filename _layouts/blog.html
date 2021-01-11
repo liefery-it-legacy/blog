@@ -28,7 +28,7 @@ layout: default
 
       <nav class="article-teaser-list__nav">
         {% if paginator.previous_page %}
-          <a href="{{ paginator.previous_page_path }}" class="article-teaser-list__nav-element">
+          <a href="blog/{{ paginator.previous_page_path }}" class="article-teaser-list__nav-element">
             &lt;- Newer
           </a>
         {% else %}
@@ -36,7 +36,7 @@ layout: default
         {% endif %}
 
         {% if paginator.next_page %}
-          <a href="{{ paginator.next_page_path }}" class="article-teaser-list__nav-element">Older -&gt;</a>
+          <a href="blog/{{ paginator.next_page_path }}" class="article-teaser-list__nav-element">Older -&gt;</a>
         {% else %}
           <span class="article-teaser-list__nav-element article-teaser-list__nav-element--disabled">Older -&gt;</span>
         {% endif %}
