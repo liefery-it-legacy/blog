@@ -10,7 +10,7 @@ excerpt: "Once on a wonderful Berlin winter day more than a year ago I was think
 Once on a wonderful Berlin winter day more than a year ago I was thinking of
 nothing evil when suddenly...
 
-![one error pops up burning house](/images/posts/curious_query/boom.jpg)
+![one error pops up burning house](/blog/images/posts/curious_query/boom.jpg)
 
 _Bugsnag_ popped up and complained about an
 `Elixir.DBConnection.ConnectionError` - I took a look immediately to find out
@@ -168,7 +168,7 @@ But what do the results say? Apparently `with_courier_ids` and `full custom`
 rock! `DB View` is over **4600 times slower!**. Wow case solved. Using a nice
 visual representation from the HTML report makes this even clearer:
 
-![benchee report locations single report](/images/posts/curious_query/benchee_single_run.png)
+![benchee report locations single report](/blog/images/posts/curious_query/benchee_single_run.png)
 
 (displayed is how many iterations we could do per second on average, so
 bigger is better!)
@@ -185,7 +185,7 @@ on the back for one of the best performance improvements ever and call it a day!
 
 We deploy and boom...
 
-![many errors pop up burning house](/images/posts/curious_query/boooom.jpg)
+![many errors pop up burning house](/blog/images/posts/curious_query/boooom.jpg)
 
 The bugsnag errors start rolling in! Look at all these `DBConnectionError`s! There are
 more than before! How? We benchmarked this! This can't be happening!
@@ -418,7 +418,7 @@ them...
 
 ## Combined Indexes to the rescue
 
-![combined indexes](/images/posts/curious_query/combined_index.jpg)
+![combined indexes](/blog/images/posts/curious_query/combined_index.jpg)
 
 We can define indexes on
 [multiple columns](https://www.postgresql.org/docs/9.6/static/indexes-multicolumn.html)
@@ -464,19 +464,19 @@ _(before)_.
 
 ### 2.5 million Locations
 
-![big](/images/posts/curious_query/big.png)
+![big](/blog/images/posts/curious_query/big.png)
 
 ### 200 000 Locations
 
-![200k](/images/posts/curious_query/200k.png)
+![200k](/blog/images/posts/curious_query/200k.png)
 
 ### 20 000 locations
 
-![20k](/images/posts/curious_query/20k.png)
+![20k](/blog/images/posts/curious_query/20k.png)
 
 ### No Locations
 
-![no locations](/images/posts/curious_query/no_locations.png)
+![no locations](/blog/images/posts/curious_query/no_locations.png)
 
 ### The Query Plan
 
@@ -568,4 +568,4 @@ there's some great tools out there.
 So, take your trusty benchmarking tool and remember your inputs. Then, you too
 can have a nice comfortable house... errm application again.
 
-![nice house](/images/posts/curious_query/nice-house.jpg)
+![nice house](/blog/images/posts/curious_query/nice-house.jpg)

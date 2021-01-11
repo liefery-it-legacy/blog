@@ -7,7 +7,7 @@ tags: flutter flutter_redux redux Optiontypes
 excerpt: "Have we discovered an incompatibility between Redux Selectors and Option types?"
 ---
 <figure>
-<img  alt="pug crossed with an owl" src="/images/posts/battle-of-the-patterns/pugowl.jpg" />
+<img  alt="pug crossed with an owl" src="/blog/images/posts/battle-of-the-patterns/pugowl.jpg" />
 </figure>
 ## Introduction
 

@@ -6,7 +6,7 @@ author: Thea Kupler
 tags: remote retrospective process transformation retrotool
 excerpt: "How we adapted our retrospective process with a facilitation tool and how we reflect on it."
 ---
-![sticky notes as therapy in new york subway](/images/posts/adapting-our-retrospective-process/sticky_note_therapy.jpg)
+![sticky notes as therapy in new york subway](/blog/images/posts/adapting-our-retrospective-process/sticky_note_therapy.jpg)
 
 ## Introduction
 
@@ -23,7 +23,7 @@ I liked the vibe it brought to be human and to interact on a different level wit
 Esther Derby and Diana Larsen shared the 5 steps of a retrospective [about which Claus Vagner Pedersen blogged on medium](https://medium.com/path-pattern/the-retrospective-a-known-recipe-for-improvement-with-my-own-spice-da534c6628cc):
 
 
-![stages of retrospective by Esther Derby and Diana Larsen (picture by Claus Vagner Pedersen](/images/posts/adapting-our-retrospective-process/retrospective-steps.png)
+![stages of retrospective by Esther Derby and Diana Larsen (picture by Claus Vagner Pedersen](/blog/images/posts/adapting-our-retrospective-process/retrospective-steps.png)
 
 ## The old retrospective process
 
@@ -52,7 +52,7 @@ ___
 [The retrotool](https://retrotool.io/) is a great way to integrate the features of an offline retrospective with sticky notes.
 Each person can prepare their own sticky notes which will be color-coded and saved to a private section by the tool automatically. There is even an integrated 5 minute timer which can be used for the time-boxing. When it is your turn you can drag & drop one card after the other in the public section of the board.
 
-![retrotool](/images/posts/adapting-our-retrospective-process/retrotool-private-sections.png)
+![retrotool](/blog/images/posts/adapting-our-retrospective-process/retrotool-private-sections.png)
 
 After everybody shared their notes, it is possible to activate hidden voting, so that there can be a non-biased voting. We decided that everybody can give 3 votes in total. To see what wins the majority, we sort each board-section with the built-in retrotool option by points and start with the most votes and proceed in descending order. Compared to the old process I think the voting is also a huge win to have a better insight of what matters to the team and not only representing concerns for individuals.
 

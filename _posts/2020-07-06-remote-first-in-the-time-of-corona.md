@@ -127,5 +127,5 @@ distanced picnic - to play frisbee and to say goodbye to Roman who was leaving
 the team. Below you can see how funny it looks when you try to take a
 group photo, without being too close to each other.
 
-![Team photo](/images/posts/remote-first-in-the-time-of-corona/team1.jpg)
-![Another photo that includes your truly](/images/posts/remote-first-in-the-time-of-corona/team2.jpg)
+![Team photo](/blog/images/posts/remote-first-in-the-time-of-corona/team1.jpg)
+![Another photo that includes your truly](/blog/images/posts/remote-first-in-the-time-of-corona/team2.jpg)

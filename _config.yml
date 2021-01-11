@@ -1,7 +1,7 @@
 title: Liefery IT Legacy Blog
 description: > # this means to ignore newlines until "baseurl:"
   The legacy blog of the Liefery IT team
-baseurl: "/blog/" # the subpath of your site, e.g. /blog/
+baseurl: "/blog"
 url: "https://liefery-it-legacy.github.io" # the base hostname & protocol for your site
 
 # Build settings

@@ -9,7 +9,7 @@ But what do you do if the counter cache is the problem?"
 ---
 
 <div style="width:100%;">
-  <img src="/images/posts/counter-caches-as-the-problem/counting.gif">
+  <img src="/blog/images/posts/counter-caches-as-the-problem/counting.gif">
 </div>
 <div style="text-align: center">
   <a href="https://giphy.com/gifs/latenightseth-lol-seth-meyers-lnsm-l0XtbC8EniiuwAEOQn">via GIPHY</a>
@@ -171,7 +171,7 @@ and so on.
 How bad is it?
 Well...
 
-![4 seconds only for the counter update](/images/posts/counter-caches-as-the-problem/skylight.png)
+![4 seconds only for the counter update](/blog/images/posts/counter-caches-as-the-problem/skylight.png)
 
 Only updating the shipment counter caches on the tour appointment now takes 4 seconds on average
 if we have many parallel update attempts to the same tour appointment. 
@@ -453,6 +453,6 @@ This can be solved by
 We can go home now and enjoy our afternoon!
 
 <div style="width:100%;">
-  <img src="/images/posts/counter-caches-as-the-problem/success.gif">
+  <img src="/blog/images/posts/counter-caches-as-the-problem/success.gif">
 </div>
 <div style="text-align: center"><a href="https://giphy.com/gifs/mrw-week-job-4xpB3eE00FfBm">via GIPHY</a></div>

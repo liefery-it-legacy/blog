@@ -6,7 +6,7 @@ author: Kaja Santro
 tags: diversity feminism tokenism teams women
 excerpt: "Why not being the only woman in a tech team is so healthy."
 ---
-![Foto by Andrea Piacquadio on Pexels](/images/posts/find_your_peers/pexels-andrea-piacquadio-3860868.jpg)
+![Foto by Andrea Piacquadio on Pexels](/blog/images/posts/find_your_peers/pexels-andrea-piacquadio-3860868.jpg)
 
 ## Diversity as an Illusion
 
@@ -38,7 +38,7 @@ We all know that white able-bodied men are overrepresented in tech teams, at lea
 
 But if you would actually look at the team you would see something like this:
 
-![Photo by Tim van der Kuip on Unsplash](/images/posts/find_your_peers/tim-van-der-kuip-CPs2X8JYmS8-unsplash.jpg)
+![Photo by Tim van der Kuip on Unsplash](/blog/images/posts/find_your_peers/tim-van-der-kuip-CPs2X8JYmS8-unsplash.jpg)
 
 So even if we have a diversity of hair cuts or a diversity of nationalities, this will still feel very discouraging to the people with certain awareness of the whole problem (mostly the people being affected by racism, sexism, ableism etc.). If we talk about diversity, we also have to talk about representation.
 
@@ -56,7 +56,7 @@ I have recently watched a movie about Freddie Mercury and how his band Queen evo
 
 Have you ever been the only one representing your identity in a group of people? Have you ever been the Freddie Mercury in Queen? Have you been the only fat* person in the room? Or the only Black person in a company full of white people? And did this somehow keep your mind busy? I can tell you how it feels being the only woman in a tech team. It feels like anything you do differently from the others will automatically be perceived as connected to your gender.
 
-![Bild von MonikaP auf Pixabay](/images/posts/find_your_peers/impala-2668617_640.jpg)
+![Bild von MonikaP auf Pixabay](/blog/images/posts/find_your_peers/impala-2668617_640.jpg)
 
 I was constantly trying not to stick out too much as different from my team mates. It was already weird enough that when going on a retreat with my team, I was the only one who was sleeping separately in her own room (a privilege that I tried to see as a good thing). But I was suffering from being perceived as very emotional. While *I am in fact* very emotional and totally like that about myself, I don't want to feed the stereotype of women being emotional while men being rational. I can also be super rational by the way and if you know a little bit about how the brain actually works, you also probably don't believe in this false dichotomy. But even if there is such a thing as rational and emotional people, and even if I do have a very emotional side to me, I don't want everyone to think
 

@@ -7,8 +7,8 @@ tags: CSS-Modules, CSS, React, JavaScript, Component
 excerpt: "I'm a fan of CSS Modules. This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules ..."
 ---
 
-[menu]: /images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png
-[menu-separated]: /images/posts/overriding-styles-with-CSS-modules/menu-separated.png
+[menu]: /blog/images/posts/overriding-styles-with-CSS-modules/menu-not-separated.png
+[menu-separated]: /blog/images/posts/overriding-styles-with-CSS-modules/menu-separated.png
 I'm a fan of [CSS Modules](https://github.com/css-modules/css-modules). This clever build step allows you to write CSS in a clean, manageable way. No longer do you have gigantic CSS files. No longer are you scared to delete CSS rules, for fear of unexpected style changes in murky corners of your application. No longer do you have to implement complex CSS naming schemes that are slowly forgotten or implemented inconsistently.
 
 We get these benefits when we use CSS Modules because we write small and simple CSS files. Each of these files (modules) has its own scope, allowing you to reuse simple class names like `button` in several different modules. Build tools such as [css-loader](https://github.com/webpack-contrib/css-loader#modules) for Webpack then take care of scoping and naming issues during compilation. These scoped class names let you forget about complex selectors, and for the most part [specificity](https://css-tricks.com/specifics-on-css-specificity/).
@@ -92,7 +92,7 @@ We still have separators. Our more specific CSS is not being used. Don't be sad 
 the menu, we can see this happening to the menu's `item` class:
 
 
-![compiled menu scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-menu-classes.png){:class="dev-tools-image"}
+![compiled menu scoped classes](/blog/images/posts/overriding-styles-with-CSS-modules/compiled-menu-classes.png){:class="dev-tools-image"}
 
 
 The menu item elements do not have the class `item`. Instead, they have been given the compiled class name `Menu__item--3FNtb`. Likewise the CSS itself is also compiled with a new name.
@@ -167,7 +167,7 @@ export default Menu
 Let's check the developer tools to see if these classes are really added:
 
 
-![compiled menu and header scoped classes](/images/posts/overriding-styles-with-CSS-modules/compiled-with-header-classes.png){:class="dev-tools-image"}
+![compiled menu and header scoped classes](/blog/images/posts/overriding-styles-with-CSS-modules/compiled-with-header-classes.png){:class="dev-tools-image"}
 
 
 Looks good! Now we have both `Menu_item--3FNtb` and `Header_item--1NKCj` on our elements.

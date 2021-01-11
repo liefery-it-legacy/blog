@@ -9,10 +9,10 @@ They have a profound impact on how we work, how much we enjoy our work and
 ultimately on the outcome of our work ..."
 ---
 
-[ticket-jira]: /images/posts/to-optimize-your-workflow-make-it-disappear/ticket-jira.png
-[ticket-github]: /images/posts/to-optimize-your-workflow-make-it-disappear/ticket-github.png
-[qa-comment-github]: /images/posts/to-optimize-your-workflow-make-it-disappear/qa-comment-github.png
-[qa-comment-jira]: /images/posts/to-optimize-your-workflow-make-it-disappear/qa-comment-jira.png
+[ticket-jira]: /blog/images/posts/to-optimize-your-workflow-make-it-disappear/ticket-jira.png
+[ticket-github]: /blog/images/posts/to-optimize-your-workflow-make-it-disappear/ticket-github.png
+[qa-comment-github]: /blog/images/posts/to-optimize-your-workflow-make-it-disappear/qa-comment-github.png
+[qa-comment-jira]: /blog/images/posts/to-optimize-your-workflow-make-it-disappear/qa-comment-jira.png
 
 Workflows are an essential part of every software engineering team. They have a
 profound impact on how we work, how much we enjoy our work and ultimately on the

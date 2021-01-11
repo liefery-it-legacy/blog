@@ -13,7 +13,7 @@ In this post I want to talk about a situation that required me to step back and 
  The first thing you learn in Flutter is that everything is a widget. Not just small components of the page like a form or a menu, but _everything_. A single button is a widget. A line of text is a widget. Padding and margins are also achieved with widgets. After a long day at the office you start to question if you too are widget.
 
  <figure>
- <img  alt="monkey looking at self in mirror" src="/images/posts/flutter/existential_crisis_monkey.jpg" />   <figcaption>Photo by Andre Mouton on Unsplash.</figcaption>
+ <img  alt="monkey looking at self in mirror" src="/blog/images/posts/flutter/existential_crisis_monkey.jpg" />   <figcaption>Photo by Andre Mouton on Unsplash.</figcaption>
  </figure>
 
 Every widget in Flutter is created from a `build` method, and every build method takes a `BuildContext` as an argument.
@@ -24,7 +24,7 @@ Every widget in Flutter is created from a `build` method, and every build method
 ```
 This build context describes where you are in the tree of widgets of your application.  I learnt that it's easy to ignore the build context completely. Just add a BuildContext parameter to your build function when your IDE complains and then forget about it. This lazy approach served me well until the day I needed to create a [snackbar](https://material.io/design/components/snackbars.html); the small pieces of information that pop up at the bottom of your screen.
 
-![snackbar popup dialog on a phone](/images/posts/flutter/snackbar_bottom_only.png)
+![snackbar popup dialog on a phone](/blog/images/posts/flutter/snackbar_bottom_only.png)
 
 
 Let's delve into what it takes to display a snackbar, and why it is relevant to understand the build context.
@@ -67,7 +67,7 @@ class MyDocumentsScreen extends StatelessWidget {
   }
 }
 ```
-<img class="userDefined centered" src="/images/posts/flutter/sad.png" width="260"  />
+<img class="userDefined centered" src="/blog/images/posts/flutter/sad.png" width="260"  />
 
 When we click the button no snackbar is displayed, and the following error is printed to the console:
 
@@ -99,7 +99,7 @@ So why did the error say that there was no scaffold in the given build context, 
 
 >Each widget has its own BuildContext, which becomes the parent of the widget returned by the StatelessWidget.build.  
 
-<img class="userDefined" src="/images/posts/flutter/login_screen.png" width="245"  /><img class="userDefined" src="/images/posts/flutter/arrow.png" width="70"  /><img class="userDefined" src="/images/posts/flutter/full_screen_no_snackbar.png" width="250"  />
+<img class="userDefined" src="/blog/images/posts/flutter/login_screen.png" width="245"  /><img class="userDefined" src="/blog/images/posts/flutter/arrow.png" width="70"  /><img class="userDefined" src="/blog/images/posts/flutter/full_screen_no_snackbar.png" width="250"  />
 
 That means that if we are building the MyDocuments screen then the `BuildContext` in the `MyDocumentsScreen#build` method is the parent widget - in this case the Login Screen on the left side.
 
@@ -144,7 +144,7 @@ class MyDocumentsScreen extends StatelessWidget {
 ```
 Success! We now have rendered a snackbar into our scaffold.
 
-<img class="userDefined centered" display="block" src="/images/posts/flutter/snackbar.png" width="250"  />
+<img class="userDefined centered" display="block" src="/blog/images/posts/flutter/snackbar.png" width="250"  />
 
 Putting aside our disappointment that snackbars are unrelated to food, we can see the importance of the build context for the everyday task of rendering something into a scaffold after build time. As a Flutter beginner you will find the build context useful for much more, such as getting your current location for navigation, adding colour themes, and translating your text.
 
@@ -153,5 +153,5 @@ Putting aside our disappointment that snackbars are unrelated to food, we can se
 
 
 <figure>
-<img  alt="monkey looking at self in mirror" src="/images/posts/flutter/snacks.jpg" />   <figcaption>An improved snackbar.   Photo by rawpixel on Unsplash.</figcaption>
+<img  alt="monkey looking at self in mirror" src="/blog/images/posts/flutter/snacks.jpg" />   <figcaption>An improved snackbar.   Photo by rawpixel on Unsplash.</figcaption>
 </figure>
