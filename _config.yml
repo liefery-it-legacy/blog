@@ -13,6 +13,7 @@ plugins:
   - jekyll-feed
 
 paginate: 5
+paginate_path: "blog/page/:num/"
 
 feed:
   path: feed.xml
