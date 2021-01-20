@@ -13,7 +13,7 @@ excerpt: "How we adapted our retrospective process with a facilitation tool and 
 The Liefery IT Team had many new joiners over the last few months. As somebody new joining the team, it is a special opportunity to reflect on why and how things are done, still having a fresh and external view on the processes. 
 
 The retrospective (aka retro) was one of our meeting formats which experienced transformation and still leads to discussion.
-How we organized our retro meeting in the past can be read in an [older blog post](https://engineering.liefery.com/2019/05/08/the-only-constant-is-change-scaling-our-processes-with-weekly-retrospectives.html).
+How we organized our retro meeting in the past can be read in an [older blog post](/blog/2019/05/08/the-only-constant-is-change-scaling-our-processes-with-weekly-retrospectives.html).
 
 A retrospective is a method to support continuous development with a perspective on the people, interactions and processes.
 It is a people-first meeting, giving space to the value of the [agile manifesto](https://agilemanifesto.org/) "Individuals and interactions over processes and tools". It's usually the only meeting with no laptop and something haptic like sticky notes, paper and scissor or similar.
@@ -27,7 +27,7 @@ Esther Derby and Diana Larsen shared the 5 steps of a retrospective [about which
 
 ## The old retrospective process
 
-When I joined Liefery I was curious about how the retro was done since we have a [remote-first approach, about which we wrote in our blog before](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
+When I joined Liefery I was curious about how the retro was done since we have a [remote-first approach, about which we wrote in our blog before](/blog/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
 In the retro one of the team members volunteered to take notes and then everybody one-by-one talked about their likes and wishes.
 Afterwards we went through all the wishes and made action items for them.
 

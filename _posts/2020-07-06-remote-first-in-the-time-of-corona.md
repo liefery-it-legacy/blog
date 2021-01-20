@@ -19,13 +19,13 @@ On 1st April I decided to stay at home, opened my laptop, turned on Slack and sh
 
 My colleagues were indeed all working from home. Uff... no bad surprises here!
 Any other option just didn't make sense to me. Our processes were already
-optimized for remote work, [thanks to our remote-first approach](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
+optimized for remote work, [thanks to our remote-first approach](/blog/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
 **If any team was "ready for Corona" then it was us.**
 
 #### Team processes
 
 And indeed, when it comes to team processes, I don't have much new to share. They
-work really well, surprisingly well. [You can just read the previous blog post](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html),
+work really well, surprisingly well. [You can just read the previous blog post](/blog/2018/11/29/our-road-from-remote-friendly-to-remote-first.html),
 because it describes them and the motivation in depth.
 
 What I'd like to focus on instead are the other aspects of completely switching to

@@ -26,7 +26,7 @@ First, some background on our tools.
 
 At the core of a team developing software is the code itself. We host it on
 [GitHub](https://github.com/). Therefore, we also
-[review code](https://engineering.liefery.com/2018/02/21/how-we-do-code-reviews)
+[review code](/blog/2018/02/21/how-we-do-code-reviews)
 there.
 
 Tickets help us to organize our work. We use

@@ -73,7 +73,7 @@ a longer discussion, we schedule a dedicated meeting for it. In such a case the
 decision may be "Schedule a meeting to talk about updating JavaScript
 dependencies". This allows us to keep our retrospectives focused and with
 predictable duration. An additional advantage of scheduling separate meetings
-is that a lot of discussions can [happen asynchronously](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
+is that a lot of discussions can [happen asynchronously](/blog/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
 
 We store store meeting notes and make them available to everyone on the team.
 Thanks to this it's easy to review the action items from the previous
@@ -136,7 +136,7 @@ It started as an experiment, but now it's a foundation of our development
 process.
 
 Other things that we improved through retrospectives:
-- [transitioning from remote-friendly to remote-first](/2018/11/29/our-road-from-remote-friendly-to-remote-first.html)
+- [transitioning from remote-friendly to remote-first](/blog/2018/11/29/our-road-from-remote-friendly-to-remote-first.html)
 - deprecating Cucumber and switching to RSpec feature specs
 - organizing the responsibility of internal customer support and exception
 monitoring across the team
