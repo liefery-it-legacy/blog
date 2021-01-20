@@ -1,6 +1,6 @@
-# This is the source code for the Liefery Engineering Blog
+# This is the source code for the old Liefery IT blog
 
-The live site can be found at [engineering.liefery.com](http://engineering.liefery.com)
+The live site can be found at [liefery-it-legacy.github.io/blog/](https://liefery-it-legacy.github.io/blog/)
 
 It uses [Jekyll](http://jekyllrb.com) as a static site generator.
 
@@ -14,7 +14,7 @@ bundle install
 invoker start
 ```
 
-and then visit localhost:4000 to see the blog in action.
+and then visit localhost:4000/blog/ to see the blog in action.
 
 # Deployment:
 Is handled by github and done automatically.
