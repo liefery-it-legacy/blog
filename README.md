@@ -20,8 +20,7 @@ and then visit localhost:4000/blog/ to see the blog in action.
 Is handled by github and done automatically.
 
 # License and copyright
-Following files, directories and their contents are copyright LieferFactory GmbH.
-You may not reuse anything therein without permission:
+Following files, directories and their contents are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/):
 
 * _posts/
 * images
