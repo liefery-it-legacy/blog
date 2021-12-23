@@ -75,7 +75,7 @@ dependencies". This allows us to keep our retrospectives focused and with
 predictable duration. An additional advantage of scheduling separate meetings
 is that a lot of discussions can [happen asynchronously](/blog/2018/11/29/our-road-from-remote-friendly-to-remote-first.html).
 
-We store store meeting notes and make them available to everyone on the team.
+We store meeting notes and make them available to everyone on the team.
 Thanks to this it's easy to review the action items from the previous
 iteration. We do it at the end of our retrospective - go through the points one
 by one and check if we made some progress there. If we didn't follow up on an
